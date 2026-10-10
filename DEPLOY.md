@@ -1,4 +1,4 @@
-# welcome to sylnice - 静态站点托管部署指南
+# welcome to me - 静态站点托管部署指南
 
 本压缩包是由 Blokko 多页面建站工具生成的纯静态站点离线包，无需 Node.js 或后端服务器运行环境。
 
