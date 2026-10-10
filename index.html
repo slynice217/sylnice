@@ -702,7 +702,7 @@
 /* Ensure the visitor comment panel remains visible below the Blokko canvas. */
 html, body { min-height:100%; overflow-y:auto !important; }
 #app { position:relative; z-index:1; }
-#visitor-comments { display:block !important; position:relative !important; z-index:10001 !important; visibility:visible !important; opacity:1 !important; flex:0 0 auto; }
+/* Removed conflicting rule: it overrode the fixed floating-panel styles above. */
 
 .visitor-comments{width:min(920px,calc(100% - 32px));margin:28px auto 34px;color:var(--text-primary,#25212b);font-family:inherit}
 .visitor-comments *{box-sizing:border-box}
