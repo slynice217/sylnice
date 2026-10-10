@@ -872,6 +872,7 @@
     return fallbackConvert(text, target);
   };
   const originals = new WeakMap();
+  const originalAttrs = new WeakMap();
   const attrs = ['title', 'aria-label', 'placeholder', 'alt'];
   function process(root) {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -893,9 +894,13 @@
       if (el.closest('#site-language-toggle')) return;
       attrs.forEach(attr => {
         if (!el.hasAttribute(attr)) return;
-        const key = 'langOriginal' + attr;
-        if (!el.dataset[key]) el.dataset[key] = el.getAttribute(attr);
-        const next = convert(el.dataset[key], language);
+        let saved = originalAttrs.get(el);
+        if (!saved) {
+          saved = new Map();
+          originalAttrs.set(el, saved);
+        }
+        if (!saved.has(attr)) saved.set(attr, el.getAttribute(attr));
+        const next = convert(saved.get(attr), language);
         if (el.getAttribute(attr) !== next) el.setAttribute(attr, next);
       });
     });

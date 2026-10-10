@@ -733,27 +733,20 @@
     });
     const elements = root.querySelectorAll ? root.querySelectorAll('*') : [];
     elements.forEach(el => {
-    if (el.closest('#site-language-toggle')) return;
-
-    attrs.forEach(attr => {
-    if (!el.hasAttribute(attr)) return;
-
-    let saved = originalAttrs.get(el);
-    if (!saved) {
-      saved = new Map();
-      originalAttrs.set(el, saved);
-    }
-
-    if (!saved.has(attr)) {
-      saved.set(attr, el.getAttribute(attr));
-    }
-
-    const next = convert(saved.get(attr), language);
-    if (el.getAttribute(attr) !== next) {
-      el.setAttribute(attr, next);
-    }
-
+      if (el.closest('#site-language-toggle')) return;
+      attrs.forEach(attr => {
+        if (!el.hasAttribute(attr)) return;
+        let saved = originalAttrs.get(el);
+        if (!saved) {
+          saved = new Map();
+          originalAttrs.set(el, saved);
+        }
+        if (!saved.has(attr)) saved.set(attr, el.getAttribute(attr));
+        const next = convert(saved.get(attr), language);
+        if (el.getAttribute(attr) !== next) el.setAttribute(attr, next);
+      });
     });
+  }
   toggle.dataset.lang = language;
   toggle.setAttribute('aria-checked', language === 'tw' ? 'true' : 'false');
   document.documentElement.lang = language === 'tw' ? 'zh-Hant' : 'zh-Hans';
