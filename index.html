@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="--inspector-ui-opacity: 1; --global-banners-height: 0px; --site-nav-height: 51px; --system-broadcast-height: 72px; --broadcast-offset: 72px;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Created with Blokko">
+
+
+<title>welcome to sylnice - Blokko</title>
+<link rel="stylesheet" href="./viewer.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--active-card-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  #app {
+    flex: 1 0 auto;
+  }
+  .viewer-loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #666; }
+
+  /* 站点导航栏：吸顶，毛玻璃微半透，层级高于画布 */
+  .blokko-site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 9000;
+    background: var(--color-card-bg, #ffffff);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+    flex-shrink: 0;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .blokko-site-nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 16px;
+    min-height: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  /* 自定义背景色时：去掉默认毛玻璃底色/模糊，并统一深色模式下的底色，确保整条 banner 都是自定义色 */
+  .blokko-site-nav.has-custom-bg,
+  html:not(.light-mode) .blokko-site-nav.has-custom-bg,
+  html.dark-mode .blokko-site-nav.has-custom-bg {
+    background: var(--nav-custom-bg, var(--color-card-bg, #ffffff));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .blokko-nav-desktop {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  /* 站点标识：logo + 标题（与编辑器 SiteNavBanner 一致） */
+  .blokko-site-nav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 6px;
+  }
+  .blokko-site-nav-logo {
+    display: block;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  .blokko-site-nav-title {
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .blokko-site-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text-primary, #111111);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.15s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  .blokko-site-nav-link:hover {
+    background: var(--color-hover, rgba(0, 0, 0, 0.05));
+    color: var(--color-primary, #007AFF);
+  }
+  .blokko-site-nav-link[data-blokko-nav-current="true"],
+  .blokko-site-nav-link.is-active,
+  .blokko-site-nav-link.is-parent-active {
+    color: var(--color-primary, #007AFF);
+    font-weight: 600;
+    background: var(--color-active, rgba(0, 122, 255, 0.08));
+  }
+
+  /* 桌面端二级悬浮下拉菜单 */
+  .blokko-site-nav-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .blokko-nav-chevron {
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0.7;
+    margin-left: 2px;
+  }
+  .blokko-site-nav-dropdown:hover .blokko-nav-chevron,
+  .blokko-site-nav-dropdown.is-open .blokko-nav-chevron {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+  .blokko-site-nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+    transition-delay: 60ms; /* safe hover 防抖闭合 */
+    z-index: 9999;
+  }
+  /* Safe-Hover 隐形透明安全桥垫：填补 trigger 与 menu 间隙，彻底杜绝划入时意外断连 */
+  .blokko-site-nav-dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 12px;
+  }
+  .blokko-site-nav-dropdown:hover .blokko-site-nav-dropdown-menu,
+  .blokko-site-nav-dropdown:focus-within .blokko-site-nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+    transition-delay: 0s;
+  }
+  .blokko-dropdown-menu-inner {
+    min-width: 150px;
+    max-width: 260px;
+    /* 下拉浮层配色跟随 banner 外观（由 --nav-menu-* 内联变量派生，与编辑器预览一致） */
+    background: var(--nav-menu-bg, var(--color-card-bg, rgba(255, 255, 255, 0.95)));
+    color: var(--nav-menu-fg, var(--text-primary, #222222));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--nav-menu-border, var(--border-color, rgba(0, 0, 0, 0.08)));
+    border-radius: 14px;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .blokko-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .blokko-dropdown-item:hover {
+    background: var(--nav-menu-hover, var(--color-hover, rgba(0, 0, 0, 0.05)));
+    color: var(--color-primary, #007AFF);
+    transform: translateX(2px);
+  }
+  .blokko-dropdown-item[data-blokko-nav-current="true"],
+  .blokko-dropdown-item.is-active {
+    color: var(--color-primary, #007AFF);
+    font-weight: 600;
+    background: var(--color-active, rgba(0, 122, 255, 0.08));
+  }
+
+  /* 移动端汉堡包按钮与侧边抽屉 */
+  .blokko-nav-burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+  }
+  .blokko-nav-burger:hover {
+    background: var(--color-hover, rgba(0, 0, 0, 0.05));
+  }
+  .blokko-burger-bar {
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-primary, #222222);
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+  .blokko-site-nav.is-mobile-open .blokko-burger-bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .blokko-site-nav.is-mobile-open .blokko-burger-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .blokko-site-nav.is-mobile-open .blokko-burger-bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .blokko-mobile-drawer {
+    display: none;
+  }
+  /* 抽屉打开时整体抬升层级：nav 是 sticky + z-index + backdrop-filter，自身创建 stacking context，
+     抽屉(9999)与遮罩(9998)会被困在 nav 的 9000 层内——页面里任何 z>9000 的元素（如图片放大层）都会压住抽屉。
+     打开期间把 nav 提到最高层，并临时去掉 backdrop-filter，规避部分浏览器将其作为 fixed 后代 containing block 的差异 */
+  .blokko-site-nav.is-mobile-open {
+    z-index: 99999;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .blokko-mobile-drawer-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .blokko-mobile-drawer-content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 82vw;
+    background: var(--color-card-bg, #ffffff);
+    z-index: 9999;
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .blokko-site-nav.is-mobile-open .blokko-mobile-drawer-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .blokko-site-nav.is-mobile-open .blokko-mobile-drawer-content {
+    transform: translateX(0);
+  }
+  .blokko-mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  }
+  .blokko-mobile-drawer-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #111111);
+  }
+  .blokko-mobile-close-btn {
+    border: none;
+    background: transparent;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--text-secondary, #666666);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .blokko-mobile-close-btn:hover {
+    background: var(--color-hover, rgba(0, 0, 0, 0.05));
+    color: var(--text-primary, #111111);
+  }
+  .blokko-mobile-nav-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .blokko-mobile-nav-item {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--text-primary, #111111);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .blokko-mobile-nav-item:hover,
+  .blokko-mobile-nav-item:active {
+    background: var(--color-hover, rgba(0, 0, 0, 0.05));
+  }
+  .blokko-mobile-nav-item[data-blokko-nav-current="true"],
+  .blokko-mobile-nav-item.is-active {
+    color: var(--color-primary, #007AFF);
+    font-weight: 600;
+    background: var(--color-active, rgba(0, 122, 255, 0.08));
+  }
+
+  /* 移动端手风琴折叠菜单 */
+  .blokko-mobile-accordion {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .blokko-mobile-accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .blokko-accordion-main-link {
+    flex: 1;
+  }
+  .blokko-accordion-toggle {
+    background: transparent;
+    border: none;
+    padding: 10px 14px;
+    cursor: pointer;
+    color: var(--text-secondary, #888888);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease;
+  }
+  .blokko-accordion-toggle:hover {
+    color: var(--text-primary, #111111);
+  }
+  .blokko-accordion-arrow {
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .blokko-mobile-accordion.is-expanded .blokko-accordion-arrow {
+    transform: rotate(180deg);
+  }
+  .blokko-mobile-accordion-body {
+    display: none;
+    padding-left: 14px;
+    margin-top: 2px;
+    border-left: 2px solid var(--border-color, rgba(0, 0, 0, 0.08));
+    margin-left: 14px;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .blokko-mobile-accordion.is-expanded .blokko-mobile-accordion-body {
+    display: flex;
+  }
+  .blokko-mobile-sub-item {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--text-secondary, #555555);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .blokko-mobile-sub-item:hover {
+    background: var(--color-hover, rgba(0, 0, 0, 0.05));
+    color: var(--color-primary, #007AFF);
+  }
+  .blokko-mobile-sub-item[data-blokko-nav-current="true"],
+  .blokko-mobile-sub-item.is-active {
+    color: var(--color-primary, #007AFF);
+    font-weight: 600;
+    background: var(--color-active, rgba(0, 122, 255, 0.08));
+  }
+
+  @media (max-width: 768px) {
+    .blokko-site-nav-inner { justify-content: space-between; min-height: 46px; padding: 0 14px; }
+    .blokko-nav-desktop { display: none; }
+    .blokko-nav-burger { display: flex; }
+    .blokko-mobile-drawer { display: block; }
+  }
+
+  /* 站点页脚样式 */
+  .blokko-site-footer {
+    flex-shrink: 0;
+    border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+    background: var(--color-card-bg, #ffffff);
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary, #666666);
+    line-height: 1.6;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .blokko-site-footer a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .blokko-site-footer a:hover {
+    color: var(--color-primary, #007AFF);
+    text-decoration: underline;
+  }
+  .blokko-footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .blokko-footer-links {
+    margin-top: 4px;
+    font-size: 0.82rem;
+  }
+
+  /* 深色模式自适应：当未显式锁定 light 类且系统偏好深色时，自动启用深色样式 */
+  @media (prefers-color-scheme: dark) {
+    html:not(.light-mode) {
+      --bg-preview-pane: #0f1115;
+      --bg-color: #0f1115;
+      --color-card-bg: #1c1e24;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-primary: #f0f2f5;
+      --text-secondary: #9aa0a6;
+      --color-hover: rgba(255, 255, 255, 0.08);
+      --color-active: rgba(0, 122, 255, 0.18);
+    }
+    html:not(.light-mode) body {
+      background: var(--bg-preview-pane, #0f1115);
+      color: var(--text-primary, #f0f2f5);
+    }
+    html:not(.light-mode) .blokko-site-nav {
+      background: #17191e;
+      border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+    html:not(.light-mode) .blokko-site-nav-link {
+      color: #e2e8f0;
+    }
+    html:not(.light-mode) .blokko-site-nav-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    html:not(.light-mode) .blokko-site-footer {
+      background: #17191e;
+      border-top-color: rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+    }
+    html:not(.light-mode) .not-found-card {
+      background: #1c1e24;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    html:not(.light-mode) .not-found-title {
+      color: #f0f2f5;
+    }
+    html:not(.light-mode) .not-found-desc {
+      color: #94a3b8;
+    }
+  }
+
+  /* 显式带有 .dark-mode 时的样式补全 */
+  html.dark-mode {
+    --bg-preview-pane: #0f1115;
+    --bg-color: #0f1115;
+    --color-card-bg: #1c1e24;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-primary: #f0f2f5;
+    --text-secondary: #9aa0a6;
+    --color-hover: rgba(255, 255, 255, 0.08);
+    --color-active: rgba(0, 122, 255, 0.18);
+  }
+  html.dark-mode body {
+    background: var(--bg-preview-pane, #0f1115);
+    color: var(--text-primary, #f0f2f5);
+  }
+  html.dark-mode .blokko-site-nav {
+    background: #17191e;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  html.dark-mode .blokko-site-nav-link {
+    color: #e2e8f0;
+  }
+  html.dark-mode .blokko-site-nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  html.dark-mode .blokko-site-footer {
+    background: #17191e;
+    border-top-color: rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+  }
+  html.dark-mode .not-found-card {
+    background: #1c1e24;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  html.dark-mode .not-found-title {
+    color: #f0f2f5;
+  }
+  html.dark-mode .not-found-desc {
+    color: #94a3b8;
+  }
+
+  @media (max-width: 768px) {
+    .blokko-site-nav-inner { justify-content: flex-start; min-height: 42px; padding: 0 10px; }
+    .blokko-site-nav-link { padding: 5px 11px; font-size: 0.85rem; }
+    .blokko-site-footer { padding: 18px 12px; font-size: 0.8rem; }
+  }
+</style>
+<!-- 富文本净化依赖：缺失会把富文本降级成纯文本，必须在渲染前同步就绪 -->
+<script src="./lib/dompurify/purify.min.js"></script>
+<script src="./lib/iconify/iconify.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <div class="viewer-loading">正在加载…</div>
+</div>
+
+<footer class="blokko-site-footer" role="contentinfo">
+  <div class="blokko-site-footer-inner">
+    <div class="blokko-footer-copyright">© 2026 My Site. All rights reserved.</div>
+    
+    
+  </div>
+</footer>
+
+<script>
+  window.__BLOKKO_DATA__ = {"items":[{"id":"profile_afckwpdk4","type":"profile","isVisible":true,"layout":{"width":100,"height":"auto"},"styleVariant":"social-card","nickname":"Sylnice","nicknameColor":null,"subtitle":"10｜0217｜INTP-A","subtitleColor":null,"bio":"\u003cp style=\"text-align: center;\">\u003cspan style=\"font-family: &quot;Noto Serif CJK&quot; !important;\">\u003cstrong>\u003cem>“也许永远，也许明天”\u003c/em>\u003c/strong>\u003c/span>\u003c/p>","bioColor":null,"avatar":"assets/media/ewcc4v.jpg","avatarShape":"50%","avatarSize":100,"avatarBorderColor":null,"statusBadge":"none","statusBadgeEmoji":"🟢","tags":[],"tagBgColor":null,"tagTextColor":null,"tagShadow":true,"tagStyle":"solid","tagRadius":20,"tagFontSize":0.8,"tagOpacity":1,"extraFieldColor":null,"extraFieldFontSize":0.85,"avatarBorderSize":0,"avatarOffsetX":0,"avatarOffsetY":0,"showIdText":true,"holoOpacity":0.6,"bannerShadow":true,"bannerHeight":120,"socialBottomShape":"straight","bannerBgGradStart":"#4facfe","bannerBgGradEnd":"#00f2fe","bannerBgGradAngle":135,"bgColor":null,"textColor":null,"radius":null,"opacity":null,"accentColor":null,"titleColor":null,"titleTextAlign":"center","bannerBgColor":"#8153ba","hasAlpha":false,"subtitleFontSize":1.2,"bioFontSize":1,"_activeSections":[],"_removedSections":["profile.taglist"]},{"id":"c_zjo7jdizb","type":"card","isVisible":true,"title":"阅前须知：","content":"\u003cp>此网页作者极度爱装x，且此网页内的所有言论，意在取悦自己，并通过文字或图片强制干预他人的思想，如果翻阅之后出现不适等症状，请立刻退出。并且恭喜你，怀了我的孩子。\u003c/p>\u003cp>且本网页采用一页到底形式，别想逃开哦~（温迪语气）\u003c/p>\u003cp>若已阅读并接受以上内容，请继续下滑\u003c/p>","cardStyle":"default","sticker":"none","imageFillMode":"cover","layout":{"width":100,"height":"auto"},"writingMode":"horizontal-tb","textAlign":"","opacity":1,"textColor":"#4b1d91"},{"id":"spacer_roecttgqa","type":"spacer","isVisible":true,"title":"留白占位","height":202,"layout":{"width":100,"height":"auto"}},{"id":"music_qge6ozesz","type":"music","isVisible":true,"title":"音乐模块","style":"default","musicMode":"local","neteaseSongId":"2690846778","coverArt":"assets/media/1ji6o1.jpg","songTitle":"nowhere, nobody","artist":"Ariana Grande","lyrics":"\n作词 : Ariana Grande\n作曲 : Ariana Grande/Ilya Salmanzadeh","lrcContent":"[00:00.000] 作词 : Ariana Grande\n[00:01.000] 作曲 : Ariana Grande/Ilya Salmanzadeh\n[00:15.757]Hard to believe in a perfect ending (很难相信会有完美结局)\n[00:20.926]But that's alright (不过没关系)\n[00:23.489]Yeah, mmm, that's alright-ight, mmm (没关系)\n[00:29.449]This prophecy might be self-fulfilling (这预言也许终将自我应验)\n[00:34.582]But that's alright (不过没关系)\n[00:37.178]Boy, look on the bright side (男孩 往好的方面想想吧)\n[00:41.568]\n[00:41.569]I don't care about tomorrow (我不在乎明天会怎样)\n[00:44.905]I love you right now (我爱的是此时此刻的你)\n[00:49.106]So (所以)\n[00:49.597]\n[00:49.598]Deep breaths, honey (深呼吸 亲爱的)\n[00:52.694]There's no more running (我们不必再逃避)\n[00:55.736]And there's nowhere with nobody else that I'd rather be (我只愿此时此地与你相依)\n[01:02.186]I'm taking you (我要带着你)\n[01:03.420]Deep breaths, honey (深呼吸 亲爱的)\n[01:06.253]We've at least till morning (至少我们能挺过明日早晨)\n[01:09.369]Then there's nowhere, nobody else that I'd rather be with (我只愿此时此地与你相依)\n[01:17.365]\n[01:17.376]Voices in my head been trying to swallow me (脑海中盘踞的声音 始终试图将我吞噬)\n[01:22.606]But I don't bite (但我绝不上当)\n[01:26.139]Yeah, I'm alright, I've (我一切都好 我)\n[01:31.195]Been holding hands with so much complexity (始终与繁杂纷乱的思绪作伴)\n[01:36.316]Since I was five (五岁起便是如此)\n[01:39.606]But we've done alright (但我们也挺过来了)\n[01:43.190]Tell me why I keep on climbing just to reach the ground, just (告诉我 为什么我总是不断向上攀爬 却只会跌回地面)\n[01:43.544]\n[01:51.330]Deep breaths, honey (深呼吸 亲爱的)\n[01:51.623]\n[01:54.323]There's no more running (我们不必再逃避)\n[01:57.366]And there's nowhere with nobody else that I'd rather be (我只愿此时此地与你相依)\n[02:03.907]I'm taking you (我要带着你)\n[02:05.085]Deep breaths, honey (深呼吸 亲爱的)\n[02:07.868]We've at least till morning (至少我们能挺过明日早晨)\n[02:11.068]Then there's nowhere, nobody else that I'd rather be with (我只愿此时此地与你相依)\n[02:18.979]\n[02:20.706]No, there's nowhere else (别无去处)\n[02:24.136]And there's no more running (我们不必再逃避)\n[02:27.004]Nobody else that I'd rather be with (我只愿此时此地与你相依)\n[02:32.475]Deep breaths, honey (No, there's nowhere else) (深呼吸 亲爱的 (别无去处))\n[02:35.791]Least till morning (And there is nobody) (至少能挺过天明 (没有别人))\n[02:40.599]Nobody else that I'd rather be with (我只愿此时此地与你相依)","audioUrl":"assets/media/xzwj0b.mp3","currentTime":"00:00","totalTime":"02:40","accentColor":"#6a5487","layout":{"width":100,"height":"auto"},"lyricsMode":"original","bgMode":"gradient","bgGradient":{"layers":[{"type":"linear","angle":135,"center":{"x":50,"y":50},"blend":"normal","stops":[{"color":"#f4efff","pos":0},{"color":"#604d79","pos":100}]}]},"bgGradientStart":"#f4efff","bgGradientEnd":"#604d79","bgGradientAngle":135,"textColor":"#f6f4fb","_activeSections":["music.displaysettings"],"hidePlaylist":false,"lockHeight":false,"hideLyrics":true,"hideLoop":false,"hasAlpha":false},{"id":"button_ji14zu1cv","type":"button","isVisible":true,"title":"按钮模块","icon":"ic:baseline-tiktok","text":"kwong_jisoo","subtext":"","layout":{"width":33,"height":"auto"},"textAlign":"center","styleVariant":"default"},{"id":"button_39bwuxi3t","type":"button","isVisible":true,"title":"按钮模块","icon":"ic:baseline-wechat","text":"Sylnice217","subtext":"","layout":{"width":33,"height":"auto"},"textAlign":"center","styleVariant":"default","_activeSections":["button.interaction"],"layoutDirection":"column","individualRadius":false},{"id":"button_t34ixlsj5","type":"button","isVisible":true,"title":"按钮模块","icon":"mdi:instagram","text":"sylnice_217","subtext":"","layout":{"width":33,"height":"auto"},"textAlign":"center","styleVariant":"default","_activeSections":["button.interaction"],"interactions":{"jump":{"type":"link","payload":"https://www.instagram.com/sylnice_217/"}}},{"id":"timer_9jizx2a1q","type":"timer","isVisible":true,"title":"倒计时","styleVariant":"card","targetDate":"2027-02-17T00:00","expiredText":"已结束","layout":{"width":100,"height":"auto"},"showUnits":true,"labelBefore":"我的十六岁剩余"},{"id":"progress_663k154nc","type":"progress","isVisible":true,"title":"进度条模块","label":"内倾","percentage":83,"color":"#604a7c","trackColor":"#eeeeee","thickness":8,"style":"linear","layout":{"width":100,"height":"auto"}},{"id":"progress_1791561716210_pdxk","type":"progress","isVisible":true,"title":"进度条模块","label":"直觉","percentage":57,"color":"#72519b","trackColor":"#eeeeee","thickness":8,"style":"linear","layout":{"width":100,"height":"auto"}},{"id":"progress_1791561778831_xrg6","type":"progress","isVisible":true,"title":"进度条模块","label":"思考","percentage":54,"color":"#937bb3","trackColor":"#eeeeee","thickness":8,"style":"linear","layout":{"width":100,"height":"auto"}},{"id":"progress_1791561824284_asbl","type":"progress","isVisible":true,"title":"进度条模块","label":"感知","percentage":71,"color":"#af98cc","trackColor":"#eeeeee","thickness":8,"style":"linear","layout":{"width":100,"height":"auto"}},{"id":"progress_1791561860270_450u","type":"progress","isVisible":true,"title":"进度条模块","label":"果断","percentage":83,"color":"#c4b6e9","trackColor":"#eeeeee","thickness":8,"style":"linear","layout":{"width":100,"height":"auto"}},{"id":"spacer_1791562292025_db7i","type":"spacer","isVisible":true,"title":"留白占位","height":29,"layout":{"width":100,"height":"auto"}},{"id":"card_iwssrcqsa","type":"card","isVisible":true,"title":"一些爱好","content":"\u003cp>【画画】\u003c/p>\u003cp>但本人几乎没有原创能力，只会临摹。\u003c/p>\u003cp>\u003c/p>\u003cp>【音乐】\u003c/p>\u003cp>我说这个世界上不能没有音乐！\u003c/p>\u003cp>喜欢听欧美流行，rnb和kpop\u003c/p>\u003cp>最爱Olivia和Ariana\u003c/p>\u003cp>虽说会弹琴，但已经没有练专业。闲来无事&amp;刷到喜欢的谱子就摸两下倒也挺舒适\u003c/p>\u003cp>\u003c/p>\u003cp>【烹饪】\u003c/p>\u003cp>做饭和吃饭是最幸福的事吧！\u003c/p>\u003cp>（比起做甜点我更喜欢炒菜。\u003c/p>\u003cp>\u003c/p>\u003cp>【电影/小说】\u003c/p>\u003cp>adhd+喜欢装文艺，所以此类活动仅在电子产品被没收时短时间高强度进行。\u003c/p>\u003cp>外国文学/科幻/玄幻/悬疑/心理学/哲学/散文\u003c/p>\u003cp>拜读过几乎所有刘慈欣小说。\u003c/p>\u003cp>\u003c/p>\u003cp>【solotrip】\u003c/p>\u003cp>一个人出门不用照顾别人的意见真是太爽了！且经常想一出是一出，是永不做攻略之人\u003c/p>\u003cp>\u003c/p>\u003cp>【摄影】\u003c/p>\u003cp>虽然没有什么很专业的相机，但本人坚信目前自己的摄影水平极高（指无脑长焦\u003c/p>","cardStyle":"default","sticker":"none","imageFillMode":"cover","layout":{"width":67,"height":"auto"},"writingMode":"horizontal-tb","textAlign":"","_activeSections":["common.radius"],"borderWidth":0,"_removedSections":["common.border","common.titlefloating"],"padding":10,"titleFloating":false,"interactions":{"enableFold":false}},{"id":"c_int63z16j","type":"timeline","isVisible":true,"title":"","timeColor":null,"accentColor":null,"cards":[{"id":"c_tmt7m1tnx","time":"2010-2-17","content":"登录地球online","dotColor":"#745757"},{"id":"tlc_8084gp30","time":"2013-2-15","content":"\u003cp>新玩家加入队伍\u003c/p>"},{"id":"tlc_0zojswv3","time":"2020-2022","content":"\u003cp>【数据丢失】\u003c/p>"},{"id":"tlc_k31h8hjz","time":"2022-2025","content":"\u003cp>茉莉蜜茶的粘\u003c/p>\u003cp>永远怀念的惠高时期...好想你们。\u003c/p>"},{"id":"tlc_8kdrisbg","time":"2025.9-2026.7","content":"\u003cp>农夫山泉淡的甜\u003c/p>\u003cp>（在惠中我只能说果然环境塑造人啊。）\u003c/p>"},{"id":"tlc_oriz3v7k","time":"2026.9-？","content":"\u003cp>【章节解锁中】\u003c/p>\u003cp>\u003c/p>"}],"layout":{"width":33,"height":"550"},"textAlign":"","style":"default","layoutMode":"right","_activeSections":[],"_removedSections":["timeline.titlecolor"],"bgColor":"#ffffff"},{"id":"spacer_gu4sfqi0l","type":"spacer","isVisible":true,"title":"留白占位","height":30,"layout":{"width":100,"height":"auto"}},{"id":"grid_phzeqblrk","type":"grid","isVisible":true,"title":"我这辈子一定会去的：","styleVariant":"default","columns":3,"aspectRatio":"1/1","items":[{"id":"g1","image":"assets/media/15kin6.jpg","text":"德国-科隆","subtitle":""},{"id":"g2","image":"assets/media/1wemvd.jpg","text":"挪威-特罗姆瑟","subtitle":""},{"id":"g3","image":"assets/media/19jfhm.jpg","text":"西班牙-圣约翰节","subtitle":""},{"id":"g4","image":"assets/media/kcq7ri.jpg","text":"新疆-赛里木湖","subtitle":""},{"id":"g5","image":"assets/media/11n0vr.jpg","text":"意大利","subtitle":""},{"id":"g6","image":"","text":"？？？","subtitle":"其实写到这里我想不到了 还去小红书搜“人生必去的地方”哈哈哈，还是留给以后的自己吧"}],"layout":{"width":100,"height":"auto"},"bgMode":"solid","bgGradient":{"layers":[{"type":"linear","angle":267,"center":{"x":50,"y":50},"blend":"normal","stops":[{"color":"#8366a0","pos":1},{"color":"#ffffff","pos":100}]}]},"bgGradientStart":"#8366a0","bgGradientEnd":"#ffffff","bgGradientAngle":267,"_removedSections":[],"_activeSections":["common.appearance","grid.title","grid.list","grid.columns"],"itemTextAlign":"center","hasAlpha":false,"bgColor":"#f3f3f3","baseColumns":6,"gridGap":10,"innerRadius":8,"masonry":false,"titleColor":"#674196"},{"id":"spacer_1791559139871_g3h2","type":"spacer","isVisible":true,"title":"留白占位","height":30,"layout":{"width":100,"height":"auto"}},{"id":"qa_jp3bwzlqa","type":"qa","isVisible":true,"styleVariant":"default","icon":"mdi:message-question-outline","question":"Sylnice是什么意思？","asker":"匿名提问","answer":"\u003cp>咳咳（）nice是我英文名后半段，至于syl是谁的名字，\u003c/p>\u003cp>你猜呀\u003c/p>","accentColor":"#b898e0","bgColor":null,"textColor":null,"layout":{"width":100,"height":"auto"}},{"id":"qa_1791554529055_zxn3","type":"qa","isVisible":true,"styleVariant":"default","icon":"mdi:message-question-outline","question":"为什么突然想到做这个网站？","asker":"匿名提问","answer":"\u003cp>emm 最近vibecoding风很大我这么爱跟风肯定要玩下啦\u003c/p>\u003cp>而且很高坤 又可以装\u003c/p>\u003cp>...其实是想被看见呢。\u003c/p>\u003cp>据说我们永远无法真正了解一个人，既然如此，我不妨勇敢一点、写多一点，哪怕能让你窥见一点点真实的我呢？srds，真的有人会看吗\u003c/p>\u003cp>这里引用一位我很欣赏很佩服的朋友说过的：“可1能是表达出在意的时候就好像把刀递给别人了那样，或者是羞耻心作祟，又或者是担心展露真心会有一天被摔得粉碎。这样子等真正分别的时候就会显得体面一点。”\u003c/p>\u003cp>这真的是为什么我不敢overshare（在学了在学了！\u003c/p>","accentColor":"#9a7bc0","bgColor":null,"textColor":null,"layout":{"width":100,"height":"auto"}},{"id":"qa_1791555559380_mu5q","type":"qa","isVisible":true,"styleVariant":"default","icon":"mdi:message-question-outline","question":"向往的16岁，成为了小时候梦想的样子吗？","asker":"匿名提问","answer":"\u003cp>为什么向往16岁呢，因为小学的时候网上“交友”一直谎报自己16岁。\u003c/p>\u003cp>而且说实话我真不知道小时候梦想的现在是什么样子。\u003c/p>\u003cp>但现在来说，我的16岁好像还挺厉害的。一个人来这边上学（严格意义上不算一个人，但也不能算有人陪）\u003c/p>\u003cp>原来我才16岁吗？\u003c/p>","accentColor":"#795d9b","bgColor":null,"textColor":null,"layout":{"width":100,"height":"auto"}},{"id":"qa_1791556436554_jhce","type":"qa","isVisible":true,"styleVariant":"default","icon":"mdi:message-question-outline","question":"主播主播为啥我没找到匿名提问的入口？？","asker":"匿名提问","answer":"\u003cp>因为根本就没有这个入口呀宝贝\u003c/p>\u003cp>这些提问的都是我自己哈哈哈（包括你）\u003c/p>\u003cp>但有想问的可以在这里哦\u003c/p>\u003cp>\u003ca target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://qntwx.com/sylnice\">https://qntwx.com/sylnice\u003c/a>\u003c/p>","accentColor":"#604a7c","bgColor":null,"textColor":null,"layout":{"width":100,"height":"auto"},"interactions":{"enableScratch":false}},{"id":"card_6l3eah361","type":"card","isVisible":true,"title":"","content":"\u003cp>\u003cspan style=\"color: rgb(106, 84, 135);\">其实我想放多一点问题但是这样观感不太好\u003c/span>\u003c/p>\u003cp>\u003cspan style=\"color: rgb(106, 84, 135);\">但问答是最直接简单可以了解一个人的方式吧？\u003c/span>\u003c/p>\u003cp>\u003cspan style=\"color: rgb(106, 84, 135);\">要思考一下。\u003c/span>\u003c/p>\u003cp>\u003c/p>\u003cp>\u003c/p>","cardStyle":"default","sticker":"none","imageFillMode":"cover","layout":{"width":100,"height":"120"},"writingMode":"horizontal-tb","textAlign":"","scrollEnabled":false,"bgMode":"solid"},{"id":"spacer_jbcdxn888","type":"spacer","isVisible":true,"title":"留白占位","height":20,"layout":{"width":100,"height":"auto"}},{"id":"card_qjtifsxn6","type":"card","isVisible":true,"title":"书影音","content":"\u003cp>一点个人品味。非常艰难地分别挑了俩\u003c/p>","cardStyle":"default","sticker":"none","imageFillMode":"cover","layout":{"width":100,"height":"auto"},"writingMode":"horizontal-tb","textAlign":"","_activeSections":["card.colors"],"titleColor":"#4d3b64"},{"id":"showcase_1791559681136_nwf1","type":"showcase","isVisible":true,"title":"三体","styleVariant":"book","showcaseType":"movie","layoutStyle":"vertical","coverArt":"assets/media/5i6g6d.jpg","subtitle":"刘慈欣","rating":5,"comment":"最爱的小说，也是原著加上有声剧不知道刷了多少遍，太伟大了...能让宏大的宇宙叙事稀释本就渺小的我吗？\n","tags":["科幻","社会学"],"useDefaultStyle":true,"layout":{"width":100,"height":"auto"},"interactions":{"enableSpoiler":false},"hasAlpha":false},{"id":"showcase_fhaxsjly7","type":"showcase","isVisible":true,"title":"当尼采哭泣","styleVariant":"book","showcaseType":"movie","layoutStyle":"vertical","coverArt":"assets/media/li027o.png","subtitle":"欧文·亚隆","rating":4,"comment":"尼采的“永劫回归”概念很有意思：如果我们的一生将会在无限的未来中重复上演，再微小的选择都将背负上永恒的重量。我们会为今天的选择后悔吗？（但其实前半部分剧情啥的有点枯燥）","tags":["哲学","心理学"],"useDefaultStyle":true,"layout":{"width":100,"height":"auto"},"textAlign":"","hasAlpha":true},{"id":"showcase_yjmx57n31","type":"showcase","isVisible":true,"title":"你的名字。","styleVariant":"book","showcaseType":"movie","layoutStyle":"vertical","coverArt":"assets/media/1c2iyh.jpg","subtitle":"新海诚","rating":5,"comment":"最爱的电影\n第一次看是六年级，重刷了不知道多少次，每次看都会爆哭。倘若时间只是上天的结绳。","tags":[],"useDefaultStyle":true,"layout":{"width":100,"height":"auto"},"hasAlpha":false},{"id":"showcase_03z1t0xfe","type":"showcase","isVisible":true,"title":"马戏之王","styleVariant":"book","showcaseType":"movie","layoutStyle":"vertical","coverArt":"assets/media/l7enah.jpg","subtitle":"2017","rating":3.95,"comment":"是音乐剧电影，第一次看完全被震撼，特别是发现喜欢的歌竟然出自这里，每首歌都超好听。never enough","tags":["音乐剧"],"useDefaultStyle":true,"layout":{"width":100,"height":"auto"},"hasAlpha":false},{"id":"showcase_5xztdcjs3","type":"showcase","isVisible":true,"title":"number one girl","styleVariant":"magazine","showcaseType":"movie","layoutStyle":"vertical","coverArt":"assets/media/1ip0qx.jpg","subtitle":"ROSÉ","rating":4.5,"comment":"唉放这首真是五味杂陈呀。因为一些追星原因不太喜欢Rosie，但奈何她的歌太好听了。世界和平吧love＆peace","tags":[],"useDefaultStyle":true,"layout":{"width":50,"height":"auto"},"hasAlpha":false},{"id":"showcase_1791560851091_cefc","type":"showcase","isVisible":true,"title":"stupid song","styleVariant":"magazine","showcaseType":"movie","layoutStyle":"vertical","coverArt":"assets/media/eaudcq.jpg","subtitle":"Olivia Rodrigo","rating":5,"comment":"and i want you more tham any stupid song could ever sing\n没听过的都亏了。","tags":[],"useDefaultStyle":true,"layout":{"width":50,"height":"auto"},"hasAlpha":false}],"stickers":[],"pageStyles":{"pageBgMode":"solid","pageBgDayNight":"day","pageBgSolidColor":"#e8e3f2","pageBgNightSolidColor":"#121417","pageBgNightGradientStart":"#1a1d24","pageBgNightGradientEnd":"#0d0f14","pageBgImageDataUrl":null,"pageBgRepeat":"no-repeat","pageBgSize":"cover","pageBgImageAttribution":null,"pageBgGradientStart":"#f5f3ff","pageBgGradientEnd":"#ede9fe","pageBgGradientAngle":135,"pageBgGradient":null,"pageOverlayColor":"#6d28d9","pageOverlayOpacity":0.05,"pageBgPattern":"","pageBgPatternColor":"#000000","pageBgPatternOpacity":0.1,"pageBgPatternDensity":30,"pageBgPatternFadeMode":"off","pageBgPatternFadeAngle":0,"pageBgPatternFadeStrength":30,"pageStageBgMode":"auto","pageStageBgSolidColor":"#ffffff","pageStageBgImageDataUrl":null,"pageStageBgRepeat":"no-repeat","pageStageBgSize":"cover","pageStageBgImageAttribution":null,"pageStageBgGradientStart":"#f0f2f5","pageStageBgGradientEnd":"#e6e9ed","pageStageBgGradientAngle":135,"pageStageBgGradient":null,"pageStageBgPattern":"","pageStageBgPatternColor":"#000000","pageStageBgPatternOpacity":0.1,"pageStageBgPatternDensity":24,"pageStageBgPatternFadeMode":"off","pageStageBgPatternFadeAngle":0,"pageStageBgPatternFadeStrength":30,"headerBgMode":"solid","headerBorderRadius":16,"headerBgColor":"#ffffff","headerTextColor":"#28126f","headerOpacity":1,"headerBgGradientStart":"#ffffff","headerBgGradientEnd":"#f7f7f7","headerBgGradientAngle":135,"containerShape":"default","polaroidText":"Untitled Moment","polaroidRotation":-1.5,"layoutMode":"standard","allowOverlap":true,"snapToGrid":true,"masonryEnabled":false,"previewGap":24,"glassEnabled":false,"glassBlur":14,"glassColor":"#ffffff","glassOpacity":0.15,"globalSectionState":{"global.pageGlass":{"visible":false,"order":8}}},"globalTheme":{"primary":"#8b5cf6","accent":"#8b67d0","background":"#FFFFFF","text":"#1a1a1a"},"globalBorderSettings":{"style":"solid","width":1,"color":"#e0e0e0","shadowOffset":4,"shadowColor":"#000000","borderEnabled":true,"applyTo":{"profile":false,"card":false,"image":false,"button":false,"music":false,"lyrics":false,"timeline":false,"timeline-pro":false,"showcase":false,"rpg":false,"progress":false,"social":false,"grid":false,"collage":false,"todo":false,"calendar":false,"qa":false,"achievement":false,"letter":false,"marquee":false,"ranking":false,"dialogue":false,"qr-code":false,"relationship":false,"checklist":false,"timer":false,"chart":false,"receipt":false,"crossword":false,"video":false,"subpage":false},"globalShadowSettings":{"color":"#000000","opacity":0.08,"offsetX":0,"offsetY":17,"blur":14,"applyTo":{"profile":true,"card":true,"image":true,"button":true,"music":true,"lyrics":true,"timeline":true,"timeline-pro":true,"showcase":true,"rpg":true,"progress":true,"social":true,"grid":true,"collage":true,"todo":true,"calendar":true,"qa":true,"achievement":true,"letter":true,"marquee":true,"ranking":true,"dialogue":true,"qr-code":true,"relationship":true,"checklist":true,"timer":true,"chart":true,"receipt":true,"crossword":true,"video":true,"subpage":true}}},"groupConfigs":{},"globalComponentStyles":{"bgMode":"solid","bgColor":"#ffffff","textColor":"#28126f","opacity":1,"bgGradientStart":"#ffffff","bgGradientEnd":"#f5f5f5","bgGradientAngle":135,"bgGradient":null,"bgGradientMode":"uniform","radius":12,"textAlign":"left","titleTextAlign":"","lineHeight":"1.5","letterSpacing":0,"padding":15,"glassEnabled":false,"glassBlur":14,"glassColor":"#ffffff","glassOpacity":0.1,"fontFamily":"","titleFontFamily":"","titleFontBold":true,"titleFontItalic":false,"titleColor":"#8b67d0","titleFontSize":"1.1em","contentFontSize":"0.95em","textStrokeWidth":0,"textStrokeColor":"#000000","verticalAlign":"center","textOffsetY":0,"bgPattern":"","bgPatternColor":"#000000","bgPatternOpacity":0.1,"bgPatternDensity":30,"bgPatternFadeMode":"off","bgPatternFadeAngle":0,"bgPatternFadeStrength":30},"customIcons":[],"personalInfo":{"nicknameColor":"#28126f","subtitleColor":"rgb(90 59 158 / 0.6)","bioColor":"rgb(90 59 158 / 0.6)","tagBgColor":"#f6f4fb","tagTextColor":"#7657b8"},"exportSettings":{"lockAspectRatio":true,"customWidth":1200,"customHeight":750,"iosMode":false,"quality":"hd","roundedCorners":true,"cornerRadius":25,"watermark":true,"watermarkTitle":"","watermarkSuffix":"","splitByCutLine":false,"iosCompat":false,"experimentalMode":false,"syncBackup":false,"magicArchive":false,"textWidthCompensationEnabled":false,"textWidthCompensation":0,"wrapLockEnabled":false,"cjkFontFixEnabled":false,"advancedExport":{"enabled":false,"fontKerning":"none","textRendering":"auto","wordBreak":"break-word","displayMode":"flow-root","fontFeatureSettings":"\"kern\" 0, \"calt\" 0, \"liga\" 0","timeout":30000,"customCSS":"/* 解决导出文字比预览更宽的问题 */\n#export-clone-container .preview-card-content {\n    letter-spacing: -0.01em !important;\n    word-spacing: -0.02em !important;\n}\n#export-clone-container .preview-card-title,\n#export-clone-container .preview-button span {\n    letter-spacing: -0.01em !important;\n}\n/* 歌词、名片ID等文本元素同样需要宽度补偿，否则导出时提前换行 */\n#export-clone-container .lyrics-line,\n#export-clone-container .lyrics-scroll-inner,\n#export-clone-container #preview-custom-id,\n#export-clone-container .music-title,\n#export-clone-container .music-artist,\n#export-clone-container .music-time-labels,\n#export-clone-container .profile-extra-item,\n#export-clone-container .letter-body,\n#export-clone-container .dialogue-text,\n#export-clone-container .qa-content {\n    letter-spacing: -0.01em !important;\n    word-spacing: -0.02em !important;\n}"}},"systemSettings":{"editMode":2,"advancedMode":true,"scene":null,"exportFilePrefix":"Blokko","canvasMode":"mobile","canvasWidth":600,"canvasBentoCols":24,"canvasStandardCols":12,"htmlModeEnabled":true,"siteModeEnabled":true,"siteNavConfig":{"enabled":true,"logo":"","title":"","logoHeight":28,"bg":"","textColor":"","accent":"","height":0,"sticky":true,"align":"center","logoText":true},"mobileAdaptiveEnabled":false,"siteFooter":{"enabled":true,"copyright":"© 2026 My Site. All rights reserved.","icp":"","links":[]},"workerBaseUrl":"https://api.blokko.top","inspectorOpacity":1,"lowPerformanceMode":false,"mobileLandscapePCMode":false,"uiDisplayMode":"auto","imageUploadQuality":0.8,"uploadTimeout":8000,"imageCompressionEnabled":true,"imageCompressionQuality":0.9,"imageCompressionScaleEnabled":true,"imageCompressionMaxWidth":2560,"imageCompressionSizeThreshold":1.5,"alwaysShowGrid":false,"useNativeColorPicker":false,"useNativeUploader":true,"autoCleanupRecycleBin":false,"recycleRetentionDays":15,"recycleBinMaxPages":15,"forceVirtualResolution":true,"editorLayoutMode":"classic","workspaceThumbnailsEnabled":true,"cloudSyncEnabled":true,"htmlTitle":"welcome to sylnice"},"currentPath":[]};
+  window.__BLOKKO_FONTS__ = [{"family":"Noto Serif CJK","cssUrl":"https://fontsapi.zeoseven.com/285/main/result.css","weight":null}];
+</script>
+<script src="./viewer.js"></script>
+</body>
+</html>

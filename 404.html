@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="--inspector-ui-opacity: 1; --global-banners-height: 0px; --site-nav-height: 51px; --system-broadcast-height: 72px; --broadcast-offset: 72px;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - 页面未找到</title>
+<link rel="stylesheet" href="./viewer.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--active-card-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg-color, #f7f7f8);
+    color: var(--text-primary, #111111);
+    text-align: center;
+    padding: 24px;
+  }
+  .not-found-card {
+    background: var(--color-card-bg, #ffffff);
+    padding: 48px 36px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    max-width: 420px;
+    width: 100%;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not(.light-mode) body {
+      background: #0f1115;
+      color: #f0f2f5;
+    }
+    html:not(.light-mode) .not-found-card {
+      background: #1c1e24;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    html:not(.light-mode) .not-found-title {
+      color: #f0f2f5;
+    }
+    html:not(.light-mode) .not-found-desc {
+      color: #94a3b8;
+    }
+  }
+  html.dark-mode body {
+    background: #0f1115;
+    color: #f0f2f5;
+  }
+  html.dark-mode .not-found-card {
+    background: #1c1e24;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  html.dark-mode .not-found-title {
+    color: #f0f2f5;
+  }
+  html.dark-mode .not-found-desc {
+    color: #94a3b8;
+  }
+  .not-found-code {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-primary, #007aff);
+    margin-bottom: 12px;
+  }
+  .not-found-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .not-found-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #666666);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .not-found-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--color-primary, #007aff);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .not-found-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+</style>
+</head>
+<body>
+  <div class="not-found-card">
+    <div class="not-found-code">404</div>
+    <div class="not-found-title">页面不存在或已被移除</div>
+    <div class="not-found-desc">您访问的页面不存在，请返回首页继续浏览。</div>
+    <a href="./index.html" class="not-found-btn">返回站点首页</a>
+  </div>
+</body>
+</html>

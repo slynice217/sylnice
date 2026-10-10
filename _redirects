@@ -1,0 +1,3 @@
+# Cloudflare Pages / Netlify 静态托管路由重定向规则
+# 针对未匹配到的静态页面请求兜底到 404.html
+/*    /404.html    404
