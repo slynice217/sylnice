@@ -705,6 +705,139 @@
 </script>
 <script src="./viewer.js"></script>
 
+<section class="visitor-comments" id="visitor-comments" aria-labelledby="visitor-comments-heading">
+  <div class="visitor-comments-inner">
+    <div class="visitor-comments-heading">
+      <h2 id="visitor-comments-heading">留言板</h2>
+      <p>欢迎留下你的想法，请友善交流。</p>
+    </div>
+    <form id="visitor-comment-form" class="visitor-comment-form">
+      <label for="visitor-comment-nickname">昵称</label>
+      <input id="visitor-comment-nickname" name="nickname" type="text" maxlength="40" placeholder="输入昵称" required>
+      <label for="visitor-comment-message">留言内容</label>
+      <textarea id="visitor-comment-message" name="message" maxlength="2000" rows="4" placeholder="写下你想说的话……" required></textarea>
+      <div class="visitor-comment-form-bottom">
+        <span id="visitor-comment-status" role="status" aria-live="polite">留言会公开显示，请勿填写私人信息。</span>
+        <button type="submit" id="visitor-comment-submit">发布留言</button>
+      </div>
+    </form>
+    <div class="visitor-comments-list-heading">
+      <h3>大家的留言</h3>
+      <button type="button" id="visitor-comment-refresh" class="visitor-comment-refresh">刷新</button>
+    </div>
+    <div id="visitor-comments-list" class="visitor-comments-list" aria-live="polite">
+      <p class="visitor-comments-empty">正在加载留言……</p>
+    </div>
+  </div>
+</section>
+<style id="visitor-comments-style">
+.visitor-comments{width:min(920px,calc(100% - 32px));margin:28px auto 34px;color:var(--text-primary,#25212b);font-family:inherit}
+.visitor-comments *{box-sizing:border-box}
+.visitor-comments-inner{background:rgba(255,255,255,.84);border:1px solid rgba(114,81,155,.2);border-radius:18px;padding:clamp(16px,3vw,26px);box-shadow:0 8px 28px rgba(42,24,67,.06)}
+.visitor-comments-heading h2{margin:0 0 6px;font-size:clamp(1.25rem,2.8vw,1.7rem);color:#604d79}
+.visitor-comments-heading p{margin:0 0 18px;opacity:.72;font-size:.92rem}
+.visitor-comment-form{display:grid;gap:8px}
+.visitor-comment-form label{font-size:.9rem;font-weight:600;margin-top:4px}
+.visitor-comment-form input,.visitor-comment-form textarea{width:100%;font:inherit;color:#282231;background:#fff;border:1px solid #d9cfe7;border-radius:10px;padding:11px 12px;outline:none}
+.visitor-comment-form input:focus,.visitor-comment-form textarea:focus{border-color:#72519b;box-shadow:0 0 0 3px rgba(114,81,155,.13)}
+.visitor-comment-form textarea{resize:vertical;min-height:90px}
+.visitor-comment-form-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px}
+#visitor-comment-status{font-size:.82rem;opacity:.75;flex:1;min-width:180px}
+#visitor-comment-submit,.visitor-comment-refresh{font:inherit;border:0;border-radius:999px;padding:10px 17px;background:#604d79;color:#fff;cursor:pointer}
+#visitor-comment-submit:disabled{opacity:.6;cursor:wait}
+.visitor-comments-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px;padding-top:18px;border-top:1px solid rgba(114,81,155,.16)}
+.visitor-comments-list-heading h3{font-size:1.05rem;margin:0;color:#604d79}
+.visitor-comment-refresh{background:#eee8f5;color:#604d79;padding:7px 13px}
+.visitor-comment-item{border-bottom:1px solid rgba(114,81,155,.13);padding:14px 0}
+.visitor-comment-item:last-child{border-bottom:0;padding-bottom:0}
+.visitor-comment-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.visitor-comment-name{font-weight:700;color:#604d79;overflow-wrap:anywhere}
+.visitor-comment-date{font-size:.8rem;opacity:.62}
+.visitor-comment-body{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65}
+.visitor-comments-empty{opacity:.68;font-size:.92rem;margin:16px 0 0}
+@media(max-width:540px){.visitor-comments{width:calc(100% - 22px);margin:22px auto 28px}.visitor-comments-inner{padding:15px}.visitor-comment-form-bottom{align-items:stretch}.visitor-comment-form-bottom #visitor-comment-submit{width:100%}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script id="visitor-comments-app">
+(function(){
+  const PROJECT_URL = 'https://wjoqqwujsebbqnxzoyrg.supabase.co';
+  const PUBLISHABLE_KEY = 'sb_publishable_pj2nWmEQY8pPkd50HIlAaA_qqjCUVEc';
+  const form = document.getElementById('visitor-comment-form');
+  if (!form) return;
+  const nicknameInput = document.getElementById('visitor-comment-nickname');
+  const messageInput = document.getElementById('visitor-comment-message');
+  const status = document.getElementById('visitor-comment-status');
+  const submit = document.getElementById('visitor-comment-submit');
+  const list = document.getElementById('visitor-comments-list');
+  const refresh = document.getElementById('visitor-comment-refresh');
+  if (!window.supabase || !window.supabase.createClient) {
+    status.textContent = '留言服务加载失败，请刷新页面后重试。';
+    list.textContent = '暂时无法连接留言服务。';
+    return;
+  }
+  const db = window.supabase.createClient(PROJECT_URL, PUBLISHABLE_KEY);
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function setStatus(text, isError) {
+    status.textContent = text;
+    status.style.color = isError ? '#b42318' : '';
+  }
+  function formatDate(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return date.toLocaleString(undefined, {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }
+  async function loadComments() {
+    list.replaceChildren(el('p','visitor-comments-empty','正在加载留言……'));
+    const result = await db.from('site_comments').select('id,nickname,message,created_at').order('created_at',{ascending:false}).limit(100);
+    if (result.error) {
+      list.replaceChildren(el('p','visitor-comments-empty','暂时无法读取留言。请确认已在 Supabase 创建 site_comments 表并设置公开读取权限。'));
+      setStatus('留言服务尚未配置完成。', true);
+      return;
+    }
+    list.replaceChildren();
+    if (!result.data || !result.data.length) {
+      list.append(el('p','visitor-comments-empty','还没有留言，来写下第一条吧。'));
+      return;
+    }
+    result.data.forEach(row => {
+      const item = el('article','visitor-comment-item');
+      const meta = el('div','visitor-comment-meta');
+      meta.append(el('span','visitor-comment-name',row.nickname || '访客'));
+      meta.append(el('time','visitor-comment-date',formatDate(row.created_at)));
+      const body = el('p','visitor-comment-body',row.message || '');
+      item.append(meta,body);
+      list.append(item);
+    });
+  }
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const nickname = nicknameInput.value.trim();
+    const message = messageInput.value.trim();
+    if (!nickname || !message) { setStatus('请填写昵称和留言内容。', true); return; }
+    if (nickname.length > 40 || message.length > 2000) { setStatus('昵称最多 40 字，留言最多 2000 字。', true); return; }
+    submit.disabled = true;
+    setStatus('正在发布留言……');
+    const result = await db.from('site_comments').insert({nickname, message});
+    submit.disabled = false;
+    if (result.error) {
+      setStatus('发布失败，请确认 Supabase 的 site_comments 表及匿名插入权限已设置。', true);
+      return;
+    }
+    messageInput.value = '';
+    setStatus('发布成功！');
+    await loadComments();
+  });
+  refresh.addEventListener('click', loadComments);
+  loadComments();
+  // Refresh periodically so visitors see newly posted messages without manually reloading.
+  window.setInterval(loadComments, 15000);
+})();
+</script>
 <button class="site-language-toggle" id="site-language-toggle" type="button" role="switch" aria-checked="false" aria-label="切换简体中文和繁體中文" data-lang="cn">
   <span class="lang-knob" aria-hidden="true"></span><span class="lang-label lang-cn">简</span><span class="lang-label lang-tw">繁</span>
 </button>

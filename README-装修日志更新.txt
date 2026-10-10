@@ -13,3 +13,5 @@ Supabase Project URL 已配置为 https://wjoqqwujsebbqnxzoyrg.supabase.co，前
 留言板说明：index.html 已加入访客留言板，使用 Supabase 的 public.site_comments 表。请确认此前的留言 SQL 已在同一个 Supabase 项目执行，并允许 anon 角色 select/insert；如果尚未创建该表，需先执行创建 site_comments 的 SQL。
 
 语言同步修复：简繁切换状态现在会保存在当前浏览器的 localStorage 中；主页和装修日志页共用同一个状态。切换后打开另一页会继续使用上次选择的简体或繁体。
+
+最终修复说明：留言板现在同时放在 index.html（首页）和 page.html（装修日志页），两个页面使用同一 Supabase site_comments 表。简繁选择由 localStorage 的 sylnice-language 保存；请将解压后的 index.html、page.html 和其他原始资源一起提交到 GitHub Pages 实际发布的分支/目录。
