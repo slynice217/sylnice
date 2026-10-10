@@ -731,6 +731,11 @@
   </div>
 </section>
 <style id="visitor-comments-style">
+/* Ensure the visitor comment panel remains visible below the Blokko canvas. */
+html, body { min-height:100%; overflow-y:auto !important; }
+#app { position:relative; z-index:1; }
+#visitor-comments { display:block !important; position:relative !important; z-index:10001 !important; visibility:visible !important; opacity:1 !important; flex:0 0 auto; }
+
 .visitor-comments{width:min(920px,calc(100% - 32px));margin:28px auto 34px;color:var(--text-primary,#25212b);font-family:inherit}
 .visitor-comments *{box-sizing:border-box}
 .visitor-comments-inner{background:rgba(255,255,255,.84);border:1px solid rgba(114,81,155,.2);border-radius:18px;padding:clamp(16px,3vw,26px);box-shadow:0 8px 28px rgba(42,24,67,.06)}
