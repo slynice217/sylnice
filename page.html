@@ -675,6 +675,38 @@ body { display: flex; flex-direction: column; }
     })();
   </script>
 </nav>
+<script id="ensure-admin-nav-link">
+(function(){
+  function addAdminLink(){
+    var list=document.querySelector('.blokko-mobile-nav-list');
+    if(!list)return false;
+    if(list.querySelector('[data-admin-nav-link]'))return true;
+    var a=document.createElement('a');
+    a.className='blokko-mobile-nav-item';
+    a.href='#live-renovation-logs';
+    a.setAttribute('data-admin-nav-link','true');
+    a.textContent='管理员登录';
+    a.style.cssText='display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:2147483647!important;';
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      var nav=document.querySelector('.blokko-site-nav');
+      if(nav)nav.classList.remove('is-mobile-open');
+      var panel=document.getElementById('live-log-admin');
+      var section=document.getElementById('live-renovation-logs');
+      if(panel)panel.open=true;
+      if(section)section.scrollIntoView({behavior:'smooth',block:'start'});
+      setTimeout(function(){var input=document.getElementById('live-log-email');if(input)input.focus({preventScroll:true});},450);
+    });
+    list.appendChild(a);
+    return true;
+  }
+  if(!addAdminLink()){
+    var observer=new MutationObserver(function(){if(addAdminLink())observer.disconnect();});
+    observer.observe(document.documentElement,{childList:true,subtree:true});
+    document.addEventListener('DOMContentLoaded',addAdminLink,{once:true});
+  }
+})();
+</script>
 <button id="live-log-admin-shortcut" type="button" aria-label="跳转到管理员登录" style="position:fixed!important;right:18px!important;bottom:18px!important;z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;border:0!important;border-radius:999px!important;background:#72519b!important;color:#fff!important;padding:12px 18px!important;font:600 14px/1.2 system-ui,-apple-system,'Microsoft YaHei',sans-serif!important;box-shadow:0 6px 22px rgba(40,18,111,.28)!important;cursor:pointer!important">管理员登录</button>
 
 <div id="app">
