@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>管理员登录 - welcome to me</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#e8e3f2;color:#28126f;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif}
+.card{width:min(100%,420px);padding:28px;border-radius:20px;background:#fff;box-shadow:0 12px 40px #28126f1a}
+h1{margin:0 0 8px;font-size:1.5rem}p{line-height:1.6;color:#625477}.field{display:grid;gap:7px;margin:18px 0;font-weight:600}input{width:100%;padding:12px;border:1px solid #d9d1e5;border-radius:10px;font:inherit;color:#222}button,.back{display:inline-flex;justify-content:center;align-items:center;width:100%;padding:12px 16px;border:0;border-radius:10px;background:#72519b;color:white;font:inherit;font-weight:650;text-decoration:none;cursor:pointer}button:disabled{opacity:.65;cursor:wait}.status{min-height:1.5em;font-size:.92rem;color:#a22}.back{margin-top:12px;background:#f1edf7;color:#604a7c}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<main class="card">
+<h1>管理员登录</h1>
+<p>登录后将进入装修日志管理页面。</p>
+<form id="admin-login">
+<label class="field">管理员邮箱<input id="email" type="email" autocomplete="username" required></label>
+<label class="field">密码<input id="password" type="password" autocomplete="current-password" required></label>
+<button id="submit" type="submit">登录管理</button>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+</form>
+<a class="back" href="./page.html">返回装修日志</a>
+</main>
+<script>
+(function(){
+ const URL='https://wjoqqwujsebbqnxzoyrg.supabase.co';
+ const KEY='sb_publishable_pj2nWmEQY8pPkd50HIlAaA_qqjCUVEc';
+ const form=document.getElementById('admin-login'),button=document.getElementById('submit'),status=document.getElementById('status');
+ if(!window.supabase||!window.supabase.createClient){status.textContent='登录组件加载失败，请检查网络后重试。';return;}
+ const db=window.supabase.createClient(URL,KEY);
+ db.auth.getSession().then(({data})=>{if(data.session){status.style.color='#287447';status.textContent='检测到已有登录状态，正在进入管理页面…';location.replace('./page.html#live-log-admin');}});
+ form.addEventListener('submit',async function(e){
+  e.preventDefault();button.disabled=true;button.textContent='登录中…';status.textContent='';
+  try{
+   const {data,error}=await db.auth.signInWithPassword({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});
+   if(error)throw error;
+   if(!data.user)throw new Error('未能取得登录用户信息。');
+   status.style.color='#287447';status.textContent='登录成功，正在进入装修日志管理页面…';
+   location.href='./page.html#live-log-admin';
+  }catch(error){status.style.color='#a22';status.textContent='登录失败：'+(error.message||'请检查邮箱和密码。');}
+  finally{button.disabled=false;button.textContent='登录管理';}
+ });
+})();
+</script>
+</body>
+</html>
