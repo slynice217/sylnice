@@ -554,7 +554,7 @@ body { display: flex; flex-direction: column; }
 .live-log-list{display:grid;gap:12px}.live-log-title{font-size:1.08rem;font-weight:700;margin:0 0 5px}.live-log-date{color:var(--color-primary,#72519b);font-size:.84rem;margin-bottom:10px}.live-log-content{line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.97rem}
 .live-log-empty,.live-log-status{padding:12px 14px;border-radius:10px;background:rgba(114,81,155,.07);font-size:.92rem;line-height:1.6}.live-log-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .live-log-btn{border:1px solid rgba(114,81,155,.28);background:#72519b;color:white;border-radius:9px;padding:9px 14px;font:inherit;font-size:.9rem;cursor:pointer}.live-log-btn.secondary{background:transparent;color:var(--text-primary,#25212b)}.live-log-btn.danger{background:#a33b48;border-color:#a33b48}.live-log-btn:disabled{opacity:.55;cursor:wait}
-.live-log-admin summary{cursor:pointer;font-weight:650}.live-log-form{display:grid;gap:10px;margin-top:14px}.live-log-form label{display:grid;gap:5px;font-size:.9rem;font-weight:600}
+.live-log-admin summary{cursor:pointer;font-weight:650}.live-log-admin:not([open]) #live-log-auth-view{display:none}.live-log-admin[open] #live-log-auth-view{display:block}.live-log-form{display:grid;gap:10px;margin-top:14px}.live-log-form label{display:grid;gap:5px;font-size:.9rem;font-weight:600}
 .live-log-form input,.live-log-form textarea{width:100%;border:1px solid var(--border-color,#ddd);background:var(--color-card-bg,#fff);color:var(--text-primary,#222);border-radius:9px;padding:10px 11px;font:inherit;font-size:.95rem}.live-log-form textarea{min-height:150px;resize:vertical;line-height:1.6}
 .live-log-auth{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.live-log-auth .full{grid-column:1/-1}.live-log-small{opacity:.7;font-size:.82rem;line-height:1.5}
 @media(max-width:540px){.live-renovation-logs{width:calc(100% - 22px);margin:22px auto 28px}.live-log-card,.live-log-admin{padding:14px}.live-log-auth{grid-template-columns:1fr}.live-log-auth .full{grid-column:auto}}
@@ -677,7 +677,7 @@ body { display: flex; flex-direction: column; }
   <div class="live-log-heading"><h2 id="live-log-heading">装修日志 · 最新更新</h2><p>这里会显示管理员发布的最新文字记录。</p></div>
   <div class="live-log-status" id="live-log-status" role="status">正在连接日志服务…</div>
   <div class="live-log-list" id="live-log-list" aria-live="polite"></div>
-  <details class="live-log-admin" id="live-log-admin">
+  <details class="live-log-admin" id="live-log-admin" open>
     <summary>管理员入口 · 更新装修日志</summary>
     <div id="live-log-auth-view"><p class="live-log-small" style="margin-top:10px">仅管理员登录后可新增、编辑或删除日志。</p>
       <form id="live-log-login" class="live-log-form"><div class="live-log-auth">
@@ -719,7 +719,7 @@ body { display: flex; flex-direction: column; }
  async function load(){
    message('正在加载装修日志…');
    const {data,error}=await db.from('renovation_logs').select('id,title,content,log_date,created_at,updated_at').order('log_date',{ascending:false}).order('created_at',{ascending:false});
-   if(error){list.replaceChildren();message('暂时无法读取日志：'+error.message+'。请先在 Supabase 执行随压缩包附上的建表 SQL。',true);return}
+   if(error){message('暂时无法读取在线日志：'+error.message+'。请检查 Supabase 表与权限；管理员登录入口仍可使用。',true);return}
    list.replaceChildren();
    if(!data||!data.length){list.append(el('div','live-log-empty','还没有在线发布的日志。原有页面内容仍会保留；管理员登录后可以发布第一篇。'));message('日志服务已连接。');return}
    data.forEach(row=>{
