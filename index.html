@@ -402,7 +402,9 @@
   }
 
   @media (max-width: 768px) {
-    .blokko-site-nav-inner { justify-content: space-between; min-height: 46px; padding: 0 14px; }
+    /* 给右上角语言切换按钮预留空间，避免它遮住手机端导航汉堡按钮 */
+    .blokko-site-nav-inner { justify-content: space-between; min-height: 46px; padding: 0 98px 0 14px !important; }
+    .blokko-nav-burger { flex: 0 0 36px; position: relative; z-index: 2; }
     .blokko-nav-desktop { display: none; }
     .blokko-nav-burger { display: flex; }
     .blokko-mobile-drawer { display: block; }
@@ -557,7 +559,10 @@
   .site-language-toggle[data-lang="cn"] .lang-cn,
   .site-language-toggle[data-lang="tw"] .lang-tw { color: #fff; }
   .site-language-toggle:focus-visible { outline: 2px solid #8b67d0; outline-offset: 3px; }
-  @media (max-width: 600px) { .site-language-toggle { top: 10px; right: 10px; } }
+  @media (max-width: 600px) {
+    /* 给右侧的移动端导航菜单按钮留出空间，把语言开关向左移 */
+    .site-language-toggle { top: 10px; right: 66px; }
+  }
 </style>
 
 </head>
