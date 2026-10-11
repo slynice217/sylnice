@@ -547,6 +547,12 @@ body { display: flex; flex-direction: column; }
 <script src="./lib/dompurify/purify.min.js"></script>
 <script src="./lib/iconify/iconify.min.js"></script>
 
+<style id="live-log-admin-shortcut-style">
+#live-log-admin-shortcut{position:fixed;right:18px;bottom:18px;z-index:2147483001;border:0;border-radius:999px;background:#72519b;color:#fff;padding:12px 18px;font:600 14px/1.2 system-ui,-apple-system,"Microsoft YaHei",sans-serif;box-shadow:0 6px 22px rgba(40,18,111,.28);cursor:pointer}
+#live-log-admin-shortcut:focus-visible{outline:3px solid #bda2e7;outline-offset:3px}
+#live-renovation-logs{scroll-margin-top:24px}
+@media(max-width:540px){#live-log-admin-shortcut{right:12px;bottom:12px;padding:11px 15px}}
+</style>
 <style id="live-renovation-logs-style">
 .live-renovation-logs{width:min(920px,calc(100% - 32px));margin:28px auto 36px;color:var(--text-primary,#25212b);font-family:inherit}
 .live-renovation-logs *{box-sizing:border-box}.live-log-heading{margin-bottom:14px}.live-log-heading h2{font-size:clamp(1.25rem,2.8vw,1.7rem);margin:0 0 6px}.live-log-heading p{font-size:.92rem;opacity:.72;margin:0}
@@ -950,5 +956,23 @@ body { display: flex; flex-direction: column; }
 </script>
 <script src="./viewer.js"></script>
 
+<button id="live-log-admin-shortcut" type="button" aria-label="跳转到管理员登录">管理员登录</button>
+<script id="live-log-admin-shortcut-app">
+(function(){
+ const b=document.getElementById('live-log-admin-shortcut');
+ if(!b)return;
+ b.addEventListener('click',function(){
+   const section=document.getElementById('live-renovation-logs');
+   const panel=document.getElementById('live-log-admin');
+   if(!section||!panel){alert('管理员登录模块未加载，请刷新页面后重试。');return;}
+   panel.open=true;
+   section.scrollIntoView({behavior:'smooth',block:'start'});
+   window.setTimeout(function(){
+     const email=document.getElementById('live-log-email');
+     if(email)email.focus({preventScroll:true});
+   },450);
+ });
+})();
+</script>
 </body>
 </html>
