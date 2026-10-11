@@ -25,15 +25,15 @@ create policy "Anyone can read renovation logs"
 drop policy if exists "Admin can create renovation logs" on public.renovation_logs;
 create policy "Admin can create renovation logs"
   on public.renovation_logs for insert to authenticated
-  with check (auth.uid() = 'YOUR_ADMIN_USER_UUID'::uuid);
+  with check (auth.uid() = 'dce9e193-842c-4ede-a061-27526c695429'::uuid);
 
 drop policy if exists "Admin can update renovation logs" on public.renovation_logs;
 create policy "Admin can update renovation logs"
   on public.renovation_logs for update to authenticated
-  using (auth.uid() = 'YOUR_ADMIN_USER_UUID'::uuid)
-  with check (auth.uid() = 'YOUR_ADMIN_USER_UUID'::uuid);
+  using (auth.uid() = 'dce9e193-842c-4ede-a061-27526c695429'::uuid)
+  with check (auth.uid() = 'dce9e193-842c-4ede-a061-27526c695429'::uuid);
 
 drop policy if exists "Admin can delete renovation logs" on public.renovation_logs;
 create policy "Admin can delete renovation logs"
   on public.renovation_logs for delete to authenticated
-  using (auth.uid() = 'YOUR_ADMIN_USER_UUID'::uuid);
+  using (auth.uid() = 'dce9e193-842c-4ede-a061-27526c695429'::uuid);
