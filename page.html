@@ -624,7 +624,25 @@ body { display: flex; flex-direction: column; }
   }
 </style>
 
-  <style id="hide-home-comments-on-renovation-page">#visitor-comments{display:none!important}</style>
+  <style id="hide-home-comments-on-renovation-page">
+/* 装修日志页：即使站点脚本动态插入首页留言板，也不在本页显示 */
+body:has(#live-renovation-logs) #visitor-comments,
+body.renovation-log-page #visitor-comments,
+#visitor-comments { display: none !important; }
+</style>
+<script id="renovation-page-comment-guard">
+(function () {
+  document.documentElement.classList.add('renovation-log-page');
+  function hideHomeComments() {
+    document.querySelectorAll('#visitor-comments, .visitor-comments, #visitor-comment-form, #visitor-comments-list').forEach(function (el) {
+      el.style.setProperty('display', 'none', 'important');
+      el.setAttribute('aria-hidden', 'true');
+    });
+  }
+  hideHomeComments();
+  new MutationObserver(hideHomeComments).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
 </head>
 <body>
 
