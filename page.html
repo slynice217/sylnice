@@ -9,6 +9,13 @@
 <title>装修日志 - welcome to me</title>
 <link rel="prefetch" href="./index.html">
 <link rel="stylesheet" href="./viewer.css">
+<style id="scroll-unlock-fix">
+/* 修复 viewer.css 将整个页面锁定导致无法向下滚动的问题 */
+html, body { position: static !important; height: auto !important; min-height: 100% !important; overflow-x: hidden !important; overflow-y: auto !important; }
+body { display: flex; flex-direction: column; }
+#app { flex: 0 0 auto; min-height: 0; }
+.live-renovation-logs { position: relative; display: block; visibility: visible; }
+</style>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
