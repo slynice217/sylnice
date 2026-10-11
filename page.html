@@ -633,14 +633,28 @@ body.renovation-log-page #visitor-comments,
 <script id="renovation-page-comment-guard">
 (function () {
   document.documentElement.classList.add('renovation-log-page');
-  function hideHomeComments() {
-    document.querySelectorAll('#visitor-comments, .visitor-comments, #visitor-comment-form, #visitor-comments-list').forEach(function (el) {
+  function hideComments() {
+    var selectors = '#visitor-comments, .visitor-comments, #visitor-comment-form, #visitor-comments-list, [id*="visitor-comment"], [class*="visitor-comment"]';
+    document.querySelectorAll(selectors).forEach(function (el) {
       el.style.setProperty('display', 'none', 'important');
       el.setAttribute('aria-hidden', 'true');
     });
+    document.querySelectorAll('h1,h2,h3,h4').forEach(function (h) {
+      if ((h.textContent || '').trim() !== '留言板') return;
+      var node = h;
+      for (var i = 0; i < 8 && node.parentElement; i++) {
+        node = node.parentElement;
+        if (node.querySelector('form') || node.querySelector('[id*="visitor-comment"],[class*="visitor-comment"]')) {
+          node.style.setProperty('display', 'none', 'important');
+          node.setAttribute('aria-hidden', 'true');
+          break;
+        }
+      }
+    });
   }
-  hideHomeComments();
-  new MutationObserver(hideHomeComments).observe(document.documentElement, { childList: true, subtree: true });
+  hideComments();
+  new MutationObserver(hideComments).observe(document.documentElement, {childList:true, subtree:true});
+  window.addEventListener('load', hideComments);
 })();
 </script>
 </head>
