@@ -634,26 +634,26 @@ body.renovation-log-page #visitor-comments,
 (function () {
   document.documentElement.classList.add('renovation-log-page');
   function hideComments() {
-    var selectors = '#visitor-comments, .visitor-comments, #visitor-comment-form, #visitor-comments-list, [id*="visitor-comment"], [class*="visitor-comment"]';
-    document.querySelectorAll(selectors).forEach(function (el) {
+    document.querySelectorAll('#visitor-comments, .visitor-comments, #visitor-comment-form, #visitor-comments-list, [id*="visitor-comment"], [class*="visitor-comment"]').forEach(function (el) {
       el.style.setProperty('display', 'none', 'important');
       el.setAttribute('aria-hidden', 'true');
     });
-    document.querySelectorAll('h1,h2,h3,h4').forEach(function (h) {
-      if ((h.textContent || '').trim() !== '留言板') return;
-      var node = h;
-      for (var i = 0; i < 8 && node.parentElement; i++) {
-        node = node.parentElement;
-        if (node.querySelector('form') || node.querySelector('[id*="visitor-comment"],[class*="visitor-comment"]')) {
-          node.style.setProperty('display', 'none', 'important');
-          node.setAttribute('aria-hidden', 'true');
+    document.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(function (heading) {
+      if (!/留言板/.test((heading.textContent || '').trim())) return;
+      var parent = heading;
+      for (var i = 0; i < 12 && parent.parentElement; i++) {
+        parent = parent.parentElement;
+        if (parent.id === 'app' || parent.id === 'live-renovation-logs' || parent.tagName === 'BODY') break;
+        if (parent.querySelector('form, textarea, [contenteditable="true"], [id*="visitor-comment"], [class*="visitor-comment"]')) {
+          parent.style.setProperty('display', 'none', 'important');
+          parent.setAttribute('aria-hidden', 'true');
           break;
         }
       }
     });
   }
   hideComments();
-  new MutationObserver(hideComments).observe(document.documentElement, {childList:true, subtree:true});
+  new MutationObserver(hideComments).observe(document.documentElement, {childList: true, subtree: true, characterData: true});
   window.addEventListener('load', hideComments);
 })();
 </script>
