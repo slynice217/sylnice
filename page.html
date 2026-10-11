@@ -978,5 +978,18 @@ body { display: flex; flex-direction: column; }
  });
 })();
 </script>
+
+<script id="pc-message-board-notice">
+(function () {
+  function showNotice() {
+    window.alert('由于我懒得改+很少人用，pc端可能没有显示留言板部分');
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showNotice, { once: true });
+  } else {
+    showNotice();
+  }
+})();
+</script>
 </body>
 </html>
