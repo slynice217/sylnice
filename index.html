@@ -903,5 +903,39 @@ html, body { min-height:100%; overflow-y:auto !important; }
 })();
 </script>
 
+<script id="pc-message-board-notice">
+(function () {
+  function showNotice() {
+    if (document.getElementById('welcome-notice-overlay')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'welcome-notice-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(20,16,30,.48);box-sizing:border-box;';
+    const modal = document.createElement('div');
+    modal.style.cssText = 'width:min(100%,440px);box-sizing:border-box;padding:28px 24px 22px;border-radius:20px;background:#fff;color:#292431;box-shadow:0 18px 60px rgba(0,0,0,.24);font:16px/1.8 system-ui,-apple-system,"Segoe UI",sans-serif;white-space:pre-line;text-align:left;';
+    const message = document.createElement('div');
+    message.textContent = '由于我懒得改+很少人用，pc端可能没有显示留言板部分。\nanyway，谢谢你愿意打开我的网站\nwelcomeee';
+    const buttonWrap = document.createElement('div');
+    buttonWrap.style.cssText = 'display:flex;justify-content:center;margin-top:24px;';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = 'ok';
+    button.style.cssText = 'min-width:100px;padding:10px 28px;border:0;border-radius:12px;background:#76519a;color:#fff;font-size:16px;font-weight:600;cursor:pointer;';
+    function close() { overlay.remove(); }
+    button.addEventListener('click', close);
+    overlay.addEventListener('click', function (event) { if (event.target === overlay) close(); });
+    buttonWrap.appendChild(button);
+    modal.appendChild(message);
+    modal.appendChild(buttonWrap);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    button.focus();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showNotice, { once: true });
+  } else {
+    showNotice();
+  }
+})();
+</script>
 </body>
 </html>
