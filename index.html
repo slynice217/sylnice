@@ -729,6 +729,7 @@ html, body { min-height:100%; overflow-y:auto !important; }
 <script id="instagram-direct-navigation">
   (function () {
     var instagramUrl = 'https://www.instagram.com/sylnice_217/';
+    var qntwxUrl = 'https://qntwx.com/sylnice';
     document.addEventListener('click', function (event) {
       var target = event.target;
       if (!(target instanceof Element)) return;
@@ -736,14 +737,18 @@ html, body { min-height:100%; overflow-y:auto !important; }
       if (!button) return;
       var label = (button.innerText || button.textContent || '').trim();
       var icon = button.querySelector('[data-icon], .iconify, svg');
-      var isInstagramButton = label === 'sylnice_217' ||
-        (button.getAttribute('aria-label') || '').toLowerCase().includes('instagram') ||
-        (button.getAttribute('title') || '').toLowerCase().includes('instagram') ||
-        (icon && /instagram/i.test((icon.getAttribute('data-icon') || '') + ' ' + (icon.getAttribute('class') || '')));
-      if (!isInstagramButton) return;
+      var iconName = icon ? ((icon.getAttribute('data-icon') || '') + ' ' + (icon.getAttribute('class') || '')) : '';
+      var ariaLabel = (button.getAttribute('aria-label') || '').toLowerCase();
+      var title = (button.getAttribute('title') || '').toLowerCase();
+      var isInstagramButton = label === 'sylnice_217' || ariaLabel.includes('instagram') ||
+        title.includes('instagram') || /instagram/i.test(iconName);
+      var isQntwxButton = label === 'Sylnice217' || ariaLabel.includes('qntwx') ||
+        title.includes('qntwx') || /wechat/i.test(iconName);
+      var destination = isInstagramButton ? instagramUrl : (isQntwxButton ? qntwxUrl : null);
+      if (!destination) return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      window.location.href = instagramUrl;
+      window.location.href = destination;
     }, true);
   })();
 </script>
