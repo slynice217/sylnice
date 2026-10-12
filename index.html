@@ -763,11 +763,9 @@ html, body { min-height:100%; overflow-y:auto !important; }
     event.preventDefault();
     event.stopPropagation();
     if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
-    // Block Blokko's delegated handlers across the full pointer/click sequence.
-    if (event.type === 'click') {
-      window.location.assign(destination);
-    } else {
-      event.__socialDestination = destination;
+    // Navigate on the initial press, before Blokko can open its interaction popup.
+    if (event.type === 'pointerdown' || event.type === 'mousedown' || event.type === 'click') {
+      window.location.href = destination;
     }
   }
   ['pointerdown', 'mousedown', 'pointerup', 'mouseup', 'click'].forEach(function (type) {
