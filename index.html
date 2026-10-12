@@ -744,6 +744,11 @@ html, body { min-height:100%; overflow-y:auto !important; }
     for (var i = 0; i < nodes.length && i < 12; i++) {
       var node = nodes[i];
       if (!(node instanceof Element)) continue;
+      // The visible URL in the rich-text answer must behave as a normal hyperlink.
+      if (node.matches('a[href]')) {
+        var href = node.getAttribute('href') || '';
+        if (/^https?:\/\/qntwx\.com\/sylnice\/?(?:[?#].*)?$/i.test(href)) return destinations.qntwx;
+      }
       var label = normalize(node.innerText || node.textContent);
       var icon = normalize((node.getAttribute('data-icon') || '') + ' ' + (node.getAttribute('class') || ''));
       if (label === 'sylnice217' || icon.indexOf('wechat') !== -1) return destinations.qntwx;
