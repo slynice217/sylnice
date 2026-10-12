@@ -726,6 +726,27 @@ html, body { min-height:100%; overflow-y:auto !important; }
   window.__BLOKKO_FONTS__ = [{"family":"Noto Serif CJK","cssUrl":"https://fontsapi.zeoseven.com/285/main/result.css","weight":null}];
 </script>
 <script src="./viewer.js"></script>
+<script id="instagram-direct-navigation">
+  (function () {
+    var instagramUrl = 'https://www.instagram.com/sylnice_217/';
+    document.addEventListener('click', function (event) {
+      var target = event.target;
+      if (!(target instanceof Element)) return;
+      var button = target.closest('button, a, [role="button"]');
+      if (!button) return;
+      var label = (button.innerText || button.textContent || '').trim();
+      var icon = button.querySelector('[data-icon], .iconify, svg');
+      var isInstagramButton = label === 'sylnice_217' ||
+        (button.getAttribute('aria-label') || '').toLowerCase().includes('instagram') ||
+        (button.getAttribute('title') || '').toLowerCase().includes('instagram') ||
+        (icon && /instagram/i.test((icon.getAttribute('data-icon') || '') + ' ' + (icon.getAttribute('class') || '')));
+      if (!isInstagramButton) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      window.location.href = instagramUrl;
+    }, true);
+  })();
+</script>
 <button class="site-language-toggle" id="site-language-toggle" type="button" role="switch" aria-checked="false" aria-label="切换简体中文和繁體中文" data-lang="cn">
   <span class="lang-knob" aria-hidden="true"></span><span class="lang-label lang-cn">简</span><span class="lang-label lang-tw">繁</span>
 </button>
