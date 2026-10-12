@@ -757,14 +757,22 @@ html, body { min-height:100%; overflow-y:auto !important; }
     }
     return null;
   }
-  document.addEventListener('click', function (event) {
+  function interceptSocialNavigation(event) {
     var destination = destinationFor(event.target);
     if (!destination) return;
     event.preventDefault();
     event.stopPropagation();
-    event.stopImmediatePropagation();
-    window.location.href = destination;
-  }, true);
+    if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+    // Block Blokko's delegated handlers across the full pointer/click sequence.
+    if (event.type === 'click') {
+      window.location.assign(destination);
+    } else {
+      event.__socialDestination = destination;
+    }
+  }
+  ['pointerdown', 'mousedown', 'pointerup', 'mouseup', 'click'].forEach(function (type) {
+    document.addEventListener(type, interceptSocialNavigation, true);
+  });
 })();
 </script>
 <button class="site-language-toggle" id="site-language-toggle" type="button" role="switch" aria-checked="false" aria-label="切换简体中文和繁體中文" data-lang="cn">
