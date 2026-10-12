@@ -877,8 +877,17 @@ html, body { min-height:100%; overflow-y:auto !important; }
     status.style.color = isError ? '#b42318' : '';
   }
   function formatDate(value) {
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return '';
+    if (value === null || value === undefined || value === '') return '時間未知';
+    // Handle Unix timestamps in seconds or milliseconds as well as ISO date strings.
+    let date;
+    if (typeof value === 'number' || /^\d+(\.\d+)?$/.test(String(value).trim())) {
+      let timestamp = Number(value);
+      if (timestamp < 100000000000) timestamp *= 1000;
+      date = new Date(timestamp);
+    } else {
+      date = new Date(value);
+    }
+    if (Number.isNaN(date.getTime()) || date.getUTCFullYear() <= 1970) return '時間未知';
     return date.toLocaleString(undefined, {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
   }
   async function loadComments() {
