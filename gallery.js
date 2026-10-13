@@ -7,10 +7,35 @@ const photos=document.getElementById('photos');
 albums.forEach(n=>{
  const a=document.createElement('section');
  a.className='album';
- a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="stack">${[5,4,3,2,1].map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}">`).join('')}</div>`;
- a.onclick=()=>openAlbum(n);
+ if(n===3){
+   a.innerHTML=`<div class="album-title">📷 图集3</div><div class="album3-carousel" aria-label="图集3，左右滑动切换照片"><div class="album3-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<img src="./assets/gallery/album3/${i}.jpg" alt="图集3照片${i}" draggable="false">`).join('')}</div><div class="album3-controls"><button type="button" class="album3-prev" aria-label="上一张">‹</button><span class="album3-counter">1 / 5</span><button type="button" class="album3-next" aria-label="下一张">›</button></div></div>`;
+   setupAlbum3Carousel(a);
+ }else{
+   a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="stack">${[5,4,3,2,1].map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}">`).join('')}</div>`;
+   a.onclick=()=>openAlbum(n);
+ }
  root.appendChild(a);
 });
+
+function setupAlbum3Carousel(album){
+ const carousel=album.querySelector('.album3-carousel');
+ const track=album.querySelector('.album3-track');
+ const slides=Array.from(track.querySelectorAll('img'));
+ const counter=album.querySelector('.album3-counter');
+ let current=0,startX=0,startY=0,dragging=false;
+ function goTo(index){
+   current=(index+slides.length)%slides.length;
+   track.style.transform=`translateX(-${current*100}%)`;
+   counter.textContent=`${current+1} / ${slides.length}`;
+ }
+ carousel.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;},{passive:true});
+ carousel.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;const dy=e.changedTouches[0].clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));},{passive:true});
+ carousel.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;startX=e.clientX;startY=e.clientY;dragging=true;});
+ carousel.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const dx=e.clientX-startX;const dy=e.clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));});
+ album.querySelector('.album3-prev').addEventListener('click',e=>{e.stopPropagation();goTo(current-1);});
+ album.querySelector('.album3-next').addEventListener('click',e=>{e.stopPropagation();goTo(current+1);});
+ goTo(0);
+}
 
 function openAlbum(n){
  root.classList.add('closed');
