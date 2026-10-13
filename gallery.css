@@ -329,3 +329,12 @@ h1{text-align:center}
   background: transparent !important;
 }
 /* Keep the center photo above its neighbors while allowing the side cards to overlap */
+
+
+/* 24px rounded corners for the depth-stack photos, without clipping the side overlap */
+.album-carousel.depth-stack .depth-card,
+.album-carousel.depth-stack .depth-card-inner,
+.album-carousel.depth-stack .depth-face,
+.album-carousel.depth-stack .depth-front img {
+  border-radius: 24px !important;
+}
