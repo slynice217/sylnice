@@ -48,3 +48,12 @@ h1{text-align:center}
 .album3-controls{display:flex;align-items:center;justify-content:center;gap:26px;margin:12px 0 2px}
 .album3-controls button{width:38px;height:38px;border:0;border-radius:50%;background:#6d3bb0;color:white;font-size:28px;line-height:1;cursor:pointer}
 .album3-counter{min-width:44px;font-variant-numeric:tabular-nums}
+
+
+/* All three albums: swipe photos directly in the gallery list */
+.album-carousel{width:min(100%,320px);margin:0 auto;overflow:hidden;border-radius:24px;touch-action:pan-y;position:relative}
+.album-track{display:flex;width:100%;transition:transform .35s ease;will-change:transform}
+.album-track img{display:block;flex:0 0 100%;width:100%;height:280px;object-fit:cover;border-radius:24px;background:linear-gradient(145deg,#f8f5ff,#e8def4);user-select:none;-webkit-user-drag:none}
+.album-controls{display:flex;align-items:center;justify-content:center;gap:26px;margin:12px 0 2px}
+.album-controls button{width:38px;height:38px;border:0;border-radius:50%;background:#6d3bb0;color:white;font-size:28px;line-height:1;cursor:pointer}
+.album-counter{min-width:44px;font-variant-numeric:tabular-nums}
