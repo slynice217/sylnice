@@ -206,3 +206,101 @@ h1{text-align:center}
   object-fit: cover !important;
   border-radius: 0 !important;
 }
+
+
+/* FIX: photos and cards fill the frame with no default white button area */
+.album-carousel.depth-stack {
+  display: block;
+  width: min(100%, 300px) !important;
+  aspect-ratio: 3 / 4 !important;
+  height: auto !important;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate;
+  perspective: 1000px;
+}
+.album-carousel.depth-stack .album-track {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform-style: preserve-3d;
+}
+.album-carousel.depth-stack .depth-card {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  color: inherit;
+  box-shadow: none;
+  overflow: visible;
+  transform-style: preserve-3d;
+  -webkit-tap-highlight-color: transparent;
+}
+.album-carousel.depth-stack .depth-card-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  transform-style: preserve-3d;
+  transition: transform .72s cubic-bezier(.2,.75,.25,1);
+}
+.album-carousel.depth-stack .depth-card.is-flipped .depth-card-inner {
+  transform: rotateY(180deg);
+}
+.album-carousel.depth-stack .depth-face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: transparent;
+  box-shadow: none;
+}
+.album-carousel.depth-stack .depth-front img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0 !important;
+  object-fit: cover !important;
+  background: transparent !important;
+}
+.album-carousel.depth-stack .depth-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(145deg,#322542,#17151d);
+}
