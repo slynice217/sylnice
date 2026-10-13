@@ -348,3 +348,49 @@ h1{text-align:center}
   object-fit:cover!important;
   object-position:center!important;
 }
+
+
+/* Final override: make each gallery card image-only, with no frame or white space */
+.album-carousel.depth-stack .depth-card,
+.album-carousel.depth-stack .depth-card:focus,
+.album-carousel.depth-stack .depth-card:focus-visible{
+  padding:0!important;
+  border:0!important;
+  outline:none!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+.album-carousel.depth-stack .depth-card-inner{
+  border:0!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+.album-carousel.depth-stack .depth-face,
+.album-carousel.depth-stack .depth-front{
+  inset:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+.album-carousel.depth-stack .depth-front img{
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  object-fit:cover!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+}
