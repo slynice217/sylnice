@@ -338,3 +338,18 @@ h1{text-align:center}
 .album-carousel.depth-stack .depth-front img {
   border-radius: 24px !important;
 }
+
+
+/* Apply 24px rounded corners to every Gallery image/card, including non-depth albums */
+.album-carousel:not(.depth-stack) .album-track,
+.album-carousel:not(.depth-stack) .album-track > *,
+.album-carousel:not(.depth-stack) .album-track img,
+.album-carousel:not(.depth-stack) img,
+.album-carousel.depth-stack .depth-face,
+.album-carousel.depth-stack .depth-front img {
+  border-radius: 24px !important;
+}
+.album-carousel:not(.depth-stack) .album-track img {
+  display: block;
+  overflow: hidden;
+}
