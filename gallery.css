@@ -5,16 +5,16 @@ body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Seg
 main{max-width:600px;margin:auto;padding:24px}
 h1{text-align:center}
 .album{margin:42px 0;text-align:center;background:#ffffff88;padding:18px;border-radius:32px;box-shadow:0 10px 30px #0001}
-.stack{height:260px;position:relative;margin:auto;width:min(90vw,360px);cursor:pointer;touch-action:manipulation}
-.stack img{position:absolute;width:100%;height:100%;object-fit:cover;border-radius:28px;box-shadow:0 12px 30px #0002;transition:transform .3s ease}
-.stack img:nth-child(1){z-index:4;transform:rotate(0deg)}
-.stack img:nth-child(2){z-index:3;transform:rotate(5deg) translate(12px,8px)}
-.stack img:nth-child(3){z-index:2;transform:rotate(-5deg) translate(-12px,15px)}
-.stack img:nth-child(4){z-index:1;transform:rotate(8deg) translate(18px,22px)}
+.stack{height:280px;position:relative;margin:0 auto;width:min(100%,320px);cursor:pointer;touch-action:manipulation;isolation:isolate}
+.stack img{position:absolute;top:0;left:0;width:100%;height:100%;display:block;object-fit:cover;overflow:hidden;border:1px solid rgba(95,70,125,.12);border-radius:26px;box-shadow:0 12px 30px #0002;transition:transform .3s ease;background:linear-gradient(145deg,#f8f5ff,#e8def4);font-size:0;color:transparent}
+.stack img:nth-child(1){z-index:4;transform:translate(0,0) rotate(0deg)}
+.stack img:nth-child(2){z-index:3;transform:translate(10px,7px) rotate(3deg)}
+.stack img:nth-child(3){z-index:2;transform:translate(20px,14px) rotate(5deg)}
+.stack img:nth-child(4){z-index:1;transform:translate(30px,21px) rotate(7deg)}
 .closed{display:none}
 .hidden{display:none}
 .album-title{font-size:20px;margin-bottom:15px}
 .viewer-card{background:#ffffffaa;border-radius:32px;padding:16px}
 .viewer-photo{display:block;width:100%;max-width:500px;margin:20px auto;border-radius:24px;box-shadow:0 10px 25px #0002}
 #back{margin:20px;padding:12px 25px;border:0;border-radius:30px;background:#6d3bb0;color:white;font-size:16px}
-@media(max-width:600px){main{padding:16px}.stack{height:230px}.nav{font-size:14px;overflow-x:auto;white-space:nowrap}}
+@media(max-width:600px){main{padding:16px}.album{padding:18px 12px;overflow:hidden}.stack{height:260px;width:min(100%,300px);}.nav{font-size:14px;overflow-x:auto;white-space:nowrap}}
