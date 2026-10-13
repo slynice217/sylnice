@@ -99,3 +99,26 @@ h1{text-align:center}
   height: auto;
   object-fit: cover;
 }
+
+
+/* FIX: make Album 3 depth stack visibly layered on mobile */
+.album-carousel.album3-depth{
+  overflow:visible!important;
+  perspective:1000px!important;
+  transform-style:preserve-3d!important;
+  isolation:isolate;
+}
+.album-carousel.album3-depth .album-track{
+  overflow:visible!important;
+  transform-style:preserve-3d!important;
+}
+.album-carousel.album3-depth .album-track img{
+  inset:0!important;
+  width:78%!important;
+  height:88%!important;
+  max-width:none!important;
+  aspect-ratio:auto!important;
+  border-radius:22px!important;
+  box-shadow:0 14px 30px rgba(35,20,55,.28)!important;
+  transition:transform .42s cubic-bezier(.2,.75,.25,1),opacity .42s ease!important;
+}
