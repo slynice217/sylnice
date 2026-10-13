@@ -82,3 +82,13 @@ h1{text-align:center}
 .album3-depth .album-track{height:100%;aspect-ratio:3/4}
 .album3-depth .album-track img{height:auto;aspect-ratio:3/4;width:100%;max-width:300px;object-fit:cover}
 .flip-controls{margin:12px auto 0}
+
+
+/* FINAL OVERRIDE: swipe-only albums, strict 3:4 portrait frame */
+.album-controls,.album-controls button,.album-prev,.album-next,.album3-controls,.album3-controls button,.flip-controls button,#flipPrev,#flipNext{display:none!important}
+.album-carousel{display:block!important;width:min(100%,300px)!important;height:auto!important;aspect-ratio:3/4!important;overflow:hidden!important;position:relative!important;border-radius:24px}
+.album-carousel:not(.album3-depth) .album-track{display:flex!important;width:100%!important;height:auto!important;aspect-ratio:3/4!important}
+.album-carousel:not(.album3-depth) .album-track img{display:block!important;flex:0 0 100%!important;width:100%!important;height:auto!important;aspect-ratio:3/4!important;object-fit:cover!important}
+.album-carousel.album3-depth{height:auto!important;aspect-ratio:3/4!important;overflow:hidden!important;perspective:900px;position:relative!important}
+.album-carousel.album3-depth .album-track{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;aspect-ratio:auto!important}
+.album-carousel.album3-depth .album-track img{position:absolute!important;inset:0!important;margin:auto!important;width:100%!important;height:100%!important;max-width:none!important;aspect-ratio:auto!important;object-fit:cover!important}
