@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gallery</title>
-<link rel="stylesheet" href="./gallery.css?v=20261014-2">
+<link rel="stylesheet" href="./gallery.css?v=20261014-3">
 </head>
 <body>
 <nav class="nav"><a href="./index.html">首页</a><a href="./page.html">装修日志</a><a href="./admin.html">管理员登录</a><a href="./gallery.html">Gallery</a></nav>
@@ -72,8 +72,8 @@
         if (offset > cards.length / 2) offset -= cards.length;
         if (offset < -cards.length / 2) offset += cards.length;
         const distance = Math.abs(offset);
-        const x = offset * (window.innerWidth <= 600 ? 54 : 66);
-        card.style.transform = 'translate3d(' + x + 'px,' + (distance * 5) + 'px,' + (-distance * 95) + 'px) rotateY(' + (-offset * 13) + 'deg) rotateZ(' + (-offset * 2.5) + 'deg) scale(' + (offset === 0 ? 1 : Math.max(.68, 1 - distance * .1)) + ')';
+        const x = offset * (window.innerWidth <= 600 ? 30 : 40);
+        card.style.transform = 'translate3d(' + x + 'px,' + (distance * 5) + 'px,' + (-distance * 95) + 'px) rotateY(' + (-offset * 13) + 'deg) rotateZ(' + (-offset * 2.5) + 'deg) scale(' + (offset === 0 ? .9 : Math.max(.62, .9 - distance * .09)) + ')';
         card.style.zIndex = String(10 - distance);
         card.style.opacity = distance > 2 ? '0' : '1';
         card.style.pointerEvents = distance > 2 ? 'none' : 'auto';
