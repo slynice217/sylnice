@@ -7,7 +7,7 @@ const photos=document.getElementById('photos');
 albums.forEach(n=>{
  const a=document.createElement('section');
  a.className='album';
- a.innerHTML=`<div class="album-title">${n===3?"宝贝nikki":`图集${n}`}</div><div class="album-carousel ${n===3?'album3-depth':''}" aria-label="图集${n}，左右滑动切换照片"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>n===2?`<div class="album2-card"><div class="album2-card-inner"><div class="album2-face album2-front"><img src="./assets/gallery/album2/${i}.jpg" alt="图集2照片${i}" draggable="false"></div><div class="album2-face album2-back"><span>0${i} / 05</span><h3>图集 2</h3><p>照片 ${i}</p><small>点击翻回照片</small></div></div></div>`:`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false">`).join('')}</div></div>`;
+ a.innerHTML=`<div class="album-title">${n===3?"宝贝nikki":`图集${n}`}</div><div class="album-carousel depth-stack" aria-label="图集${n}，左右滑动切换照片，点击照片翻面"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<div class="depth-card" tabindex="0" role="button" aria-label="图集${n}照片${i}，点击翻面"><div class="depth-card-inner"><div class="depth-face depth-front"><img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false"></div><div class="depth-face depth-back"><span>0${i} / 05</span><h3>${n===3?'宝贝nikki':`图集 ${n}`}</h3><p>照片 ${i}</p><small>点击翻回照片</small></div></div></div>`).join('')}</div></div>`;
  setupAlbumCarousel(a,n);
  root.appendChild(a);
 });
@@ -15,30 +15,30 @@ albums.forEach(n=>{
 function setupAlbumCarousel(album,albumNumber){
  const carousel=album.querySelector('.album-carousel');
  const track=album.querySelector('.album-track');
- const slides=Array.from(track.children);
- const counter=album.querySelector('.album-counter');
- let current=0,startX=0,startY=0,dragging=false;
+ const slides=Array.from(track.querySelectorAll('.depth-card'));
+ let current=0,startX=0,startY=0,dragging=false,moved=false;
  function goTo(index){
    current=(index+slides.length)%slides.length;
-   if(albumNumber===3){
-     slides.forEach((slide,i)=>{
-       let offset=i-current;
-       if(offset>slides.length/2)offset-=slides.length;
-       if(offset< -slides.length/2)offset+=slides.length;
-       slide.style.transform=`translateX(calc(${offset} * 54px)) translateZ(${offset===0?0:-Math.abs(offset)*75}px) rotateY(${offset* -16}deg) scale(${offset===0?1:Math.max(.72,1-Math.abs(offset)*.12)})`;
-       slide.style.zIndex=String(10-Math.abs(offset));
-       slide.style.opacity=Math.abs(offset)>2?'0': '1';
-     });
-   }else{
-     track.style.transform=`translateX(-${current*100}%)`;
-   }
-   if(counter) counter.textContent=`${current+1} / ${slides.length}`;
+   slides.forEach((slide,i)=>{
+     let offset=i-current;
+     if(offset>slides.length/2)offset-=slides.length;
+     if(offset< -slides.length/2)offset+=slides.length;
+     slide.style.transform=`translateX(${offset*44}px) translateZ(${-Math.abs(offset)*70}px) rotateY(${offset*-12}deg) scale(${offset===0?1:Math.max(.72,1-Math.abs(offset)*.1)})`;
+     slide.style.zIndex=String(10-Math.abs(offset));
+     slide.style.opacity=Math.abs(offset)>2?'0':'1';
+     slide.style.pointerEvents=Math.abs(offset)>2?'none':'auto';
+   });
  }
+ slides.forEach(card=>{
+   card.addEventListener('click',()=>{if(!moved)card.classList.toggle('is-flipped');});
+   card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('is-flipped');}});
+ });
+ carousel.addEventListener('pointerdown',e=>{startX=e.clientX;startY=e.clientY;dragging=true;moved=false;});
+ carousel.addEventListener('pointermove',e=>{if(dragging&&(Math.abs(e.clientX-startX)>8||Math.abs(e.clientY-startY)>8))moved=true;});
+ carousel.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const dx=e.clientX-startX,dy=e.clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){goTo(current+(dx<0?1:-1));}setTimeout(()=>{moved=false;},0);});
+ carousel.addEventListener('pointercancel',()=>{dragging=false;moved=false;});
  carousel.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;},{passive:true});
- carousel.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;const dy=e.changedTouches[0].clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));},{passive:true});
- carousel.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;startX=e.clientX;startY=e.clientY;dragging=true;});
- carousel.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const dx=e.clientX-startX;const dy=e.clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));});
- if(albumNumber===2){slides.forEach(slide=>slide.addEventListener('click',e=>{if(!carousel.dataset.swiped)slide.classList.toggle('is-flipped')}));}
+ carousel.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX,dy=e.changedTouches[0].clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));},{passive:true});
  goTo(0);
 }
 
