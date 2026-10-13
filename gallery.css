@@ -353,3 +353,11 @@ h1{text-align:center}
   display: block;
   overflow: hidden;
 }
+
+
+/* Album 2: keep a solid purple layer on the reverse side when a photo flips */
+.album-carousel.depth-stack .depth-face.depth-back {
+  background: linear-gradient(145deg, #8b5cc7 0%, #5b2d91 52%, #32164f 100%) !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  color: #fff !important;
+}
