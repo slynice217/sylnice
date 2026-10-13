@@ -304,3 +304,28 @@ h1{text-align:center}
   text-align: center;
   background: linear-gradient(145deg,#322542,#17151d);
 }
+
+
+/* RESTORE: visible left/right depth overlap; keep photos full-bleed with no white card */
+.album { overflow: visible !important; }
+.album-carousel.depth-stack {
+  overflow: visible !important;
+  isolation: isolate;
+  perspective: 1000px;
+}
+.album-carousel.depth-stack .album-track {
+  overflow: visible !important;
+}
+.album-carousel.depth-stack .depth-card {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.album-carousel.depth-stack .depth-face {
+  background: transparent !important;
+}
+.album-carousel.depth-stack .depth-front img {
+  object-fit: cover !important;
+  background: transparent !important;
+}
+/* Keep the center photo above its neighbors while allowing the side cards to overlap */
