@@ -126,3 +126,14 @@ h1{text-align:center}
 
 /* Caption below Album 3 */
 .album-caption{margin:18px auto 4px;text-align:center;font-size:22px;font-weight:600;letter-spacing:2px;color:#542d8a;}
+
+
+/* Caption beneath Album 3 */
+.album-caption{
+  margin:16px auto 2px;
+  text-align:center;
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:.08em;
+  color:#542d8a;
+}
