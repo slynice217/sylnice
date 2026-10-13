@@ -122,3 +122,7 @@ h1{text-align:center}
   box-shadow:0 14px 30px rgba(35,20,55,.28)!important;
   transition:transform .42s cubic-bezier(.2,.75,.25,1),opacity .42s ease!important;
 }
+
+
+/* Caption below Album 3 */
+.album-caption{margin:18px auto 4px;text-align:center;font-size:22px;font-weight:600;letter-spacing:2px;color:#542d8a;}
