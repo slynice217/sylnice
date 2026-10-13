@@ -7,7 +7,7 @@ const photos=document.getElementById('photos');
 albums.forEach(n=>{
  const a=document.createElement('section');
  a.className='album';
- a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="album-carousel ${n===3?'album3-depth':''}" aria-label="图集${n}，左右滑动切换照片"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false">`).join('')}</div></div>`;
+ a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="album-carousel ${n===3?'album3-depth':''}" aria-label="图集${n}，左右滑动切换照片"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false">`).join('')}</div></div>${n===3?'<div class="album-caption">宝贝nikki</div>':''}`;
  setupAlbumCarousel(a,n);
  root.appendChild(a);
 });
