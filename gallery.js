@@ -7,12 +7,12 @@ const photos=document.getElementById('photos');
 albums.forEach(n=>{
  const a=document.createElement('section');
  a.className='album';
- a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="album-carousel" aria-label="图集${n}，左右滑动切换照片"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false">`).join('')}</div><div class="album-controls"><button type="button" class="album-prev" aria-label="上一张">‹</button><span class="album-counter">1 / 5</span><button type="button" class="album-next" aria-label="下一张">›</button></div></div>`;
- setupAlbumCarousel(a);
+ a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="album-carousel ${n===3?'album3-depth':''}" aria-label="图集${n}，左右滑动切换照片"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false">`).join('')}</div><div class="album-controls"><button type="button" class="album-prev" aria-label="上一张">‹</button><span class="album-counter">1 / 5</span><button type="button" class="album-next" aria-label="下一张">›</button></div></div>`;
+ setupAlbumCarousel(a,n);
  root.appendChild(a);
 });
 
-function setupAlbumCarousel(album){
+function setupAlbumCarousel(album,albumNumber){
  const carousel=album.querySelector('.album-carousel');
  const track=album.querySelector('.album-track');
  const slides=Array.from(track.querySelectorAll('img'));
@@ -20,7 +20,18 @@ function setupAlbumCarousel(album){
  let current=0,startX=0,startY=0,dragging=false;
  function goTo(index){
    current=(index+slides.length)%slides.length;
-   track.style.transform=`translateX(-${current*100}%)`;
+   if(albumNumber===3){
+     slides.forEach((slide,i)=>{
+       let offset=i-current;
+       if(offset>slides.length/2)offset-=slides.length;
+       if(offset< -slides.length/2)offset+=slides.length;
+       slide.style.transform=`translateX(calc(${offset} * 54px)) translateZ(${offset===0?0:-Math.abs(offset)*75}px) rotateY(${offset* -16}deg) scale(${offset===0?1:Math.max(.72,1-Math.abs(offset)*.12)})`;
+       slide.style.zIndex=String(10-Math.abs(offset));
+       slide.style.opacity=Math.abs(offset)>2?'0': '1';
+     });
+   }else{
+     track.style.transform=`translateX(-${current*100}%)`;
+   }
    counter.textContent=`${current+1} / ${slides.length}`;
  }
  carousel.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;},{passive:true});
