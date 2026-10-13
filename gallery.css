@@ -361,3 +361,12 @@ h1{text-align:center}
   border: 1px solid rgba(255,255,255,.28) !important;
   color: #fff !important;
 }
+
+
+/* Scale all three album stacks down so the full layered stack stays on its base */
+.album-carousel.depth-stack {
+  width: min(100%, 240px) !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4 !important;
+  margin: 0 auto !important;
+}
