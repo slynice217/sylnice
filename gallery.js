@@ -32,7 +32,7 @@ function setupAlbumCarousel(album,albumNumber){
    }else{
      track.style.transform=`translateX(-${current*100}%)`;
    }
-   counter.textContent=`${current+1} / ${slides.length}`;
+   if(counter) counter.textContent=`${current+1} / ${slides.length}`;
  }
  carousel.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;},{passive:true});
  carousel.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;const dy=e.changedTouches[0].clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));},{passive:true});
