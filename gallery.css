@@ -57,3 +57,9 @@ h1{text-align:center}
 .album-controls{display:flex;align-items:center;justify-content:center;gap:26px;margin:12px 0 2px}
 .album-controls button{width:38px;height:38px;border:0;border-radius:50%;background:#6d3bb0;color:white;font-size:28px;line-height:1;cursor:pointer}
 .album-counter{min-width:44px;font-variant-numeric:tabular-nums}
+
+
+/* Portrait 3:4 cards for Albums 2 and 3 */
+.flip-card{flex-basis:min(75vw,300px);height:400px;aspect-ratio:3/4}
+.flip-card-front img{width:100%;height:100%;object-fit:cover}
+@media(max-width:600px){.flip-card{flex-basis:min(75vw,300px);height:400px;max-height:calc(100vw);}}
