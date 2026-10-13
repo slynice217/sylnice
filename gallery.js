@@ -24,7 +24,8 @@ function setupAlbumCarousel(album,albumNumber){
      if(offset>slides.length/2)offset-=slides.length;
      if(offset< -slides.length/2)offset+=slides.length;
      const distance=Math.abs(offset);
-     const xStep=window.matchMedia("(max-width: 600px)").matches?57:64;\n     slide.style.transform=`translate3d(${offset*xStep}px,${distance*5}px,${-distance*92}px) rotateY(${offset*-15}deg) rotateZ(${offset*-2.5}deg) scale(${offset===0?1:Math.max(.68,1-distance*.105)})`;
+     const xStep=window.matchMedia("(max-width: 600px)").matches?57:64;
+     slide.style.transform=`translate3d(${offset*xStep}px,${distance*5}px,${-distance*92}px) rotateY(${offset*-15}deg) rotateZ(${offset*-2.5}deg) scale(${offset===0?1:Math.max(.68,1-distance*.105)})`;
      slide.style.zIndex=String(10-distance);
      slide.style.opacity=distance>2?'0':'1';
      slide.style.pointerEvents=offset===0?'auto':'none';
