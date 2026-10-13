@@ -35,13 +35,13 @@ function setupAlbumCarousel(album){
 function openAlbum(n){
  root.classList.add('closed');
  viewer.classList.remove('hidden');
- if(n===2){
+ if(n===2||n===3){
    photos.className='flip-gallery';
    photos.innerHTML=`<div class="flip-track" id="flipTrack">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`
-    <article class="flip-card" tabindex="0" role="button" aria-label="图集2照片${i}，点击翻面">
+    <article class="flip-card" tabindex="0" role="button" aria-label="图集${n}照片${i}，点击翻面">
       <div class="flip-card-inner">
-        <div class="flip-card-face flip-card-front"><img src="./assets/gallery/album2/${i}.jpg" alt="图集2照片${i}"></div>
-        <div class="flip-card-face flip-card-back"><div class="flip-card-back-content"><span class="flip-card-number">0${i} / 05</span><h3>图集 2</h3><p>照片 ${i}</p><span class="flip-hint">点击翻回照片</span></div></div>
+        <div class="flip-card-face flip-card-front"><img src="./assets/gallery/album${n}/${i}.jpg" alt="图集2照片${i}"></div>
+        <div class="flip-card-face flip-card-back"><div class="flip-card-back-content"><span class="flip-card-number">0${i} / 05</span><h3>图集 ${n}</h3><p>照片 ${i}</p><span class="flip-hint">点击翻回照片</span></div></div>
       </div>
     </article>`).join('')}</div><div class="flip-controls"><button type="button" id="flipPrev" aria-label="上一张">‹</button><span id="flipCounter">1 / 5</span><button type="button" id="flipNext" aria-label="下一张">›</button></div><p class="flip-help">左右滑动切换 · 点击卡片翻面</p>`;
    setupFlipGallery();
