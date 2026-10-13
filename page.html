@@ -756,6 +756,7 @@ body.renovation-log-page #visitor-comments,
  const nowDate=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
  date.value=nowDate();
  const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n};
+ const formatTimestamp=value=>{if(!value)return '时间暂不可用';const d=new Date(value);if(Number.isNaN(d.getTime()))return '时间暂不可用';const pad=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())};
  function message(t,err){status.textContent=t;status.style.background=err?'rgba(163,59,72,.1)':'';status.style.color=err?'#a33b48':''}
  function reset(){idEl.value='';title.value='';content.value='';date.value=nowDate();save.textContent='发布日志';cancel.hidden=true}
  function edit(row){idEl.value=row.id;title.value=row.title||'';date.value=row.log_date||nowDate();content.value=row.content||'';save.textContent='保存修改';cancel.hidden=false;$('live-log-admin').open=true;form.scrollIntoView({behavior:'smooth',block:'center'})}
@@ -782,7 +783,7 @@ body.renovation-log-page #visitor-comments,
       }
     }
    data.forEach(row=>{
-     const card=el('article','live-log-card');card.append(el('h3','live-log-title',row.title),el('div','live-log-date',row.log_date||''),el('div','live-log-content',row.content));
+     const card=el('article','live-log-card');card.append(el('h3','live-log-title',row.title),el('div','live-log-date','记录日期：'+(row.log_date||'日期暂不可用')+' · 更新时间：'+formatTimestamp(row.updated_at||row.created_at)),el('div','live-log-content',row.content));
      if(user){const actions=el('div','live-log-actions'),e=el('button','live-log-btn secondary','编辑'),d=el('button','live-log-btn danger','删除');e.type=d.type='button';e.onclick=()=>edit(row);d.onclick=async()=>{if(!confirm('确定删除这篇装修日志吗？此操作无法撤销。'))return;d.disabled=true;const {error}=await db.from('renovation_logs').delete().eq('id',row.id);if(error){alert('删除失败：'+error.message);d.disabled=false;return}if(String(idEl.value)===String(row.id))reset();load()};actions.append(e,d);card.append(actions)}
      list.append(card)
    });message('已加载 '+data.length+' 篇在线日志。')
