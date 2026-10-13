@@ -783,7 +783,7 @@ body.renovation-log-page #visitor-comments,
       }
     }
    data.forEach(row=>{
-     const card=el('article','live-log-card');card.append(el('h3','live-log-title',row.title),el('div','live-log-date','记录日期：'+(row.log_date||'日期暂不可用')+' · 更新时间：'+formatTimestamp(row.updated_at||row.created_at)),el('div','live-log-content',row.content));
+     const card=el('article','live-log-card');card.append(el('h3','live-log-title',row.title),el('div','live-log-date','更新时间：'+formatTimestamp(row.updated_at||row.created_at)),el('div','live-log-content',row.content));
      if(user){const actions=el('div','live-log-actions'),e=el('button','live-log-btn secondary','编辑'),d=el('button','live-log-btn danger','删除');e.type=d.type='button';e.onclick=()=>edit(row);d.onclick=async()=>{if(!confirm('确定删除这篇装修日志吗？此操作无法撤销。'))return;d.disabled=true;const {error}=await db.from('renovation_logs').delete().eq('id',row.id);if(error){alert('删除失败：'+error.message);d.disabled=false;return}if(String(idEl.value)===String(row.id))reset();load()};actions.append(e,d);card.append(actions)}
      list.append(card)
    });message('已加载 '+data.length+' 篇在线日志。')
