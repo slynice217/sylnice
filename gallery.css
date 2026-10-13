@@ -44,7 +44,7 @@ h1{text-align:center}
 /* Album 3: swipe directly on the gallery card without opening a separate page */
 .album3-carousel{width:min(100%,320px);margin:0 auto;overflow:hidden;border-radius:24px;touch-action:pan-y;position:relative}
 .album3-track{display:flex;width:100%;transition:transform .35s ease;will-change:transform}
-.album3-track img{display:block;flex:0 0 100%;width:100%;height:280px;object-fit:cover;border-radius:24px;user-select:none;-webkit-user-drag:none}
+.album3-track img{display:block;flex:0 0 100%;width:100%;height:280px;object-fit:cover;border-radius:24px;background:linear-gradient(145deg,#f8f5ff,#e8def4);user-select:none;-webkit-user-drag:none}
 .album3-controls{display:flex;align-items:center;justify-content:center;gap:26px;margin:12px 0 2px}
 .album3-controls button{width:38px;height:38px;border:0;border-radius:50%;background:#6d3bb0;color:white;font-size:28px;line-height:1;cursor:pointer}
 .album3-counter{min-width:44px;font-variant-numeric:tabular-nums}
@@ -186,76 +186,23 @@ h1{text-align:center}
 .album2-back span,.album2-back small{opacity:.72}
 
 
-/* Unified React-Bits-inspired 3D flip cards + depth stack for Albums 1–3 */
-.album-carousel.depth-stack{
-  display:block!important;
-  position:relative!important;
-  width:min(100%,300px)!important;
-  height:auto!important;
-  aspect-ratio:3/4!important;
-  overflow:visible!important;
-  perspective:1100px!important;
-  transform-style:preserve-3d!important;
-  touch-action:pan-y;
-  isolation:isolate;
+/* 图集图片比例 3:4，容器和图片一样大 */
+.album-carousel {
+  width: min(100%, 300px) !important;
+  aspect-ratio: 3 / 4 !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  margin: 0 auto !important;
 }
-.album-carousel.depth-stack .album-track{
-  position:absolute!important;
-  inset:0!important;
-  display:block!important;
-  width:100%!important;
-  height:100%!important;
-  overflow:visible!important;
-  transform-style:preserve-3d!important;
+
+.album-carousel .album-track {
+  width: 100% !important;
+  height: 100% !important;
 }
-.depth-card{
-  position:absolute!important;
-  inset:0!important;
-  margin:auto!important;
-  width:82%!important;
-  height:90%!important;
-  cursor:pointer;
-  perspective:1100px;
-  transform-style:preserve-3d;
-  transition:transform .48s cubic-bezier(.2,.75,.25,1),opacity .48s ease;
-  -webkit-tap-highlight-color:transparent;
-  user-select:none;
+
+.album-carousel .album-track img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
 }
-.depth-card-inner{
-  position:relative;
-  width:100%;
-  height:100%;
-  transform-style:preserve-3d;
-  transition:transform .72s cubic-bezier(.2,.75,.25,1);
-}
-.depth-card.is-flipped .depth-card-inner{transform:rotateY(180deg)}
-.depth-face{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  border-radius:0;
-  border:0;
-  padding:0;
-  margin:0;
-  background:transparent;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-  box-shadow:none;
-}
-.depth-front img{display:block;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
-.depth-back{
-  transform:rotateY(180deg);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  padding:18px;
-  text-align:center;
-  color:#fff;
-  background:linear-gradient(145deg,#322542,#17151d);
-  border:0;
-}
-.depth-back h3{margin:8px 0 0;font-size:24px}
-.depth-back p{margin:0;font-size:17px}
-.depth-back span,.depth-back small{opacity:.75}
