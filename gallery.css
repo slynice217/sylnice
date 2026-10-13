@@ -297,3 +297,54 @@ h1{text-align:center}
 @media(prefers-reduced-motion:reduce){
   .album-carousel.depth-stack .depth-card,.album-carousel.depth-stack .depth-card-inner{transition:none!important}
 }
+
+
+/* 2026-10-13: photo-only cards — remove the blank white panel below each image */
+.album-carousel.depth-stack .depth-card{
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  overflow:visible!important;
+}
+.album-carousel.depth-stack .depth-card-inner{
+  width:100%!important;
+  height:100%!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.album-carousel.depth-stack .depth-face{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  box-shadow:0 16px 34px rgba(35,20,55,.22)!important;
+}
+.album-carousel.depth-stack .depth-front{
+  background:transparent!important;
+}
+.album-carousel.depth-stack .depth-front img{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
