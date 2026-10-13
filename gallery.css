@@ -255,3 +255,45 @@ h1{text-align:center}
 .depth-back h3{margin:8px 0 0;font-size:24px}
 .depth-back p{margin:0;font-size:17px}
 .depth-back span,.depth-back small{opacity:.75}
+
+
+/* FIX 2026-10-13: clear left-right fan with visible depth on every album */
+.album-carousel.depth-stack{
+  width:min(100%,340px)!important;
+  aspect-ratio:4/5!important;
+  overflow:visible!important;
+  perspective:1250px!important;
+  perspective-origin:50% 42%!important;
+  contain:layout style!important;
+  margin:8px auto 20px!important;
+}
+.album-carousel.depth-stack .album-track{
+  inset:0!important;
+  overflow:visible!important;
+  transform-style:preserve-3d!important;
+}
+.album-carousel.depth-stack .depth-card{
+  width:72%!important;
+  height:88%!important;
+  border-radius:22px;
+  transform-origin:50% 55%;
+  will-change:transform,opacity;
+}
+.album-carousel.depth-stack .depth-face{
+  border:1px solid rgba(255,255,255,.82);
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 20px 38px rgba(42,24,68,.28),0 3px 9px rgba(42,24,68,.12);
+}
+.album-carousel.depth-stack .depth-front img{width:100%;height:100%;object-fit:cover}
+.album-carousel.depth-stack .depth-card:not(:first-child) .depth-front:after{
+  content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 42%,rgba(28,13,48,.12));pointer-events:none;
+}
+.album-carousel.depth-stack .depth-card.is-flipped{z-index:30!important}
+@media(max-width:600px){
+  .album-carousel.depth-stack{width:min(100%,320px)!important;aspect-ratio:4/5!important;margin:8px auto 18px!important}
+  .album-carousel.depth-stack .depth-card{width:72%!important;height:88%!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .album-carousel.depth-stack .depth-card,.album-carousel.depth-stack .depth-card-inner{transition:none!important}
+}
