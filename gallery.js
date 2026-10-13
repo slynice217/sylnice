@@ -20,13 +20,14 @@ function setupAlbumCarousel(album,albumNumber){
  function goTo(index){
    current=(index+slides.length)%slides.length;
    slides.forEach((slide,i)=>{
-     let offset=i-current;
-     if(offset>slides.length/2)offset-=slides.length;
-     if(offset< -slides.length/2)offset+=slides.length;
-     slide.style.transform=`translateX(${offset*44}px) translateZ(${-Math.abs(offset)*70}px) rotateY(${offset*-12}deg) scale(${offset===0?1:Math.max(.72,1-Math.abs(offset)*.1)})`;
-     slide.style.zIndex=String(10-Math.abs(offset));
-     slide.style.opacity=Math.abs(offset)>2?'0':'1';
-     slide.style.pointerEvents=Math.abs(offset)>2?'none':'auto';
+     const offset=(i-current+slides.length)%slides.length;
+     const distance=Math.min(offset,slides.length-offset);
+     // Keep the current photo as the only front card; remaining photos form an ordered deck behind it.
+     const depth=offset===0?0:offset;
+     slide.style.transform=`translateX(${offset===0?0:Math.min(offset,3)*7}px) translateY(${offset===0?0:Math.min(offset,3)*4}px) translateZ(${-depth*42}px) rotateY(${offset===0?0:-2}deg) scale(${offset===0?1:Math.max(.82,1-offset*.035)})`;
+     slide.style.zIndex=String(slides.length-offset);
+     slide.style.opacity='1';
+     slide.style.pointerEvents=offset===0?'auto':'none';
    });
  }
  slides.forEach(card=>{
