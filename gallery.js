@@ -7,7 +7,7 @@ const photos=document.getElementById('photos');
 albums.forEach(n=>{
  const a=document.createElement('section');
  a.className='album';
- a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="album-carousel ${n===3?'album3-depth':''}" aria-label="图集${n}，左右滑动切换照片"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false">`).join('')}</div><div class="album-controls"><button type="button" class="album-prev" aria-label="上一张">‹</button><span class="album-counter">1 / 5</span><button type="button" class="album-next" aria-label="下一张">›</button></div></div>`;
+ a.innerHTML=`<div class="album-title">📷 图集${n}</div><div class="album-carousel ${n===3?'album3-depth':''}" aria-label="图集${n}，左右滑动切换照片"><div class="album-track">${Array.from({length:albumPhotoCount},(_,i)=>i+1).map(i=>`<img src="./assets/gallery/album${n}/${i}.jpg" alt="图集${n}照片${i}" draggable="false">`).join('')}</div><div class="album-controls"><span class="album-counter">1 / 5</span></div></div>`;
  setupAlbumCarousel(a,n);
  root.appendChild(a);
 });
@@ -38,8 +38,6 @@ function setupAlbumCarousel(album,albumNumber){
  carousel.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;const dy=e.changedTouches[0].clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));},{passive:true});
  carousel.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;startX=e.clientX;startY=e.clientY;dragging=true;});
  carousel.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const dx=e.clientX-startX;const dy=e.clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));});
- album.querySelector('.album-prev').addEventListener('click',e=>{e.stopPropagation();goTo(current-1);});
- album.querySelector('.album-next').addEventListener('click',e=>{e.stopPropagation();goTo(current+1);});
  goTo(0);
 }
 
@@ -54,7 +52,7 @@ function openAlbum(n){
         <div class="flip-card-face flip-card-front"><img src="./assets/gallery/album${n}/${i}.jpg" alt="图集2照片${i}"></div>
         <div class="flip-card-face flip-card-back"><div class="flip-card-back-content"><span class="flip-card-number">0${i} / 05</span><h3>图集 ${n}</h3><p>照片 ${i}</p><span class="flip-hint">点击翻回照片</span></div></div>
       </div>
-    </article>`).join('')}</div><div class="flip-controls"><button type="button" id="flipPrev" aria-label="上一张">‹</button><span id="flipCounter">1 / 5</span><button type="button" id="flipNext" aria-label="下一张">›</button></div><p class="flip-help">左右滑动切换 · 点击卡片翻面</p>`;
+    </article>`).join('')}</div><div class="flip-controls"><span id="flipCounter">1 / 5</span></div><p class="flip-help">左右滑动切换 · 点击卡片翻面</p>`;
    setupFlipGallery();
  }else{
    photos.className='';
@@ -81,8 +79,6 @@ function setupFlipGallery(){
  track.addEventListener('pointermove',e=>{if(dragging&&(Math.abs(e.clientX-startX)>8||Math.abs(e.clientY-startY)>8))track.dataset.dragging='true';});
  track.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const dx=e.clientX-startX;const dy=e.clientY-startY;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)){goTo(current+(dx<0?1:-1));}});
  track.addEventListener('pointercancel',()=>{dragging=false;});
- document.getElementById('flipPrev').onclick=()=>goTo(current-1);
- document.getElementById('flipNext').onclick=()=>goTo(current+1);
  goTo(0);
 }
 
