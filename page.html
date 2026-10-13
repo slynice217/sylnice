@@ -717,7 +717,7 @@ body.renovation-log-page #visitor-comments,
 
 
 <section class="live-renovation-logs" id="live-renovation-logs" aria-labelledby="live-log-heading">
-  <div class="live-log-heading"><h2 id="live-log-heading">装修日志 · 最新更新</h2><p>这里会显示管理员发布的最新文字记录。</p></div>
+  <div class="live-log-heading"><h2 id="live-log-heading">装修日志 · 最新更新</h2><p id="live-log-latest-updated">正在获取最新更新时间…</p></div>
   <div class="live-log-status" id="live-log-status" role="status">正在连接日志服务…</div>
   <div class="live-log-list" id="live-log-list" aria-live="polite"></div>
   <details class="live-log-admin" id="live-log-admin" open>
@@ -764,7 +764,9 @@ body.renovation-log-page #visitor-comments,
    const {data,error}=await db.from('renovation_logs').select('id,title,content,log_date,created_at,updated_at').order('log_date',{ascending:false}).order('created_at',{ascending:false});
    if(error){message('暂时无法读取在线日志：'+error.message+'。请检查 Supabase 表与权限；管理员登录入口仍可使用。',true);return}
    list.replaceChildren();
-   if(!data||!data.length){list.append(el('div','live-log-empty','还没有在线发布的日志。原有页面内容仍会保留；管理员登录后可以发布第一篇。'));message('日志服务已连接。');return}
+   const latestLabel=$('live-log-latest-updated');
+   if(!data||!data.length){if(latestLabel)latestLabel.textContent='最新更新：暂无记录';list.append(el('div','live-log-empty','还没有在线发布的日志。原有页面内容仍会保留；管理员登录后可以发布第一篇。'));message('日志服务已连接。');return}
+   if(latestLabel){const latest=data.reduce((best,row)=>{const stamp=row.updated_at||row.created_at;return stamp&&(!best||new Date(stamp)>new Date(best))?stamp:best;},null);latestLabel.textContent=latest?'最新更新：'+new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(latest)).replace(/\\//g,'-'):'最新更新：时间暂不可用'}
    data.forEach(row=>{
      const card=el('article','live-log-card');card.append(el('h3','live-log-title',row.title),el('div','live-log-date',row.log_date||''),el('div','live-log-content',row.content));
      if(user){const actions=el('div','live-log-actions'),e=el('button','live-log-btn secondary','编辑'),d=el('button','live-log-btn danger','删除');e.type=d.type='button';e.onclick=()=>edit(row);d.onclick=async()=>{if(!confirm('确定删除这篇装修日志吗？此操作无法撤销。'))return;d.disabled=true;const {error}=await db.from('renovation_logs').delete().eq('id',row.id);if(error){alert('删除失败：'+error.message);d.disabled=false;return}if(String(idEl.value)===String(row.id))reset();load()};actions.append(e,d);card.append(actions)}
