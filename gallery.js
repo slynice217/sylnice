@@ -16,7 +16,7 @@ function setupAlbumCarousel(album,albumNumber){
  const carousel=album.querySelector('.album-carousel');
  const track=album.querySelector('.album-track');
  const slides=Array.from(track.querySelectorAll('.depth-card'));
- let current=0,startX=0,startY=0,dragging=false,moved=false;
+ let current=0,startX=0,startY=0,dragging=false,moved=false,suppressClick=false;
  function goTo(index){
    current=(index+slides.length)%slides.length;
    slides.forEach((slide,i)=>{
@@ -30,15 +30,13 @@ function setupAlbumCarousel(album,albumNumber){
    });
  }
  slides.forEach(card=>{
-   card.addEventListener('click',()=>{if(!moved)card.classList.toggle('is-flipped');});
+   card.addEventListener('click',()=>{if(suppressClick){suppressClick=false;return;}card.classList.toggle('is-flipped');});
    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('is-flipped');}});
  });
  carousel.addEventListener('pointerdown',e=>{startX=e.clientX;startY=e.clientY;dragging=true;moved=false;});
  carousel.addEventListener('pointermove',e=>{if(dragging&&(Math.abs(e.clientX-startX)>8||Math.abs(e.clientY-startY)>8))moved=true;});
- carousel.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const dx=e.clientX-startX,dy=e.clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){goTo(current+(dx<0?1:-1));}setTimeout(()=>{moved=false;},0);});
+ carousel.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const dx=e.clientX-startX,dy=e.clientY-startY;const didSwipe=Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy);if(didSwipe){goTo(current+(dx<0?1:-1));suppressClick=true;}setTimeout(()=>{moved=false;},250);});
  carousel.addEventListener('pointercancel',()=>{dragging=false;moved=false;});
- carousel.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;},{passive:true});
- carousel.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX,dy=e.changedTouches[0].clientY-startY;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))goTo(current+(dx<0?1:-1));},{passive:true});
  goTo(0);
 }
 
