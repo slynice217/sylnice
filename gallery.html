@@ -52,7 +52,9 @@
         ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span><h3>图集 2</h3><p>照片 ' + index + '</p><small>点击翻回照片</small></div></div>'
         : '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div></div>';
       const img = card.querySelector('img');
-      img.src = './assets/gallery/album' + number + '/' + index + '.jpg';
+      img.dataset.src = './assets/gallery/album' + number + '/' + index + '.jpg';
+      img.loading = 'lazy';
+      img.decoding = 'async';
       img.onerror = () => {
         card.classList.add('photo-missing');
         img.alt = '图集' + number + '的第' + index + '张照片尚未上传';
@@ -73,6 +75,14 @@
     let startY = 0;
     let dragging = false;
     let didSwipe = false;
+    let albumActivated = false;
+
+    function loadCardImage(card) {
+      const img = card.querySelector('img');
+      if (img && !img.getAttribute('src') && img.dataset.src) {
+        img.src = img.dataset.src;
+      }
+    }
 
     function render() {
       cards.forEach((card, i) => {
@@ -80,6 +90,7 @@
         if (offset > cards.length / 2) offset -= cards.length;
         if (offset < -cards.length / 2) offset += cards.length;
         const distance = Math.abs(offset);
+        if (albumActivated && distance <= 1) loadCardImage(card);
         const x = offset * (window.innerWidth <= 600 ? 30 : 40);
         card.style.transform = 'translate3d(' + x + 'px,' + (distance * 5) + 'px,' + (-distance * 95) + 'px) rotateY(' + (-offset * 13) + 'deg) rotateZ(' + (-offset * 2.5) + 'deg) scale(' + (offset === 0 ? .9 : Math.max(.62, .9 - distance * .09)) + ')';
         card.style.zIndex = String(10 - distance);
@@ -87,6 +98,19 @@
         card.style.pointerEvents = distance > 2 ? 'none' : 'auto';
         card.tabIndex = distance === 0 ? 0 : -1;
       });
+    }
+
+    if ('IntersectionObserver' in window) {
+      const albumObserver = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          albumActivated = true;
+          render();
+          albumObserver.disconnect();
+        }
+      }, { rootMargin: '180px 0px' });
+      albumObserver.observe(section);
+    } else {
+      albumActivated = true;
     }
 
     carousel.addEventListener('pointerdown', event => {
