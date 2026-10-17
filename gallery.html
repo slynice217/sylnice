@@ -52,7 +52,7 @@
         ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span><h3>图集 2</h3><p>照片 ' + index + '</p><small>点击翻回照片</small></div></div>'
         : '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div></div>';
       const img = card.querySelector('img');
-      img.dataset.src = './assets/gallery/album' + number + '/' + index + '.jpg';
+      img.dataset.src = './assets/gallery/album' + number + '/' + index + '.webp';
       img.loading = 'lazy';
       img.decoding = 'async';
       img.onerror = () => {
