@@ -26,6 +26,15 @@
   'use strict';
   const albumNumbers = [1, 2, 3];
   const photoCount = 5;
+
+  // 图集二每张照片翻面后的文字：以后直接编辑下面对应的引号内容即可。
+  const album2BackTexts = [
+    '在这里编辑第1张照片的文字',
+    '在这里编辑第2张照片的文字',
+    '在这里编辑第3张照片的文字',
+    '在这里编辑第4张照片的文字',
+    '在这里编辑第5张照片的文字'
+  ];
   const root = document.getElementById('albums');
   if (!root) return;
 
@@ -49,8 +58,9 @@
       card.className = 'depth-card';
       card.setAttribute('aria-label', '照片 ' + index + '，点击翻面');
       card.innerHTML = number === 2
-        ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span><h3>图集 2</h3><p>照片 ' + index + '</p><small>点击翻回照片</small></div></div>'
+        ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span><h3>图集 2</h3><p></p><small>点击翻回照片</small></div></div>'
         : '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div></div>';
+      if (number === 2) card.querySelector('.depth-back p').textContent = album2BackTexts[index - 1];
       const img = card.querySelector('img');
       img.src = './assets/gallery/album' + number + '/' + index + '.webp';
       img.decoding = 'async';
