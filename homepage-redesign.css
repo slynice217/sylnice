@@ -99,3 +99,21 @@ body,#app,.home-hero,.home-content,.content-module,.profile-block,.rich-content,
 
 /* Q&A answers are permanently visible; no expand/collapse affordance. */
 .qa-question{cursor:default!important;padding-right:0!important}.qa-question:after{content:none!important;display:none!important}.qa-question::-webkit-details-marker{display:none!important}
+
+/* Strong, predictable scroll snapping for the hero and each content section. */
+html{scroll-snap-type:y mandatory;scroll-padding-top:58px;overscroll-behavior-y:contain}
+.home-hero{scroll-snap-align:start;scroll-snap-stop:always;scroll-margin-top:58px}
+.content-section{scroll-snap-align:start;scroll-snap-stop:normal;scroll-margin-top:58px}
+@media(max-width:680px){
+  html{scroll-snap-type:y mandatory;scroll-padding-top:50px}
+  .home-hero{min-height:calc(100svh - 50px);scroll-margin-top:50px}
+  .content-section{scroll-margin-top:50px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:y proximity}}
+/* Load an actual Chinese serif font instead of relying on device fallback. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap');
+:root{--editorial-serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif}
+body,#app,#app *:not(svg):not(path),.visitor-comments,.visitor-comments *:not(svg):not(path){
+  font-family:var(--editorial-serif)!important;
+  font-synthesis:none;
+}
