@@ -111,7 +111,7 @@ html{scroll-snap-type:y mandatory;scroll-padding-top:58px;overscroll-behavior-y:
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:y proximity}}
 /* Load an actual Chinese serif font instead of relying on device fallback. */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap');
+
 :root{--editorial-serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif}
 body,#app,#app *:not(svg):not(path),.visitor-comments,.visitor-comments *:not(svg):not(path){
   font-family:var(--editorial-serif)!important;
