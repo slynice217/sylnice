@@ -86,3 +86,13 @@ body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Noto Serif C
 .content-section:has(.module-button){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,2vw,18px);}
 .content-section:has(.module-button) .module-button{width:auto;min-width:0;max-width:none;flex:none;padding:8px 2px;}
 .content-section:has(.module-button) .identity-link{width:100%;}
+
+/* Refined editorial typography and softer social links */
+:root{--editorial-serif:"Noto Serif CJK SC","Songti SC","STSong","Source Han Serif SC",Georgia,serif}
+body,#app,.home-hero,.home-content,.content-module,.profile-block,.rich-content,.qa-item,.timer-module,.timer-value,.module-title,.qa-question,.qa-answer,.profile-name,.profile-subtitle,.profile-bio,.identity-label{font-family:var(--editorial-serif)!important;font-weight:400}
+.identity-link{border:1px solid var(--mauve)!important;border-radius:18px!important;background:rgba(255,255,255,.22);box-shadow:0 3px 12px rgba(62,53,78,.06);transition:background .2s,transform .2s}
+.identity-link:active{transform:scale(.98)}
+.qa-item{display:block}
+.qa-question{font-size:clamp(17px,2.2vw,23px);font-weight:400;line-height:1.65;margin:0 0 16px}
+.qa-answer{display:block;line-height:1.95}
+.qa-answer p{margin:0 0 1em}
