@@ -96,3 +96,6 @@ body,#app,.home-hero,.home-content,.content-module,.profile-block,.rich-content,
 .qa-question{font-size:clamp(17px,2.2vw,23px);font-weight:400;line-height:1.65;margin:0 0 16px}
 .qa-answer{display:block;line-height:1.95}
 .qa-answer p{margin:0 0 1em}
+
+/* Q&A answers are permanently visible; no expand/collapse affordance. */
+.qa-question{cursor:default!important;padding-right:0!important}.qa-question:after{content:none!important;display:none!important}.qa-question::-webkit-details-marker{display:none!important}
