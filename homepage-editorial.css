@@ -1,20 +1,60 @@
-/* Independent homepage redesign overrides. Scoped to the Blokko canvas. */
-:root { --home-lilac:#EEECF5; --home-mauve:#9C93B1; --home-purple:#6C6082; --home-ink:#3E354E; }
-html, body { max-width:100%; overflow-x:hidden; }
-#app { width:100%; min-width:0; }
-.preview-canvas-area { scroll-behavior:smooth; }
-.preview-items-container { gap:clamp(18px,3.5vw,34px) !important; }
-.preview-item-wrapper { min-width:0; }
-.preview-card { box-shadow:none !important; border-color:transparent !important; }
-.preview-card-inner { box-shadow:none !important; border-radius:0 !important; }
-.preview-card-content { overflow-wrap:anywhere; }
-.preview-card-title { color:var(--home-purple) !important; }
-@media (max-width:700px) {
-  .preview-canvas-area { padding-left:clamp(12px,5vw,24px) !important; padding-right:clamp(12px,5vw,24px) !important; }
-  .preview-items-container { width:100% !important; max-width:100% !important; }
-  .preview-item-wrapper { max-width:100%; }
+/* Independent homepage redesign overrides. Scoped to the generated homepage canvas. */
+:root {
+  --home-lilac: #EEECF5;
+  --home-mauve: #9C93B1;
+  --home-purple: #6C6082;
+  --home-ink: #3E354E;
 }
-/* The script adds this class only after finding the real notice element. */
-html.home-section-snap .preview-canvas-area { scroll-snap-type:y proximity; }
-.home-snap-start { scroll-snap-align:start !important; scroll-margin-top:58px !important; }
-@media (prefers-reduced-motion:reduce) { .preview-canvas-area { scroll-behavior:auto; } }
+html, body { min-height:100%; }
+body { background:var(--home-lilac) !important; color:var(--home-ink); }
+#app { background:var(--home-lilac) !important; width:100%; min-width:0; }
+#app .preview-canvas-area,
+#app .preview-canvas,
+#app .preview-items-container {
+  background:var(--home-lilac) !important;
+}
+#app .preview-items-container {
+  display:flex !important;
+  flex-direction:column !important;
+  gap:clamp(22px,4vh,44px) !important;
+  padding:clamp(18px,4vw,48px) clamp(16px,5vw,56px) !important;
+}
+#app .preview-item-wrapper {
+  width:100%;
+  max-width:100%;
+}
+#app .preview-card,
+#app .preview-card-inner,
+#app .preview-card-content-wrapper {
+  box-shadow:none !important;
+}
+#app .preview-card {
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+}
+#app .preview-card-inner {
+  border-radius:0 !important;
+  background:transparent !important;
+}
+#app .preview-card-title,
+#app .preview-card-content,
+#app .timeline-preview,
+#app .timeline-preview * {
+  color:var(--home-ink);
+}
+#app .preview-card-title { color:var(--home-purple) !important; }
+#app img { max-width:100%; }
+@media (max-width:700px) {
+  #app .preview-items-container {
+    gap:28px !important;
+    padding:20px 16px 36px !important;
+  }
+  #app .preview-item-wrapper { min-width:0; }
+}
+/* Two deliberate snap points: the first visible content and the notice boundary. */
+html.home-section-snap { scroll-snap-type:y proximity; scroll-behavior:smooth; }
+.home-snap-start { scroll-snap-align:start; scroll-margin-top:56px; }
+@media (prefers-reduced-motion:reduce) {
+  html.home-section-snap { scroll-behavior:auto; }
+}
