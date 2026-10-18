@@ -81,3 +81,8 @@ body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Noto Serif C
 
 .identity-link{display:flex;flex-direction:column;gap:7px;align-items:center;justify-content:center;width:100%;min-height:76px;border-radius:0;padding:12px 6px}.identity-icon{display:inline-flex;width:25px;height:25px;align-items:center;justify-content:center}.identity-icon svg{display:block;width:100%;height:100%}.identity-label{overflow-wrap:anywhere;text-align:center}.module-button{flex:0 0 var(--module-width,33%);padding:8px 4px}
 @media(max-width:680px){.module-button{flex-basis:33.333%;padding:8px 2px}.identity-link{min-height:78px;padding:10px 4px}.identity-icon{width:24px;height:24px}.identity-label{font-size:12px}}
+
+/* Keep the three social buttons on one row on all screen sizes. */
+.content-section:has(.module-button){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,2vw,18px);}
+.content-section:has(.module-button) .module-button{width:auto;min-width:0;max-width:none;flex:none;padding:8px 2px;}
+.content-section:has(.module-button) .identity-link{width:100%;}
