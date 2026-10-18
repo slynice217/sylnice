@@ -52,6 +52,7 @@
       row.append(details); wrap.append(row); return wrap;
     }
     if(item.type==='button'){
+      wrap.classList.add('module-button');
       const text=item.text||item.title||'打开链接';
       const urls={'kwong_jisoo':'https://qntwx.com/sylnice','Sylnice217':'https://qntwx.com/sylnice','sylnice_217':'https://www.instagram.com/sylnice_217/'};
       const url=(item.interactions&&item.interactions.jump&&item.interactions.jump.payload)||urls[text];
@@ -60,10 +61,11 @@
     }
     if(item.type==='timer'){
       const box=el('div','timer-module'); box.append(el('h3','module-title',item.title||'倒计时'));
+      if(item.labelBefore) box.append(el('p','timer-label',item.labelBefore));
       const target=new Date(item.targetDate||'').getTime();
       const out=el('p','timer-value',''); box.append(out);
       const update=()=>{const left=target-Date.now();if(!Number.isFinite(target)){out.textContent='';return;}if(left<=0){out.textContent=item.expiredText||'已结束';return;}const days=Math.floor(left/86400000),hours=Math.floor(left%86400000/3600000),mins=Math.floor(left%3600000/60000),secs=Math.floor(left%60000/1000);out.textContent=days+' 天 '+hours+' 小时 '+mins+' 分 '+secs+' 秒';};
-      update(); window.setInterval(update,1000); wrap.append(box); return wrap;
+      update(); window.setInterval(update,1000); if(item.labelAfter) box.append(el('p','timer-label',item.labelAfter)); wrap.append(box); return wrap;
     }
     if(item.type==='progress'){
       const line=el('div','progress-row'); line.append(el('span','progress-label',item.label||''),el('span','progress-number',(Number(item.percentage)||0)+'%'));
