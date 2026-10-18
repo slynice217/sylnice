@@ -87,7 +87,7 @@
       const grid=el('div','destination-grid');(item.items||[]).forEach(g=>{const figure=el('figure','destination-item');figure.append(image(g.image,g.text||'','destination-image'));const cap=el('figcaption','destination-caption',g.text||'');if(g.subtitle)cap.append(el('small','',g.subtitle));figure.append(cap);grid.append(figure);});wrap.append(grid);return wrap;
     }
     if(item.type==='qa'){
-      const details=el('details','qa-item');details.append(el('summary','qa-question',item.question||''));
+      const details=el('div','qa-item');details.append(el('h3','qa-question',item.question||''));
       const answer=el('div','qa-answer');rich(answer,item.answer);details.append(answer);wrap.append(details);return wrap;
     }
     if(item.type==='showcase'){
