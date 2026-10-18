@@ -1,0 +1,28 @@
+
+/* Homepage editorial layout v2: mobile-first, without changing content/data. */
+#app { --home-lilac:#EEECF5; --home-mauve:#9C93B1; --home-purple:#6C6082; --home-ink:#3E354E; }
+#app .preview-card,
+#app .preview-card-inner,
+#app .preview-card-content {
+  box-shadow:none !important;
+}
+#app .preview-card {
+  border-color:transparent !important;
+}
+#app .preview-card-inner {
+  border-radius:0 !important;
+}
+#app .preview-card-title { color:var(--home-purple) !important; }
+#app .preview-card-content { overflow-wrap:anywhere; }
+html { scroll-behavior:smooth; }
+@media (max-width: 700px) {
+  body { overflow-x:hidden; }
+  #app { width:100%; min-width:0; }
+  #app .preview-card { max-width:100%; }
+}
+/* Snap only at deliberate section boundaries, never every individual card. */
+html.home-section-snap { scroll-snap-type:y proximity; }
+.home-snap-start { scroll-snap-align:start; scroll-margin-top:56px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+}
