@@ -53,7 +53,8 @@
       wrap.classList.add('module-button');
       const text=item.text||item.title||'打开链接';
       const url=text==='sylnice_217'?'https://www.instagram.com/sylnice_217/':'#';
-      const a=el('a','identity-link','');
+      const a=el(text==='sylnice_217'?'a':'button','identity-link','');
+      if(text!=='sylnice_217'){a.type='button';a.setAttribute('aria-label',text+'（不跳转）');}
       const icons={
         'ic:baseline-tiktok':'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.6 7.2a6.8 6.8 0 0 1-4.2-1.5v8.1a6.2 6.2 0 1 1-5.4-6.1v3.4a2.9 2.9 0 1 0 2 2.8V2.5h3.4c.2 2 1.8 3.7 4.2 4z"/></svg>',
         'ic:baseline-wechat':'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.5 4C5.4 4 2 6.7 2 10c0 1.9 1.1 3.6 2.8 4.7L4 17l2.8-1.4c.8.2 1.7.4 2.7.4h.5a5.2 5.2 0 0 1-.5-2.2c0-3.2 3.1-5.8 6.9-5.8h.6C15.9 5.7 13 4 9.5 4M7 8.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2m5 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2m4.5.5c-3 0-5.5 1.9-5.5 4.3s2.5 4.3 5.5 4.3c.7 0 1.4-.1 2-.3l2.5 1.2-.7-2.1c1.1-.8 1.7-1.9 1.7-3.1 0-2.4-2.5-4.3-5.5-4.3m-1.8 3.2a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6m3.7 0a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6"/></svg>',
@@ -61,7 +62,7 @@
       };
       if(icons[item.icon]){const icon=el('span','identity-icon');icon.innerHTML=icons[item.icon];a.append(icon);}
       a.append(el('span','identity-label',text));
-      a.href=url; if(url==='#'){a.removeAttribute('target');a.removeAttribute('rel');a.addEventListener('click',event=>event.preventDefault());}else{a.target='_blank';a.rel='noopener noreferrer';}
+      if(text==='sylnice_217'){a.href='https://www.instagram.com/sylnice_217/';a.target='_blank';a.rel='noopener noreferrer';}
       if(item.subtext) a.append(el('small','',item.subtext)); wrap.append(a); return wrap;
     }
     if(item.type==='timer'){
