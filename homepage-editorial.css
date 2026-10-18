@@ -1,28 +1,20 @@
-
-/* Homepage editorial layout v2: mobile-first, without changing content/data. */
-#app { --home-lilac:#EEECF5; --home-mauve:#9C93B1; --home-purple:#6C6082; --home-ink:#3E354E; }
-#app .preview-card,
-#app .preview-card-inner,
-#app .preview-card-content {
-  box-shadow:none !important;
+/* Independent homepage redesign overrides. Scoped to the Blokko canvas. */
+:root { --home-lilac:#EEECF5; --home-mauve:#9C93B1; --home-purple:#6C6082; --home-ink:#3E354E; }
+html, body { max-width:100%; overflow-x:hidden; }
+#app { width:100%; min-width:0; }
+.preview-canvas-area { scroll-behavior:smooth; }
+.preview-items-container { gap:clamp(18px,3.5vw,34px) !important; }
+.preview-item-wrapper { min-width:0; }
+.preview-card { box-shadow:none !important; border-color:transparent !important; }
+.preview-card-inner { box-shadow:none !important; border-radius:0 !important; }
+.preview-card-content { overflow-wrap:anywhere; }
+.preview-card-title { color:var(--home-purple) !important; }
+@media (max-width:700px) {
+  .preview-canvas-area { padding-left:clamp(12px,5vw,24px) !important; padding-right:clamp(12px,5vw,24px) !important; }
+  .preview-items-container { width:100% !important; max-width:100% !important; }
+  .preview-item-wrapper { max-width:100%; }
 }
-#app .preview-card {
-  border-color:transparent !important;
-}
-#app .preview-card-inner {
-  border-radius:0 !important;
-}
-#app .preview-card-title { color:var(--home-purple) !important; }
-#app .preview-card-content { overflow-wrap:anywhere; }
-html { scroll-behavior:smooth; }
-@media (max-width: 700px) {
-  body { overflow-x:hidden; }
-  #app { width:100%; min-width:0; }
-  #app .preview-card { max-width:100%; }
-}
-/* Snap only at deliberate section boundaries, never every individual card. */
-html.home-section-snap { scroll-snap-type:y proximity; }
-.home-snap-start { scroll-snap-align:start; scroll-margin-top:56px; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior:auto; }
-}
+/* The script adds this class only after finding the real notice element. */
+html.home-section-snap .preview-canvas-area { scroll-snap-type:y proximity; }
+.home-snap-start { scroll-snap-align:start !important; scroll-margin-top:58px !important; }
+@media (prefers-reduced-motion:reduce) { .preview-canvas-area { scroll-behavior:auto; } }
