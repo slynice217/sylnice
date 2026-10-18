@@ -52,7 +52,6 @@
     if(item.type==='button'){
       wrap.classList.add('module-button');
       const text=item.text||item.title||'打开链接';
-      const urls={'kwong_jisoo':'https://www.tiktok.com/@kwong_jisoo','Sylnice217':'https://qntwx.com/sylnice','sylnice_217':'https://www.instagram.com/sylnice_217/'};
       const url=text==='sylnice_217'?'https://www.instagram.com/sylnice_217/':'#';
       const a=el('a','identity-link','');
       const icons={
