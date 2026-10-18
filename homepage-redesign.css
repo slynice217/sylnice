@@ -26,7 +26,7 @@ body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Noto Serif C
 .rich-content a,.qa-answer a{color:var(--purple);text-underline-offset:3px}
 .scroll-cue{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);border:0;background:none;color:var(--purple);font:12px/1.5 system-ui,sans-serif;letter-spacing:.08em;cursor:pointer;padding:10px 16px}
 .home-content{padding:0 clamp(12px,4vw,52px) 60px;max-width:1240px;margin:0 auto}
-.content-section{display:flex;align-items:stretch;flex-wrap:wrap;gap:clamp(10px,2vw,24px);padding:clamp(20px,4vw,48px) 0;scroll-snap-align:start;scroll-margin-top:60px;border-bottom:1px solid var(--line)}
+.content-section{display:flex;align-items:stretch;flex-wrap:wrap;gap:clamp(8px,1.5vw,18px);padding:clamp(18px,3vw,36px) 0;scroll-snap-align:start;scroll-margin-top:60px;border-bottom:1px solid var(--line)}
 .content-section:has(.module-grid),.content-section:has(.module-showcase){display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 .intentional-spacer{width:100%;flex:none;min-height:0}
 .music-module{display:flex;gap:20px;align-items:center;max-width:700px;margin:auto}
@@ -38,9 +38,9 @@ body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Noto Serif C
 .lyrics-details{margin-top:12px;font-size:12px;line-height:1.8}
 .lyrics-details summary{cursor:pointer;color:var(--purple)}
 .lyrics-text{white-space:pre-line}
-.identity-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:1px solid var(--mauve);color:var(--ink);text-decoration:none;padding:12px 18px;font:13px/1.5 system-ui,sans-serif;transition:background .2s}
+.module-button{display:flex;align-items:center;justify-content:center;min-width:0}.identity-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;border:1px solid var(--mauve);border-radius:999px;color:var(--ink);text-decoration:none;padding:10px 16px;font:13px/1.5 system-ui,sans-serif;transition:background .2s;overflow-wrap:anywhere;text-align:center}.identity-link small{display:block;font-size:11px;opacity:.75}
 .identity-link:hover{background:var(--purple);color:white}
-.timer-module{padding:12px 0}
+.timer-module{padding:12px 0}.timer-label{font:12px/1.8 system-ui,sans-serif;color:var(--mauve);margin:0 0 8px}.timer-module .module-title{margin-bottom:12px}
 .timer-value{font:clamp(18px,3vw,28px)/1.6 system-ui,sans-serif;letter-spacing:.02em;color:var(--ink);margin:0}
 .progress-row{display:flex;justify-content:space-between;gap:12px;font:13px/1.5 system-ui,sans-serif;margin-bottom:8px}
 .progress-number{color:var(--purple)}
