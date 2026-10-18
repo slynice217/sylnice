@@ -53,7 +53,7 @@
       wrap.classList.add('module-button');
       const text=item.text||item.title||'打开链接';
       const urls={'kwong_jisoo':'https://www.tiktok.com/@kwong_jisoo','Sylnice217':'https://qntwx.com/sylnice','sylnice_217':'https://www.instagram.com/sylnice_217/'};
-      const url=(item.interactions&&item.interactions.jump&&item.interactions.jump.payload)||urls[text]||'#';
+      const url=text==='sylnice_217'?'https://www.instagram.com/sylnice_217/':'#';
       const a=el('a','identity-link','');
       const icons={
         'ic:baseline-tiktok':'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.6 7.2a6.8 6.8 0 0 1-4.2-1.5v8.1a6.2 6.2 0 1 1-5.4-6.1v3.4a2.9 2.9 0 1 0 2 2.8V2.5h3.4c.2 2 1.8 3.7 4.2 4z"/></svg>',
@@ -62,11 +62,11 @@
       };
       if(icons[item.icon]){const icon=el('span','identity-icon');icon.innerHTML=icons[item.icon];a.append(icon);}
       a.append(el('span','identity-label',text));
-      a.href=url; a.target='_blank'; a.rel='noopener noreferrer';
+      a.href=url; if(url==='#'){a.removeAttribute('target');a.removeAttribute('rel');a.addEventListener('click',event=>event.preventDefault());}else{a.target='_blank';a.rel='noopener noreferrer';}
       if(item.subtext) a.append(el('small','',item.subtext)); wrap.append(a); return wrap;
     }
     if(item.type==='timer'){
-      const box=el('div','timer-module'); box.append(el('h3','module-title',item.title||'倒计时'));
+      const box=el('div','timer-module'); 
       if(item.labelBefore) box.append(el('p','timer-label',item.labelBefore));
       const target=new Date(item.targetDate||'').getTime();
       const out=el('p','timer-value',''); box.append(out);
