@@ -102,7 +102,7 @@
   items.forEach(item=>{
     if(item===profile||item===notice)return;
     const node=renderItem(item); if(!node)return;
-    if(item.type==='spacer'){rest.append(node);return;}
+    if(item.type==='spacer'){if(section.childNodes.length){rest.append(section);section=el('section','content-section');currentWidth=0;}rest.append(node);return;}
     const w=Number(item.layout&&item.layout.width)||100;
     if(currentWidth+w>100){if(section.childNodes.length)rest.append(section);section=el('section','content-section');currentWidth=0;}
     node.style.setProperty('--module-width',Math.min(100,w)+'%');
