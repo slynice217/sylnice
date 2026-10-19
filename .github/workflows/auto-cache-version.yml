@@ -1,0 +1,91 @@
+name: Auto-update asset cache versions
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-asset-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update local CSS and JS version parameters
+        env:
+          ASSET_VERSION: ${{ github.sha }}
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          import os
+
+          version = os.environ["ASSET_VERSION"][:12]
+          html_files = list(Path(".").rglob("*.html"))
+          changed = []
+
+          def version_url(url):
+              # Only version local CSS/JS assets; leave external URLs untouched.
+              if url.startswith(("http://", "https://", "//", "data:")):
+                  return url
+              if not re.search(r"\.(?:css|js)(?:[?#]|$)", url, re.I):
+                  return url
+              base, sep, fragment = url.partition("#")
+              base = re.sub(r"([?&])v=[^&#]*", "", base, flags=re.I)
+              base = re.sub(r"[?&]+$", "", base)
+              base += ("&" if "?" in base else "?") + "v=" + version
+              return base + (("#" + fragment) if sep else "")
+
+          for path in html_files:
+              original = path.read_text(encoding="utf-8")
+              updated = original
+
+              def update_link(match):
+                  tag = match.group(0)
+                  if not re.search(r"\brel\s*=\s*(['\"])stylesheet\1", tag, re.I):
+                      return tag
+                  return re.sub(
+                      r"\bhref(\s*=\s*)(['\"])(.*?)\2",
+                      lambda m: "href" + m.group(1) + m.group(2) + version_url(m.group(3)) + m.group(2),
+                      tag,
+                      count=1,
+                      flags=re.I,
+                  )
+
+              updated = re.sub(r"<link\b[^>]*>", update_link, updated, flags=re.I)
+              updated = re.sub(
+                  r"<script\b[^>]*\bsrc(\s*=\s*)(['\"])(.*?)\2[^>]*>",
+                  lambda m: m.group(0).replace(
+                      m.group(3), version_url(m.group(3)), 1
+                  ),
+                  updated,
+                  flags=re.I,
+              )
+
+              if updated != original:
+                  path.write_text(updated, encoding="utf-8")
+                  changed.append(str(path))
+
+          print(f"Asset version: {version}")
+          print("Updated HTML files: " + (", ".join(changed) if changed else "none"))
+          PY
+
+      - name: Commit version updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '*.html'
+          if git diff --cached --quiet; then
+            echo "All local asset versions are already current."
+          else
+            git commit -m "chore: auto-update asset cache versions"
+            git push origin main
+          fi
