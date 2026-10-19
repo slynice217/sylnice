@@ -168,3 +168,82 @@ body,body *{font-family:inherit!important;font-synthesis:none!important}
 .progress-fill::after{content:"";position:absolute;inset:1px 2px auto auto;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.82);box-shadow:0 0 7px rgba(255,255,255,.8)}
 .module-progress{padding-block:clamp(20px,4vw,32px)}
 @media(prefers-reduced-motion:reduce){.progress-fill{transition:none}}
+
+/* Separate translucent white rounded panels behind each text block */
+.profile-kicker,
+.profile-name,
+.profile-subtitle,
+.profile-bio,
+.module-title,
+.rich-content p,
+.music-title,
+.music-artist,
+.lyrics-details,
+.eyebrow,
+.timer-label,
+.timer-value,
+.progress-row,
+.timeline-time,
+.timeline-copy,
+.destination-caption,
+.qa-question,
+.qa-answer,
+.showcase-title,
+.showcase-subtitle,
+.showcase-rating,
+.showcase-comment {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 6px 12px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.profile-kicker,
+.profile-name,
+.profile-subtitle,
+.module-title,
+.music-title,
+.music-artist,
+.eyebrow,
+.timer-label,
+.timer-value,
+.progress-row,
+.timeline-time,
+.timeline-copy,
+.destination-caption,
+.qa-question,
+.qa-answer,
+.showcase-title,
+.showcase-subtitle,
+.showcase-rating,
+.showcase-comment {
+  width: fit-content;
+  max-width: 100%;
+}
+.profile-kicker,
+.profile-name,
+.profile-subtitle,
+.profile-bio,
+.notice-module .module-title,
+.notice-module .rich-content p {
+  margin-left: auto;
+  margin-right: auto;
+}
+.profile-bio p,
+.rich-content p {
+  padding: 6px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.module-title { padding: 7px 14px; }
+.qa-item { border-bottom: 0; }
+.qa-question { margin-bottom: 10px; }
+.qa-answer { padding: 8px 12px; }
+.qa-answer p { background: transparent; padding: 0; }
+.music-artist, .showcase-subtitle, .showcase-rating, .timeline-time { display: table; }
+@media (max-width: 680px) {
+  .profile-name, .module-title { padding: 6px 11px; }
+  .rich-content p, .profile-bio p, .qa-question, .qa-answer,
+  .timeline-copy, .showcase-comment { padding: 6px 10px; }
+}
+
