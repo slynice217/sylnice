@@ -47,7 +47,7 @@
       if(item.coverArt) row.append(image(item.coverArt,item.songTitle||'专辑封面','music-cover'));
       const details=el('div','music-details'); details.append(el('p','eyebrow','NOW PLAYING'),el('h3','music-title',item.songTitle||'音乐'),el('p','music-artist',item.artist||''));
       const audio=el('audio','music-audio'); audio.controls=true; audio.preload='none'; if(item.audioUrl) audio.src=media(item.audioUrl); details.append(audio);
-      if(item.lyrics){const lyrics=el('details','lyrics-details');lyrics.append(el('summary','','歌词 / 创作信息'));const p=el('p','lyrics-text',item.lyrics.trim());lyrics.append(p);details.append(lyrics);}
+      // Lyrics / creation-information disclosure intentionally omitted from the homepage.
       row.append(details); wrap.append(row); return wrap;
     }
     if(item.type==='button'){
