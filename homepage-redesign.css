@@ -1,7 +1,7 @@
 :root{--lilac:#EEECF5;--mauve:#9C93B1;--purple:#6C6082;--ink:#3E354E;--paper:#f8f7fb;--line:rgba(62,53,78,.18)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-snap-type:y proximity;background:var(--lilac)}
-body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Noto Serif CJK",Georgia,"Songti SC",serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Songti SC","STSong","SimSun",serif;-webkit-font-smoothing:antialiased}
 #app{width:100%;min-height:60vh}
 .blokko-site-nav{background:rgba(238,236,245,.94)!important;border-bottom:1px solid var(--line)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .blokko-site-nav a{color:var(--ink)!important}
@@ -88,7 +88,7 @@ body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Noto Serif C
 .content-section:has(.module-button) .identity-link{width:100%;}
 
 /* Refined editorial typography and softer social links */
-:root{--editorial-serif:"Noto Serif CJK SC","Songti SC","STSong","Source Han Serif SC",Georgia,serif}
+:root{--editorial-serif:"Songti SC","STSong","SimSun",serif}
 body,#app,.home-hero,.home-content,.content-module,.profile-block,.rich-content,.qa-item,.timer-module,.timer-value,.module-title,.qa-question,.qa-answer,.profile-name,.profile-subtitle,.profile-bio,.identity-label{font-family:var(--editorial-serif)!important;font-weight:400}
 .identity-link{border:1px solid var(--mauve)!important;border-radius:18px!important;background:rgba(255,255,255,.22);box-shadow:0 3px 12px rgba(62,53,78,.06);transition:background .2s,transform .2s}
 .identity-link:active{transform:scale(.98)}
@@ -112,7 +112,7 @@ html{scroll-snap-type:y mandatory;scroll-padding-top:58px;overscroll-behavior-y:
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:y proximity}}
 /* Load an actual Chinese serif font instead of relying on device fallback. */
 
-:root{--editorial-serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif}
+:root{--editorial-serif:"Songti SC","STSong","SimSun",serif}
 body,#app,#app *:not(svg):not(path),.visitor-comments,.visitor-comments *:not(svg):not(path){
   font-family:var(--editorial-serif)!important;
   font-synthesis:none;
