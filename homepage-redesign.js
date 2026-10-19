@@ -39,6 +39,7 @@
     if(item.type==='profile') return renderProfile(item);
     if(item.type==='card'){
       if(item.title) wrap.append(el('h2','module-title',item.title));
+      if(String(item.title||'').trim()==='一些爱好') wrap.classList.add('hobbies-panel');
       const body=el('div','rich-content'); rich(body,item.content); wrap.append(body); return wrap;
     }
     if(item.type==='music'){
