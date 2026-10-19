@@ -446,48 +446,7 @@
   }
 
   /* 深色模式自适应：当未显式锁定 light 类且系统偏好深色时，自动启用深色样式 */
-  @media (prefers-color-scheme: dark) {
-    html:not(.light-mode) {
-      --bg-preview-pane: #0f1115;
-      --bg-color: #0f1115;
-      --color-card-bg: #1c1e24;
-      --border-color: rgba(255, 255, 255, 0.1);
-      --text-primary: #f0f2f5;
-      --text-secondary: #9aa0a6;
-      --color-hover: rgba(255, 255, 255, 0.08);
-      --color-active: rgba(0, 122, 255, 0.18);
-    }
-    html:not(.light-mode) body {
-      background: var(--bg-preview-pane, #0f1115);
-      color: var(--text-primary, #f0f2f5);
-    }
-    html:not(.light-mode) .blokko-site-nav {
-      background: #17191e;
-      border-bottom-color: rgba(255, 255, 255, 0.1);
-    }
-    html:not(.light-mode) .blokko-site-nav-link {
-      color: #e2e8f0;
-    }
-    html:not(.light-mode) .blokko-site-nav-link:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-    html:not(.light-mode) .blokko-site-footer {
-      background: #17191e;
-      border-top-color: rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-    }
-    html:not(.light-mode) .not-found-card {
-      background: #1c1e24;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    html:not(.light-mode) .not-found-title {
-      color: #f0f2f5;
-    }
-    html:not(.light-mode) .not-found-desc {
-      color: #94a3b8;
-    }
-  }
+  
 
   /* 显式带有 .dark-mode 时的样式补全 */
   html.dark-mode {
@@ -609,6 +568,14 @@ html, body, body *, body *::before, body *::after {
 }
 </style>
 
+<style id="force-light-mode">
+/* 网站固定使用浅色主题，不跟随手机系统深色模式 */
+:root { color-scheme: light !important; }
+html, html.dark-mode, html:not(.light-mode), body {
+  color-scheme: light !important;
+  background-color: #EEECF5;
+}
+</style>
 </head>
 <body>
 
