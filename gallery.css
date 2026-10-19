@@ -395,3 +395,7 @@ h1{text-align:center}
 
 /* Use system Songti immediately; no remote font download */
 body, body * { font-family: "Songti SC", "STSong", "SimSun", serif !important; }
+
+/* Global local-only system serif font override; intentionally no external font loading. */
+body{font-family:"Songti SC","SimSun","STSong","SimHei",serif!important}
+body,body *{font-family:inherit!important;font-synthesis:none!important}
