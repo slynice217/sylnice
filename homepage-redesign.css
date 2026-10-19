@@ -169,10 +169,11 @@ body,body *{font-family:inherit!important;font-synthesis:none!important}
 .module-progress{padding-block:clamp(20px,4vw,32px)}
 @media(prefers-reduced-motion:reduce){.progress-fill{transition:none}}
 
-/* Separate translucent white rounded panels behind each text block */
+/* Only five section-level translucent panels: timeline, hobbies, music, and two timers. */
 .profile-kicker,
 .profile-name,
 .profile-subtitle,
+.profile-bio,
 .module-title,
 .rich-content p,
 .music-title,
@@ -191,58 +192,65 @@ body,body *{font-family:inherit!important;font-synthesis:none!important}
 .showcase-subtitle,
 .showcase-rating,
 .showcase-comment {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 14px;
-  padding: 6px 12px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0;
+  padding: 0;
 }
-.profile-kicker,
-.profile-name,
-.profile-subtitle,
-.module-title,
-.music-title,
-.music-artist,
-.eyebrow,
-.timer-label,
-.timer-value,
-.progress-row,
-.timeline-time,
-.timeline-copy,
-.destination-caption,
-.qa-question,
-.qa-answer,
-.showcase-title,
-.showcase-subtitle,
-.showcase-rating,
-.showcase-comment {
-  width: fit-content;
-  max-width: 100%;
+
+/* Panel sizing follows the marked red outlines in the user's screenshots. */
+.module-timeline,
+.hobbies-panel,
+.module-music,
+.module-timer {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 0 !important;
+  border-radius: 24px !important;
+  box-shadow: none !important;
+  padding: clamp(20px, 4vw, 36px) !important;
+  margin-block: 10px;
+  min-width: 0;
 }
-.profile-kicker,
-.profile-name,
-.profile-subtitle,
-.profile-bio,
-.notice-module .module-title,
-.notice-module .rich-content p {
-  margin-left: auto;
-  margin-right: auto;
+.module-timeline .module-title,
+.hobbies-panel .module-title {
+  background: transparent !important;
 }
-.profile-bio p,
-.rich-content p {
-  padding: 6px 12px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.2);
+.module-timeline .timeline-copy,
+.module-timeline .timeline-time {
+  background: transparent !important;
+  padding: 0 !important;
 }
-.module-title { padding: 7px 14px; }
-.qa-item { border-bottom: 0; }
-.qa-question { margin-bottom: 10px; }
-.qa-answer { padding: 8px 12px; }
-.qa-answer p { background: transparent; padding: 0; }
-.music-artist, .showcase-subtitle, .showcase-rating, .timeline-time { display: table; }
+.module-timeline .timeline-entry {
+  padding-bottom: 22px;
+}
+.module-music .music-module {
+  margin: 0;
+}
+.module-music .music-title,
+.module-music .music-artist,
+.module-music .eyebrow,
+.module-music .lyrics-details,
+.module-timer .timer-label,
+.module-timer .timer-value {
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+.module-timer .timer-module {
+  padding: 0 !important;
+}
+.hobbies-panel .rich-content p {
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
 @media (max-width: 680px) {
-  .profile-name, .module-title { padding: 6px 11px; }
-  .rich-content p, .profile-bio p, .qa-question, .qa-answer,
-  .timeline-copy, .showcase-comment { padding: 6px 10px; }
+  .module-timeline,
+  .hobbies-panel,
+  .module-music,
+  .module-timer {
+    border-radius: 22px !important;
+    padding: 20px 18px !important;
+  }
 }
 
