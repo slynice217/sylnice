@@ -137,3 +137,20 @@ body,#app,#app *:not(svg):not(path),.visitor-comments,.visitor-comments *:not(sv
     color: var(--ink, #3E354E) !important;
   }
 }
+
+/* Fixed, translucent full-page background image */
+html{background:transparent!important}
+body{position:relative;isolation:isolate;background:transparent!important}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:linear-gradient(rgba(238,236,245,.4),rgba(238,236,245,.4)),url("./assets/media/IMG_20261019_210818.png");
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-size:cover;
+  opacity:1;
+}
+#app{position:relative;background:transparent!important}
