@@ -661,58 +661,8 @@ body, body * {
 </script>
 </head>
 <body>
+<nav class="nav"><a href="./index.html">首页</a><a href="./page.html">装修日志</a><a href="./admin.html">管理员登录</a><a href="./gallery.html">Gallery</a></nav>
 
-<nav class="blokko-site-nav" aria-label="站点导航" style="--color-primary:#72519b;--nav-menu-fg:#111111;--nav-menu-border:rgba(0, 0, 0, 0.08);--nav-menu-hover:rgba(0, 0, 0, 0.05)">
-  <div class="blokko-site-nav-inner">
-    <div class="blokko-site-nav-brand">
-        
-        <span class="blokko-site-nav-title">welcome to me</span>
-      </div>
-    <div class="blokko-site-nav-menu blokko-nav-desktop">
-      <a class="blokko-site-nav-link" data-blokko-nav data-payload="__home__" href="./index.html">首页</a>
-      <a class="blokko-site-nav-link" data-blokko-nav data-payload="subpage_cnetvegnp" data-blokko-nav-current="true" aria-current="page" href="./page.html">装修日志</a>
-      <a class="blokko-site-nav-link" href="./gallery.html">Gallery</a>
-      <a class="blokko-site-nav-link" href="./admin.html">管理员登录</a>
-    </div>
-    <button type="button" class="blokko-nav-burger" aria-label="切换菜单" onclick="document.querySelector('.blokko-site-nav').classList.toggle('is-mobile-open')">
-      <span class="blokko-burger-bar"></span>
-      <span class="blokko-burger-bar"></span>
-      <span class="blokko-burger-bar"></span>
-    </button>
-  </div>
-  <div class="blokko-mobile-drawer">
-    <div class="blokko-mobile-drawer-backdrop" onclick="document.querySelector('.blokko-site-nav').classList.remove('is-mobile-open')"></div>
-    <div class="blokko-mobile-drawer-content">
-      <div class="blokko-mobile-drawer-header">
-        <span class="blokko-mobile-drawer-title">welcome to me</span>
-        <button type="button" class="blokko-mobile-close-btn" aria-label="关闭菜单" onclick="document.querySelector('.blokko-site-nav').classList.remove('is-mobile-open')">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="blokko-mobile-nav-list">
-        <a class="blokko-mobile-nav-item" data-blokko-nav data-payload="__home__" href="./index.html">首页</a>
-      <a class="blokko-mobile-nav-item" data-blokko-nav data-payload="subpage_cnetvegnp" data-blokko-nav-current="true" aria-current="page" href="./page.html">装修日志</a>
-      <a class="blokko-mobile-nav-item" href="./gallery.html">Gallery</a>
-      <a class="blokko-mobile-nav-item" href="./admin.html">管理员登录</a>
-      </div>
-    </div>
-  </div>
-  <script>
-    (function(){
-      var nav = document.querySelector('.blokko-site-nav');
-      if (!nav) return;
-      nav.addEventListener('click', function(e) {
-        var link = e.target.closest('a[data-blokko-nav]');
-        if (link && !link.classList.contains('blokko-accordion-toggle')) {
-          nav.classList.remove('is-mobile-open');
-        }
-      });
-    })();
-  </script>
-</nav>
 
 
 <div id="app">
