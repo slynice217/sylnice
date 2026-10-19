@@ -1,9 +1,9 @@
-:root{--lilac:#EEECF5;--mauve:#9C93B1;--purple:#6C6082;--ink:#3E354E;--paper:#f8f7fb;--line:rgba(62,53,78,.18)}
+:root{--lilac:#E6E0EF;--mauve:#9C93B1;--purple:#6C6082;--ink:#3E354E;--paper:#f8f7fb;--line:rgba(62,53,78,.18)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-snap-type:y proximity;background:var(--lilac)}
 body{margin:0;background:var(--lilac);color:var(--ink);font-family:"Songti SC","STSong","SimSun",serif;-webkit-font-smoothing:antialiased}
 #app{width:100%;min-height:60vh}
-.blokko-site-nav{background:rgba(238,236,245,.94)!important;border-bottom:1px solid var(--line)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.blokko-site-nav{background:rgba(230,224,239,.94)!important;border-bottom:1px solid var(--line)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .blokko-site-nav a{color:var(--ink)!important}
 .blokko-site-footer{background:var(--ink)!important;color:var(--lilac)!important}
 .home-hero{min-height:calc(100svh - 51px);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(36px,7vh,80px) 22px 84px;gap:clamp(26px,5vh,52px);scroll-snap-align:start;scroll-margin-top:51px;background:var(--lilac)}
@@ -147,7 +147,7 @@ body::before{
   inset:0;
   z-index:-1;
   pointer-events:none;
-  background-image:linear-gradient(rgba(238,236,245,.4),rgba(238,236,245,.4)),url("./assets/media/IMG_20261019_210818.png");
+  background-image:linear-gradient(rgba(230,224,239,.4),rgba(230,224,239,.4)),url("./assets/media/IMG_20261019_210818.png");
   background-position:center center;
   background-repeat:no-repeat;
   background-size:cover;
