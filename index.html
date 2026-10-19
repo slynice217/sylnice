@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN" style="--inspector-ui-opacity: 1; --global-banners-height: 0px; --system-broadcast-height: 72px; --broadcast-offset: 72px; --site-nav-height: 51px;">
 <head>
+<script>
+  // 检查是不是从其他页面退回来的
+  if (window.performance && window.performance.navigation && window.performance.navigation.type === 2) {
+    window.location.reload(true); // 强制重新加载
+  }
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Created with Blokko">
