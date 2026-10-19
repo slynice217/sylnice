@@ -642,6 +642,14 @@ body, body * {
   font-synthesis: none !important;
 }
 </style>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    // 如果页面是从浏览器的往返缓存（bfcache）里恢复的，或者是从其他页面点回来的
+    if (event.persisted || (typeof window.performance != "undefined" && window.performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+      window.location.reload();
+    }
+  });
+</script>
 </head>
 <body>
 
