@@ -344,3 +344,32 @@ body {
   }
 }
 
+/* One continuous fixed background across the entire page; no white gaps between sections. */
+html, body, #app, .home-hero, .home-content, .content-section {
+  background-color: transparent !important;
+}
+body::before {
+  z-index: 0 !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background-image:
+    linear-gradient(rgba(230,224,239,.4), rgba(230,224,239,.4)),
+    url("./assets/media/IMG_20261019_210818.png") !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+#app {
+  position: relative !important;
+  z-index: 1 !important;
+  background: transparent !important;
+}
+.home-hero, .home-content, .content-section {
+  background: transparent !important;
+}
+.blokko-site-footer {
+  background: rgba(62,53,78,.72) !important;
+}
+
