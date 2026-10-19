@@ -3,3 +3,5 @@
 /* Global local-only system serif font override; intentionally no external font loading. */
 body{font-family:"Songti SC","SimSun","STSong","SimHei",serif!important}
 body,body *{font-family:inherit!important;font-synthesis:none!important}
+.nav{padding:14px;text-align:center;background:#ffffffaa;backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}
+.nav a{margin:0 8px;color:#542d8a;text-decoration:none}
