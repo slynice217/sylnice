@@ -303,4 +303,10 @@ body,body *{font-family:inherit!important;font-synthesis:none!important}
 .showcase-item {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
-
+/* Show the fixed background through the hero; only the notice gets a panel. */
+.home-hero{background:transparent!important}
+.notice-module{width:min(calc(100% - 28px),720px)!important;padding:clamp(22px,4vw,36px)!important;margin:8px auto 0!important;background:rgba(255,255,255,.2)!important;border:0!important;border-radius:24px!important;box-shadow:none!important;text-align:center}
+.notice-module .module-title,.notice-module .rich-content,.notice-module .rich-content p{background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
+.notice-module .module-title{margin:0 0 16px!important}
+.notice-module .rich-content p{margin:0 0 10px!important}
+@media(max-width:680px){.notice-module{width:calc(100% - 28px)!important;padding:22px 18px!important;border-radius:22px!important}}
