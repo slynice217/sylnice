@@ -27,7 +27,7 @@
   };
   function renderProfile(item) {
     const card = el('div','profile-block');
-    const avatar = image(item.avatar, item.nickname || '头像','profile-avatar');
+    const avatar = image('assets/media/touxiang.webp', item.nickname || '头像','profile-avatar');
     card.append(avatar);
     card.append(el('p','profile-kicker','PERSONAL SPACE'));
     card.append(el('h1','profile-name',item.nickname || ''));
