@@ -1,3 +1,10 @@
+// 如果是从其他页面（比如装修日志）退回来的，强制刷新一次
+if (window.performance && window.performance.getEntriesByType) {
+  var nav = window.performance.getEntriesByType("navigation")[0];
+  if (nav && nav.type === "back_forward") {
+    window.location.reload();
+  }
+}
 (function () {
   'use strict';
   const root = document.getElementById('app');
