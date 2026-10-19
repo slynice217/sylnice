@@ -392,3 +392,6 @@ h1{text-align:center}
     transition: none !important;
   }
 }
+
+/* Use system Songti immediately; no remote font download */
+body, body * { font-family: "Songti SC", "STSong", "SimSun", serif !important; }
