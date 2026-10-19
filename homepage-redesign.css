@@ -117,3 +117,23 @@ body,#app,#app *:not(svg):not(path),.visitor-comments,.visitor-comments *:not(sv
   font-family:var(--editorial-serif)!important;
   font-synthesis:none;
 }
+
+
+/* 修复手机系统深色模式下，旧版深色主题把首页文字变成白色的问题 */
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) #app,
+  html:not(.light-mode) #app * {
+    color: var(--ink, #3E354E) !important;
+  }
+  html:not(.light-mode) #app a {
+    color: var(--purple, #6C6082) !important;
+  }
+  html:not(.light-mode) #app .profile-kicker,
+  html:not(.light-mode) #app .eyebrow,
+  html:not(.light-mode) #app .profile-subtitle {
+    color: var(--purple, #6C6082) !important;
+  }
+  html:not(.light-mode) #app .profile-avatar {
+    color: var(--ink, #3E354E) !important;
+  }
+}
