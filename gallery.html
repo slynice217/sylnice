@@ -21,6 +21,14 @@ html, body, body *, body *::before, body *::after {
 }
 </style>
 
+<style id="force-light-mode">
+/* 网站固定使用浅色主题，不跟随手机系统深色模式 */
+:root { color-scheme: light !important; }
+html, html.dark-mode, html:not(.light-mode), body {
+  color-scheme: light !important;
+  background-color: #EEECF5;
+}
+</style>
 </head>
 <body>
 <nav class="nav"><a href="./index.html">首页</a><a href="./page.html">装修日志</a><a href="./admin.html">管理员登录</a><a href="./gallery.html">Gallery</a></nav>
