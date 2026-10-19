@@ -254,3 +254,47 @@ body,body *{font-family:inherit!important;font-synthesis:none!important}
   }
 }
 
+/* Each anonymous Q&A pair and each media-review card gets one shared panel. */
+.qa-item,
+.showcase-item {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 0 !important;
+  border-radius: 24px !important;
+  box-shadow: none !important;
+  padding: clamp(18px, 3.5vw, 30px) !important;
+  margin-block: 14px !important;
+  min-width: 0;
+}
+.qa-item .qa-question,
+.qa-item .qa-answer,
+.qa-item .qa-answer p,
+.showcase-item .showcase-title,
+.showcase-item .showcase-subtitle,
+.showcase-item .showcase-rating,
+.showcase-item .showcase-comment {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.qa-item .qa-question {
+  margin: 0 0 12px !important;
+}
+.qa-item .qa-answer {
+  margin: 0 !important;
+}
+.showcase-item .showcase-info {
+  min-width: 0;
+}
+.showcase-item .showcase-cover {
+  border-radius: 0;
+}
+@media (max-width: 680px) {
+  .qa-item,
+  .showcase-item {
+    border-radius: 22px !important;
+    padding: 18px 16px !important;
+  }
+}
+
