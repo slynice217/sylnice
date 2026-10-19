@@ -58,3 +58,6 @@ html.home-section-snap { scroll-snap-type:y proximity; scroll-behavior:smooth; }
 @media (prefers-reduced-motion:reduce) {
   html.home-section-snap { scroll-behavior:auto; }
 }
+/* Global local-only system serif font override; intentionally no external font loading. */
+body{font-family:"Songti SC","SimSun","STSong","SimHei",serif!important}
+body,body *{font-family:inherit!important;font-synthesis:none!important}
