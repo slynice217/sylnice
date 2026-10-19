@@ -15,7 +15,14 @@
   const image = (src, alt, cls) => {
     const img = el('img', cls || '', alt || '');
     img.src = media(src); img.alt = alt || ''; img.loading = 'lazy';
-    img.onerror = () => img.hidden = true;
+    img.onerror = () => {
+      if (img.dataset.fallbackTried !== '1' && /profile-avatar/.test(img.className)) {
+        img.dataset.fallbackTried = '1';
+        img.src = './assets/media/touxiang.webp';
+        return;
+      }
+      img.hidden = true;
+    };
     return img;
   };
   function renderProfile(item) {
