@@ -298,3 +298,9 @@ body,body *{font-family:inherit!important;font-synthesis:none!important}
   }
 }
 
+/* Resubmission: keep the Q&A pair and each media card as one unified panel. */
+.qa-item,
+.showcase-item {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
