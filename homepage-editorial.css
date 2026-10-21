@@ -1,3 +1,14 @@
+@font-face {
+  font-family: "SourceHanSerifCN";
+  src: url("./fonts/SourceHanSerifCN-Regular#1.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;}
+
+/* 設定全站正文用思源宋體 */
+body {
+  font-family: "SourceHanSerifCN", serif;
+}
 /* Independent homepage redesign overrides. Scoped to the generated homepage canvas. */
 :root {
   --home-lilac: #EEECF5;
