@@ -1,14 +1,16 @@
 @font-face {
   font-family: "SourceHanSerifCN";
-  src: url("./fonts/SourceHanSerifCN-Regular#1.woff") format("woff");
-  font-weight: 400;
+  src: url("./fonts/SourceHanSerifCN-Regular%231.woff") format("woff");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
-/* 設定全站正文用思源宋體 */
-body {
-  font-family: "SourceHanSerifCN", serif;
+
+/* 全站统一使用仓库内的思源宋体字体文件 */
+html, body, body * {
+  font-family: "SourceHanSerifCN", serif !important;
 }
+
 :root{--lilac:#E6E0EF;--mauve:#9C93B1;--purple:#6C6082;--ink:#3E354E;--paper:#f8f7fb;--line:rgba(62,53,78,.18)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-snap-type:y proximity;background:var(--lilac)}
