@@ -88,5 +88,15 @@ jobs:
             echo "Font subset is already up to date."
           else
             git commit -m "build: refresh SourceHanSerifCN font subset"
-            git push origin main
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git rebase origin/main
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+              echo "Push attempt $attempt failed; retrying after fetching latest main."
+              sleep $((attempt * 2))
+            done
+            echo "Unable to push after 5 attempts."
+            exit 1
           fi
