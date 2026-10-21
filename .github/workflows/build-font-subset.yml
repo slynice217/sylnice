@@ -1,0 +1,92 @@
+name: Build SourceHanSerifCN font subset
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "fonts/SourceHanSerifCN-subset.woff2"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sourcehan-font-subset
+  cancel-in-progress: false
+
+jobs:
+  subset-font:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install font subset tools
+        run: python -m pip install --upgrade fonttools brotli
+
+      - name: Collect characters from website source files
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          extensions = {".html", ".css", ".js", ".json", ".md", ".txt", ".xml", ".yml", ".yaml", ".sql"}
+          ignored_dirs = {".git", ".github", "node_modules"}
+          chars = set()
+
+          for path in Path(".").rglob("*"):
+              if not path.is_file() or path.suffix.lower() not in extensions:
+                  continue
+              if any(part in ignored_dirs for part in path.parts):
+                  continue
+              try:
+                  text = path.read_text(encoding="utf-8")
+              except (UnicodeDecodeError, OSError):
+                  continue
+              chars.update(text)
+
+          # Always include basic Latin, digits, common punctuation and whitespace.
+          chars.update(chr(i) for i in range(0x20, 0x7F))
+          chars.update("　，。！？；：、“”‘’（）【】《》〈〉—…·￥")
+          Path("/tmp/font-characters.txt").write_text("".join(sorted(chars)), encoding="utf-8")
+          print(f"Collected {len(chars)} unique characters.")
+          PY
+
+      - name: Generate WOFF2 subset
+        run: |
+          pyftsubset "fonts/SourceHanSerifCN-Regular#1.woff" \
+            --text-file=/tmp/font-characters.txt \
+            --output-file=fonts/SourceHanSerifCN-subset.woff2 \
+            --flavor=woff2 \
+            --layout-features="*" \
+            --glyph-names \
+            --symbol-cmap \
+            --legacy-cmap \
+            --notdef-glyph \
+            --notdef-outline \
+            --recommended-glyphs \
+            --name-IDs="*" \
+            --name-languages="*" \
+            --name-legacy \
+            --drop-tables+=DSIG
+          ls -lh "fonts/SourceHanSerifCN-Regular#1.woff" "fonts/SourceHanSerifCN-subset.woff2"
+
+      - name: Commit updated subset if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fonts/SourceHanSerifCN-subset.woff2
+          if git diff --cached --quiet; then
+            echo "Font subset is already up to date."
+          else
+            git commit -m "build: refresh SourceHanSerifCN font subset"
+            git push origin main
+          fi
