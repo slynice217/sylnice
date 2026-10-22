@@ -124,6 +124,17 @@ body, body * {
   const photoCount = 5;
 
   // 图集二每张照片翻面后的文字：以后直接编辑下面对应的引号内容即可。
+  // 图集一每张照片翻面后的文字：以后直接编辑下面对应的引号内容即可。
+  // 每一项依次对应 album1/1.webp、album1/2.webp……album1/5.webp。
+  const album1BackTexts = [
+    '在这里编辑图集一第 1 张照片的翻面文字',
+    '在这里编辑图集一第 2 张照片的翻面文字',
+    '在这里编辑图集一第 3 张照片的翻面文字',
+    '在这里编辑图集一第 4 张照片的翻面文字',
+    '在这里编辑图集一第 5 张照片的翻面文字'
+  ];
+
+  // 图集二每张照片翻面后的文字：以后直接编辑下面对应的引号内容即可。
   const album2BackTexts = [
     '三年前，完全松弛感…',
     '某个儿童节她竟然给我买礼物，因为不知道我喜欢啥买了两个阿尼亚哈哈哈哈',
@@ -153,9 +164,10 @@ body, body * {
       card.type = 'button';
       card.className = 'depth-card';
       card.setAttribute('aria-label', '照片 ' + index + '，点击翻面');
-      card.innerHTML = number === 2
-        ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span><h3>图集 2</h3><p></p><small>点击翻回照片</small></div></div>'
+      card.innerHTML = (number === 1 || number === 2)
+        ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span><h3>图集 ' + number + '</h3><p></p><small>点击翻回照片</small></div></div>'
         : '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div></div>';
+      if (number === 1) card.querySelector('.depth-back p').textContent = album1BackTexts[index - 1];
       if (number === 2) card.querySelector('.depth-back p').textContent = album2BackTexts[index - 1];
       const img = card.querySelector('img');
       img.src = './assets/gallery/album' + number + '/' + index + '.webp';
@@ -166,7 +178,7 @@ body, body * {
         img.removeAttribute('src');
         card.disabled = true;
       };
-      if (number === 2) card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+      if (number === 1 || number === 2) card.addEventListener('click', () => card.classList.toggle('is-flipped'));
       track.appendChild(card);
     }
 
