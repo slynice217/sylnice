@@ -1,3 +1,4 @@
+<p style="font-family: 'Songti SC', serif; font-size: 30px;">测试宋体：永和九年，岁在癸丑</p>
 <!DOCTYPE html>
 <html lang="zh-CN" style="--inspector-ui-opacity: 1; --global-banners-height: 0px; --system-broadcast-height: 72px; --broadcast-offset: 72px; --site-nav-height: 51px;">
 <head>
@@ -19,19 +20,17 @@
 
 
 <style>
-  body, body*not(svg):not(path){
+    /* 强制覆盖 Blokko 的 CSS 变量 */
+  :root {
+    --active-card-font-family: "Songti SC", "SimSun", "STSong", "Noto Serif CJK SC", serif !important;
+    --g-comp-font-family: "Songti SC", "SimSun", "STSong", "Noto Serif CJK SC", serif !important;
+    --g-comp-title-font-family: "Songti SC", "SimSun", "STSong", "Noto Serif CJK SC", serif !important;
+  }
+  
+  /* 连 html 和 body 一起强制 */
+  html, body, body *, #app *:not(svg):not(path) {
     font-family: "Songti SC", "SimSun", "STSong", "Noto Serif CJK SC", "Source Han Serif CN", serif !important;
     font-synthesis: none !important;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: var(--active-card-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
-    font-family: "Songti SC", "SimSun", "STSong", "Noto Serif CJK SC", serif !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
   }
   #app {
     flex: 1 0 auto;
