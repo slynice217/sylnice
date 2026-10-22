@@ -399,3 +399,19 @@ body, body * { font-family: "Songti SC", "STSong", "SimSun", serif !important; }
 /* Global local-only system serif font override; intentionally no external font loading. */
 body{font-family:"Songti SC","SimSun","STSong","SimHei",serif!important}
 body,body *{font-family:inherit!important;font-synthesis:none!important}
+/* 1. 引入外部 woff2 思源宋体 */
+@font-face {
+  font-family: 'MySongti';
+  src: url('./fonts/SourceHanSerifCN-subset.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* 保证网页秒开，字体加载完自动替换 */
+}
+
+/* 2. 全局强制使用该字体 */
+body, body *:not(svg):not(path) {
+  font-family: 'MySongti', "Songti SC", "SimSun", "STSong", serif !important;
+  font-synthesis: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
