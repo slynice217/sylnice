@@ -1,5 +1,11 @@
-
-
+@font-face {
+  font-family: 'Songti';
+  src: url('./fonts/SourceHanSerifCN-subset.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  /* 这句最关键：先显示黑体，字体加载完自动变宋体，不让网页卡顿 */
+  font-display: swap; 
+}
 :root{--lilac:#E6E0EF;--mauve:#9C93B1;--purple:#6C6082;--ink:#3E354E;--paper:#f8f7fb;--line:rgba(62,53,78,.18)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-snap-type:y proximity;background:var(--lilac)}
@@ -364,4 +370,8 @@ body::before {
 .blokko-site-footer {
   background: rgba(62,53,78,.72) !important;
 }
-
+body, body *:not(svg):not(path) {
+  font-family: 'Songti', "Songti SC", "SimSun", "STSong", serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
