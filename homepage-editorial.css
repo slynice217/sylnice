@@ -1,21 +1,4 @@
-@font-face {
-  font-family: "SourceHanSerifCN";
-  src: url("./fonts/SourceHanSerifCN-Regular#1.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;}
 
-/* 設定全站正文用思源宋體 */
-body {
-  font-family: "SourceHanSerifCN", serif;
-}
-/* Independent homepage redesign overrides. Scoped to the generated homepage canvas. */
-:root {
-  --home-lilac: #EEECF5;
-  --home-mauve: #9C93B1;
-  --home-purple: #6C6082;
-  --home-ink: #3E354E;
-}
 html, body { min-height:100%; }
 body { background:var(--home-lilac) !important; color:var(--home-ink); }
 #app { background:var(--home-lilac) !important; width:100%; min-width:0; }
@@ -68,7 +51,10 @@ html.home-section-snap { scroll-snap-type:y proximity; scroll-behavior:smooth; }
 .home-snap-start { scroll-snap-align:start; scroll-margin-top:56px; }
 @media (prefers-reduced-motion:reduce) {
   html.home-section-snap { scroll-behavior:auto; }
+｝
+/* 强制所有设备调用系统自带的宋体，速度最快 */
+body, body * {
+  /* 苹果设备用 Songti SC，Windows 用 SimSun，安卓等设备用 Noto Serif CJK SC，最后统一用 serif 兜底 */
+  font-family: "Songti SC", "SimSun", "STSong", "Noto Serif CJK SC", "Source Han Serif CN", serif !important;
+  font-synthesis: none !important;
 }
-/* Global local-only system serif font override; intentionally no external font loading. */
-body{font-family:"Songti SC","SimSun","STSong","SimHei",serif!important}
-body,body *{font-family:inherit!important;font-synthesis:none!important}
