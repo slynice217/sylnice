@@ -52,9 +52,3 @@ html.home-section-snap { scroll-snap-type:y proximity; scroll-behavior:smooth; }
 @media (prefers-reduced-motion:reduce) {
   html.home-section-snap { scroll-behavior:auto; }
 ｝
-/* 强制所有设备调用系统自带的宋体，速度最快 */
-body, body * {
-  /* 苹果设备用 Songti SC，Windows 用 SimSun，安卓等设备用 Noto Serif CJK SC，最后统一用 serif 兜底 */
-  font-family: "Songti SC", "SimSun", "STSong", "Noto Serif CJK SC", "Source Han Serif CN", serif !important;
-  font-synthesis: none !important;
-}
