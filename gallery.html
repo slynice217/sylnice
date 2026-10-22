@@ -1,1 +1,234 @@
 <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>
+  (function () {
+    try {
+      const nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+      if (nav && nav.type === "reload") window.location.replace("./index.html");
+    } catch (_) {}
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery</title>
+<link rel="stylesheet" href="./gallery.css?v=8764f6ccbf87">
+
+<style id="site-songti-font">
+/* 全站统一宋体；使用各平台可用的宋体字库 */
+html, body, body *, body *::before, body *::after {
+  font-family: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", serif !important;
+}
+</style>
+
+<style id="force-light-mode">
+/* 网站固定使用浅色主题，不跟随手机系统深色模式 */
+:root { color-scheme: light !important; }
+html, html.dark-mode, html:not(.light-mode), body {
+  color-scheme: light !important;
+  background-color: #EEECF5;
+}
+</style>
+<style id="local-system-serif-font">
+/* Local system fonts only: no network font requests or font swapping. */
+body {
+  font-family: "Songti SC", "SimSun", "STSong", "SimHei", serif !important;
+}
+body, body * {
+  font-family: inherit !important;
+  font-synthesis: none !important;
+}
+</style>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    // 如果页面是从浏览器的往返缓存（bfcache）里恢复的，或者是从其他页面点回来的
+    if (event.persisted || (typeof window.performance != "undefined" && window.performance.getEntriesByType("navigation")[0].type === "back_forward")) {
+      window.location.reload();
+    }
+  });
+</script>
+<style>
+  .site-language-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 2147483000;
+    width: 76px; height: 36px; padding: 3px; border: 1px solid rgba(106,84,135,.28);
+    border-radius: 999px; background: rgba(255,255,255,.88); color: #604d79;
+    box-shadow: 0 4px 16px rgba(40,18,111,.12); backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+    font: 600 14px/1 system-ui, -apple-system, "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .site-language-toggle .lang-label { position: relative; z-index: 2; width: 32px; text-align: center; transition: color .2s ease; }
+  .site-language-toggle .lang-knob {
+    position: absolute; left: 3px; top: 3px; width: 34px; height: 28px; border-radius: 999px;
+    background: #604d79; box-shadow: 0 1px 4px rgba(40,18,111,.22); transition: transform .22s ease;
+  }
+  .site-language-toggle[data-lang="tw"] .lang-knob { transform: translateX(36px); }
+  .site-language-toggle .lang-label { color: #604d79; }
+  .site-language-toggle[data-lang="cn"] .lang-cn,
+  .site-language-toggle[data-lang="tw"] .lang-tw { color: #fff; }
+  .site-language-toggle:focus-visible { outline: 2px solid #8b67d0; outline-offset: 3px; }
+  /* Mobile navigation visibility safeguard: keep the hamburger visible beside the language toggle. */
+  @media (max-width: 768px) {
+    .blokko-site-nav .blokko-site-nav-inner { padding-right: 110px !important; }
+    .blokko-site-nav .blokko-nav-burger {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 100000 !important;
+      flex: 0 0 40px !important;
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin-left: auto !important;
+      padding: 8px !important;
+      border: 1px solid rgba(114,81,155,.28) !important;
+      border-radius: 10px !important;
+      background: #fff !important;
+      color: #604d79 !important;
+      cursor: pointer !important;
+    }
+    .blokko-site-nav .blokko-nav-burger .blokko-burger-bar {
+      display: block !important;
+      width: 20px !important;
+      height: 2px !important;
+      margin: 2px 0 !important;
+      background: currentColor !important;
+      border-radius: 2px !important;
+      opacity: 1 !important;
+    }
+  }
+  @media (max-width: 600px) {
+    /* 恢复语言开关原来的右上角位置 */
+    .site-language-toggle { top: 10px; right: 16px; }
+  }
+</style>
+</head>
+<body>
+<button class="site-language-toggle" id="site-language-toggle" type="button" role="switch" aria-checked="false" aria-label="切换简体中文和繁體中文" data-lang="cn">
+  <span class="lang-knob" aria-hidden="true"></span><span class="lang-label lang-cn">简</span><span class="lang-label lang-tw">繁</span>
+</button>
+
+<nav class="nav"><a href="./index.html">首页</a><a href="./page.html">装修日志</a><a href="./admin.html">管理员登录</a><a href="./gallery.html">Gallery</a></nav>
+<main>
+<h1>Gallery</h1>
+<div id="albums"><p class="gallery-loading">正在加载照片……</p></div>
+</main>
+<div id="viewer" class="hidden"><button id="back">返回</button><div id="photos"></div></div>
+<script>
+(() => {
+  'use strict';
+  const albumNumbers = [1, 2, 3];
+  const photoCount = 5;
+
+  // 图集二每张照片翻面后的文字：以后直接编辑下面对应的引号内容即可。
+  // 图集一每张照片翻面后的文字：以后直接编辑下面对应的引号内容即可。
+  // 每一项依次对应 album1/1.webp、album1/2.webp……album1/5.webp。
+  const album1BackTexts = [
+    '自己赚钱买的演唱会票呀，虽然坐山顶但我下次会再近一点的！',
+    '和你一起在校园里并肩走似乎是上个世纪的事情了，但又觉得好像只是在走廊等了你两分钟而已 。',
+    '惠中季节限定的起床福利',
+    '姑姐请我吃板前，有时候真的觉得我这辈子太幸运了…\n感恩',
+    'not a view for tears to watch,\nnor a place for tears to land'
+  ];
+
+  // 图集二每张照片翻面后的文字：以后直接编辑下面对应的引号内容即可。
+  const album2BackTexts = [
+    '三年前，完全松弛感…',
+    '某个儿童节她竟然给我买礼物，因为不知道我喜欢啥买了两个阿尼亚哈哈哈哈',
+    '这是买DJI的第一天拍的，好萌吧',
+    '建模怪连走路随便拍都能出片啥意思。',
+    '♡'
+  ];
+  const root = document.getElementById('albums');
+  if (!root) return;
+
+  function buildAlbum(number) {
+    const section = document.createElement('section');
+    section.className = 'album';
+    const title = document.createElement('div');
+    title.className = 'album-title';
+    title.textContent = number === 1 ? '某年某月某个星期几' : number === 2 ? '点击可翻面' : '宝贝nikki';
+    section.appendChild(title);
+
+    const carousel = document.createElement('div');
+    carousel.className = 'album-carousel depth-stack';
+    carousel.setAttribute('aria-label', title.textContent + '，左右滑动切换照片');
+    const track = document.createElement('div');
+    track.className = 'album-track';
+
+    for (let index = 1; index <= photoCount; index++) {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'depth-card';
+      card.setAttribute('aria-label', '照片 ' + index + '，点击翻面');
+      card.innerHTML = (number === 1 || number === 2)
+        ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span>' + (number === 2 ? '<h3>图集 2</h3>' : '') + '<p></p><small>点击翻回照片</small></div></div>'
+        : '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div></div>';
+      if (number === 1) { const backText = card.querySelector('.depth-back p'); backText.textContent = album1BackTexts[index - 1]; backText.style.whiteSpace = 'pre-line'; }
+      if (number === 2) card.querySelector('.depth-back p').textContent = album2BackTexts[index - 1];
+      const img = card.querySelector('img');
+      img.src = './assets/gallery/album' + number + '/' + index + '.webp';
+      img.decoding = 'async';
+      img.onerror = () => {
+        card.classList.add('photo-missing');
+        img.alt = '图集' + number + '的第' + index + '张照片尚未上传';
+        img.removeAttribute('src');
+        card.disabled = true;
+      };
+      if (number === 1 || number === 2) card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+      track.appendChild(card);
+    }
+
+    carousel.appendChild(track);
+    section.appendChild(carousel);
+    root.appendChild(section);
+
+    const cards = Array.from(track.children);
+    let current = 0;
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
+    function render() {
+      cards.forEach((card, i) => {
+        let offset = i - current;
+        if (offset > cards.length / 2) offset -= cards.length;
+        if (offset < -cards.length / 2) offset += cards.length;
+        const distance = Math.abs(offset);
+        const x = offset * (window.innerWidth <= 600 ? 30 : 40);
+        card.style.transform = 'translate3d(' + x + 'px,' + (distance * 5) + 'px,' + (-distance * 95) + 'px) rotateY(' + (-offset * 13) + 'deg) rotateZ(' + (-offset * 2.5) + 'deg) scale(' + (offset === 0 ? .9 : Math.max(.62, .9 - distance * .09)) + ')';
+        card.style.zIndex = String(10 - distance);
+        card.style.opacity = distance > 2 ? '0' : '1';
+        card.style.pointerEvents = distance > 2 ? 'none' : 'auto';
+        card.tabIndex = distance === 0 ? 0 : -1;
+      });
+    }
+
+    carousel.addEventListener('pointerdown', event => {
+      startX = event.clientX;
+      startY = event.clientY;
+      dragging = true;
+    });
+    carousel.addEventListener('pointerup', event => {
+      if (!dragging) return;
+      dragging = false;
+      const dx = event.clientX - startX;
+      const dy = event.clientY - startY;
+      if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy)) {
+        current = (current + (dx < 0 ? 1 : -1) + cards.length) % cards.length;
+        render();
+      }
+    });
+    carousel.addEventListener('pointercancel', () => { dragging = false; });
+    render();
+  }
+
+  albumNumbers.forEach(buildAlbum);
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+<script src="./language.js?v=8764f6ccbf87"></script>
+</body>
+</html>
