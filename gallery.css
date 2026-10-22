@@ -415,3 +415,16 @@ body, body *:not(svg):not(path) {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+/* Album 1 flip side: remove the album label and keep the message centered on the card. */
+.album-carousel.depth-stack .depth-card .depth-face.depth-back p {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: calc(100% - 40px) !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  text-align: center !important;
+  line-height: 1.65 !important;
+}
