@@ -1,20 +1,9 @@
-@font-face {
-  font-family: "SourceHanSerifCN";
-  src: url("./fonts/SourceHanSerifCN-subset.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
 
-/* 全站统一使用仓库内的思源宋体字体文件 */
-html, body, body * {
-  font-family: "SourceHanSerifCN", serif !important;
-}
 
 :root{--lilac:#E6E0EF;--mauve:#9C93B1;--purple:#6C6082;--ink:#3E354E;--paper:#f8f7fb;--line:rgba(62,53,78,.18)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-snap-type:y proximity;background:var(--lilac)}
-body{margin:0;background:var(--lilac);color:var(--ink);font-family:"SourceHanSerifCN",serif !important;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--lilac);color:var(--ink);}
 #app{width:100%;min-height:60vh}
 .blokko-site-nav{background:rgba(230,224,239,.94)!important;border-bottom:1px solid var(--line)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .blokko-site-nav a{color:var(--ink)!important}
@@ -101,8 +90,6 @@ body{margin:0;background:var(--lilac);color:var(--ink);font-family:"SourceHanSer
 .content-section:has(.module-button) .identity-link{width:100%;}
 
 /* Refined editorial typography and softer social links */
-:root{--editorial-serif:"Songti SC","STSong","SimSun",serif}
-body,#app,.home-hero,.home-content,.content-module,.profile-block,.rich-content,.qa-item,.timer-module,.timer-value,.module-title,.qa-question,.qa-answer,.profile-name,.profile-subtitle,.profile-bio,.identity-label{font-family:var(--editorial-serif)!important;font-weight:400}
 .identity-link{border:1px solid var(--mauve)!important;border-radius:18px!important;background:rgba(255,255,255,.22);box-shadow:0 3px 12px rgba(62,53,78,.06);transition:background .2s,transform .2s}
 .identity-link:active{transform:scale(.98)}
 .qa-item{display:block}
@@ -125,11 +112,7 @@ html{scroll-snap-type:y mandatory;scroll-padding-top:58px;overscroll-behavior-y:
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:y proximity}}
 /* Load an actual Chinese serif font instead of relying on device fallback. */
 
-:root{--editorial-serif:"Songti SC","STSong","SimSun",serif}
-body,#app,#app *:not(svg):not(path),.visitor-comments,.visitor-comments *:not(svg):not(path){
-  font-family:var(--editorial-serif)!important;
-  font-synthesis:none;
-}
+
 
 
 /* 修复手机系统深色模式下，旧版深色主题把首页文字变成白色的问题 */
@@ -166,11 +149,7 @@ body::before{
   background-size:cover;
   opacity:1;
 }
-#app{position:relative;background:transparent!important}
-
-/* Global local-only system serif font override; intentionally no external font loading. */
-body{font-family:"Songti SC","SimSun","STSong","SimHei",serif!important}
-body,body *{font-family:inherit!important;font-synthesis:none!important}
+#app{position:relative;background:transparent!important｝
 
 /* Premium progress indicators: editorial labels, luminous gradient fills, and subtle depth */
 .progress-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 13px;font:inherit;letter-spacing:.025em}
