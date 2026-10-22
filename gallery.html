@@ -165,7 +165,7 @@ body, body * {
       card.className = 'depth-card';
       card.setAttribute('aria-label', '照片 ' + index + '，点击翻面');
       card.innerHTML = (number === 1 || number === 2)
-        ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span>' + (number === 2 ? '<h3>图集 2</h3>' : '') + '<p></p><small>点击翻回照片</small></div></div>'
+        ? '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div><div class="depth-face depth-back"><span>0' + index + ' / 05</span><p></p><small>点击翻回照片</small></div></div>'
         : '<div class="depth-card-inner"><div class="depth-face depth-front"><img alt="" draggable="false"></div></div>';
       if (number === 1) { const backText = card.querySelector('.depth-back p'); backText.textContent = album1BackTexts[index - 1]; backText.style.whiteSpace = 'pre-line'; }
       if (number === 2) card.querySelector('.depth-back p').textContent = album2BackTexts[index - 1];
