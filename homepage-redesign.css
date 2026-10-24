@@ -424,3 +424,23 @@ body, body *:not(svg):not(path) {
   }
 }
 
+
+
+/* Desktop only: display the four media-review modules in two columns.
+   The existing mobile single-column layout remains unchanged. */
+@media (min-width: 900px) {
+  .home-content .module-showcase {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch;
+    gap: clamp(18px, 2vw, 32px) !important;
+    min-width: 0;
+  }
+
+  .home-content .module-showcase > .showcase-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    align-self: stretch;
+  }
+}
