@@ -466,3 +466,50 @@ body, body *:not(svg):not(path) {
     align-self: stretch;
   }
 }
+
+
+/* UX refinement: desktop timeline + hobbies side by side; mobile remains unchanged. */
+@media (min-width: 900px) {
+  .home-content > .content-section:has(.module-timeline):has(.hobbies-panel) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    align-items: start;
+    gap: clamp(20px, 2.5vw, 40px) !important;
+  }
+
+  .home-content .module-timeline {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: clamp(14px, 2vw, 28px) !important;
+    margin-block: 0 !important;
+  }
+}
+
+/* Timeline: remove only its translucent panel, preserving the timeline content. */
+.module-timeline {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Destination image labels: solid high-contrast bars instead of a fading gradient. */
+.destination-caption {
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: block !important;
+  padding: 7px 9px !important;
+  color: #fff !important;
+  background: #514366 !important;
+  font-size: clamp(12px, 1.2vw, 15px) !important;
+  line-height: 1.45 !important;
+  text-shadow: none !important;
+}
+.destination-caption small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.35;
+}
