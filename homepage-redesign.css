@@ -558,3 +558,14 @@ body, body *:not(svg):not(path) {
     flex-direction: column !important;
   }
 }
+
+
+/* Destination image captions: white solid bar with black text. */
+.destination-caption {
+  color: #111 !important;
+  background: #fff !important;
+  text-shadow: none !important;
+}
+.destination-caption small {
+  color: #111 !important;
+}
