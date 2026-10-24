@@ -639,3 +639,23 @@ body, body *:not(svg):not(path) {
     width: 100% !important;
   }
 }
+
+
+/* Remove the oversized blank gap between the Blokko canvas/footer and the renovation log. */
+#app {
+  min-height: 0 !important;
+  height: auto !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.blokko-site-footer {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: 0 !important;
+}
+.blokko-site-footer-inner {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: 0 !important;
+}
