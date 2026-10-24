@@ -155,7 +155,8 @@ body, body * {
 
     const carousel = document.createElement('div');
     carousel.className = 'album-carousel depth-stack';
-    carousel.setAttribute('aria-label', title.textContent + '，左右滑动切换照片');
+    carousel.tabIndex = 0;
+    carousel.setAttribute('aria-label', title.textContent + '，可使用左右箭头按钮或键盘方向键切换照片');
     const track = document.createElement('div');
     track.className = 'album-track';
 
@@ -226,6 +227,15 @@ body, body * {
     controls.querySelector('.carousel-next').addEventListener('click', event => {
       event.stopPropagation();
       movePhoto(1);
+    });
+    carousel.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        movePhoto(-1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        movePhoto(1);
+      }
     });
 
     carousel.addEventListener('pointerdown', event => {
