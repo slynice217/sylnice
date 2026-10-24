@@ -248,6 +248,12 @@ body, body * {
       result=await db.from('renovation_logs').select('id,title,content,log_date,created_at').order('log_date',{ascending:false}).order('created_at',{ascending:false});
     }
     const {data,error}=result;
+     // 按更新时间从早到晚排列；缺少更新时间时回退到创建时间，再回退到日志日期。
+     if(data) data.sort((a,b)=>{
+       const ta=new Date(a.updated_at||a.created_at||a.log_date||0).getTime();
+       const tb=new Date(b.updated_at||b.created_at||b.log_date||0).getTime();
+       return (Number.isFinite(ta)?ta:0)-(Number.isFinite(tb)?tb:0);
+     });
     const latestLabel=$('live-log-latest-updated');
     if(error){if(latestLabel)latestLabel.textContent='最新更新：暂时无法获取';message('暂时无法读取在线日志：'+error.message+'。请检查 Supabase 表与权限；管理员登录入口仍可使用。',true);return}
     list.replaceChildren();
