@@ -114,7 +114,7 @@ body, body * {
 <nav class="nav"><a href="./index.html">首页</a><a href="./page.html">装修日志</a><a href="./admin.html">管理员登录</a><a href="./gallery.html">Gallery</a></nav>
 <main>
 <h1>Gallery</h1>
-<div id="albums"><p class="gallery-loading">正在加载照片……</p></div>
+<div id="albums"><p class="gallery-loading">前两个单击可翻面……</p></div>
 </main>
 <div id="viewer" class="hidden"><button id="back">返回</button><div id="photos"></div></div>
 <script>
@@ -150,7 +150,7 @@ body, body * {
     section.className = 'album';
     const title = document.createElement('div');
     title.className = 'album-title';
-    title.textContent = number === 1 ? '某年某月某个星期几' : number === 2 ? '点击可翻面' : '宝贝nikki';
+    title.textContent = number === 1 ? '某年某月某个星期几' : number === 2 ? '猜猜我有多爱你' : '宝贝nikki';
     section.appendChild(title);
 
     const carousel = document.createElement('div');
