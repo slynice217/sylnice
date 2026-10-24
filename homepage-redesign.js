@@ -128,5 +128,71 @@ if (window.performance && window.performance.getEntriesByType) {
   });
   if(section.childNodes.length)rest.append(section);
   root.append(rest);
+
+  // AnimatedContent 的原生实现：滚动进入时淡入、上移、轻微缩放与模糊过渡，并为内部卡片添加错峰动画。
+  const motionStyle = document.createElement('style');
+  motionStyle.id = 'homepage-animated-content-styles';
+  motionStyle.textContent = `
+    .home-hero .profile-block,
+    .home-hero .notice-module,
+    .home-content .content-module,
+    .home-content .hobbies-panel,
+    .home-content .destination-item,
+    .home-content .timeline-entry,
+    .home-content .qa-item,
+    .home-content .showcase-item {
+      --motion-delay: 0ms;
+      opacity: 0;
+      filter: blur(7px);
+      transform: translate3d(0, 28px, 0) scale(.985);
+      transition:
+        opacity 720ms cubic-bezier(.22,1,.36,1) var(--motion-delay),
+        filter 720ms cubic-bezier(.22,1,.36,1) var(--motion-delay),
+        transform 820ms cubic-bezier(.22,1,.36,1) var(--motion-delay);
+      will-change: opacity, filter, transform;
+    }
+    .home-hero .profile-block { transform: translate3d(0, 20px, 0) scale(.99); }
+    .home-hero .notice-module { transform: translate3d(0, 24px, 0) scale(.99); }
+    .home-content .is-motion-visible,
+    .home-hero .is-motion-visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    .home-content .destination-item:nth-child(6n+1) { --motion-delay: 0ms; }
+    .home-content .destination-item:nth-child(6n+2) { --motion-delay: 70ms; }
+    .home-content .destination-item:nth-child(6n+3) { --motion-delay: 140ms; }
+    .home-content .destination-item:nth-child(6n+4) { --motion-delay: 210ms; }
+    .home-content .destination-item:nth-child(6n+5) { --motion-delay: 280ms; }
+    .home-content .destination-item:nth-child(6n+6) { --motion-delay: 350ms; }
+    .home-content .timeline-entry:nth-child(2n) { --motion-delay: 90ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .home-hero .profile-block, .home-hero .notice-module,
+      .home-content .content-module, .home-content .hobbies-panel,
+      .home-content .destination-item, .home-content .timeline-entry,
+      .home-content .qa-item, .home-content .showcase-item {
+        opacity: 1 !important; filter: none !important; transform: none !important;
+        transition: none !important; will-change: auto;
+      }
+    }
+  `;
+  document.head.appendChild(motionStyle);
+  const motionTargets = root.querySelectorAll(
+    '.home-hero .profile-block, .home-hero .notice-module, .home-content .content-module, .home-content .destination-item, .home-content .timeline-entry, .home-content .qa-item, .home-content .showcase-item'
+  );
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const motionObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-motion-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    motionTargets.forEach(target => motionObserver.observe(target));
+  } else {
+    motionTargets.forEach(target => target.classList.add('is-motion-visible'));
+  }
+
   const jump=el('button','scroll-cue','向下探索 ↓');jump.type='button';jump.addEventListener('click',()=>rest.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));hero.append(jump);
 })();
