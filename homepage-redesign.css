@@ -668,7 +668,7 @@ body, body *:not(svg):not(path) {
   box-shadow: none !important;
 }
 .module-timer .timer-value {
-  font-size: 48px !important;
+  font-size: 24px !important;
   line-height: 1.35 !important;
   background: transparent !important;
   box-shadow: none !important;
