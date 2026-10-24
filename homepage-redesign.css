@@ -201,7 +201,7 @@ body::before{
 .hobbies-panel,
 .module-music,
 .module-timer {
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.4) !important;
   border: 0 !important;
   border-radius: 24px !important;
   box-shadow: none !important;
@@ -255,7 +255,7 @@ body::before{
 /* Each anonymous Q&A pair and each media-review card gets one shared panel. */
 .qa-item,
 .showcase-item {
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.4) !important;
   border: 0 !important;
   border-radius: 24px !important;
   box-shadow: none !important;
@@ -299,11 +299,11 @@ body::before{
 /* Resubmission: keep the Q&A pair and each media card as one unified panel. */
 .qa-item,
 .showcase-item {
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.4) !important;
 }
 /* Show the fixed background through the hero; only the notice gets a panel. */
 .home-hero{background:transparent!important}
-.notice-module{width:min(calc(100% - 28px),720px)!important;padding:clamp(22px,4vw,36px)!important;margin:8px auto 0!important;background:rgba(255,255,255,.2)!important;border:0!important;border-radius:24px!important;box-shadow:none!important;text-align:center}
+.notice-module{width:min(calc(100% - 28px),720px)!important;padding:clamp(22px,4vw,36px)!important;margin:8px auto 0!important;background:rgba(255,255,255,.4)!important;border:0!important;border-radius:24px!important;box-shadow:none!important;text-align:center}
 .notice-module .module-title,.notice-module .rich-content,.notice-module .rich-content p{background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
 .notice-module .module-title{margin:0 0 16px!important}
 .notice-module .rich-content p{margin:0 0 10px!important}
