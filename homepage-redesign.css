@@ -375,3 +375,52 @@ body, body *:not(svg):not(path) {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Desktop responsive layout: let homepage modules use the full browser width. */
+@media (min-width: 900px) {
+  .home-content {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    padding-inline: clamp(28px, 5vw, 88px) !important;
+  }
+
+  .home-content > .content-section {
+    width: 100% !important;
+    max-width: none !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: clamp(20px, 2.5vw, 40px) !important;
+  }
+
+  .home-content > .content-section > .content-module {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+
+  .home-content > .content-section:has(.module-grid),
+  .home-content > .content-section:has(.module-showcase) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .home-content > .content-section:has(.module-button) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .home-content .music-module {
+    width: 100%;
+    max-width: none;
+    align-items: flex-start;
+  }
+
+  .home-content .music-details {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .home-content .destination-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
