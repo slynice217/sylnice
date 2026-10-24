@@ -524,3 +524,7 @@ body, body *:not(svg):not(path) {
 @media (max-width: 600px) {
   .desktop-carousel-controls { display: none !important; }
 }
+
+
+/* Hide the photo progress counter beneath the Gallery arrows. */
+.carousel-position { display: none !important; }
