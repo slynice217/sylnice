@@ -1,0 +1,46 @@
+:root{color-scheme:light;--page-bg:#EEECF5;--ink:#342b42;--muted:#766a8a;--accent:#72519b;--line:rgba(114,81,155,.2);--panel:rgba(255,255,255,.82)}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--page-bg);scroll-behavior:smooth}
+body{min-height:100vh;margin:0;background:var(--page-bg);color:var(--ink);font-family:"Songti SC","SimSun","STSong","SimHei",serif;line-height:1.65;font-synthesis:none}
+a{color:var(--accent)}
+.nav{position:sticky;top:0;z-index:100;display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px;padding:13px 16px;background:rgba(255,255,255,.86);border-bottom:1px solid rgba(114,81,155,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.nav a{color:#542d8a;text-decoration:none;white-space:nowrap}
+.nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.live-renovation-logs{width:min(920px,calc(100% - 32px));margin:34px auto 48px;color:var(--ink)}
+.live-log-heading{margin-bottom:16px}
+.live-log-heading h2{font-size:clamp(1.45rem,3vw,1.9rem);font-weight:500;line-height:1.35;margin:0 0 7px}
+.live-log-heading p{font-size:.94rem;color:var(--muted);margin:0}
+.live-log-card,.live-log-admin{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px;margin:13px 0;box-shadow:0 5px 18px rgba(42,28,62,.045)}
+.live-log-list{display:grid;gap:12px}
+.live-log-title{font-size:1.1rem;font-weight:700;margin:0 0 5px}
+.live-log-date{color:var(--accent);font-size:.88rem;margin-bottom:10px}
+.live-log-content{line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;font-size:1rem}
+.live-log-empty,.live-log-status{padding:13px 15px;border-radius:10px;background:rgba(114,81,155,.08);font-size:.94rem;line-height:1.65}
+.live-log-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.live-log-btn{border:1px solid rgba(114,81,155,.3);background:var(--accent);color:white;border-radius:9px;padding:9px 15px;font:inherit;font-size:.92rem;cursor:pointer}
+.live-log-btn.secondary{background:transparent;color:var(--ink)}
+.live-log-btn.danger{background:#a33b48;border-color:#a33b48}
+.live-log-btn:disabled{opacity:.55;cursor:wait}
+.live-log-admin summary{cursor:pointer;font-weight:650}
+.live-log-admin:not([open]) #live-log-auth-view{display:none}
+.live-log-admin[open] #live-log-auth-view{display:block}
+.live-log-form{display:grid;gap:11px;margin-top:14px}
+.live-log-form label{display:grid;gap:5px;font-size:.92rem;font-weight:600}
+.live-log-form input,.live-log-form textarea{width:100%;border:1px solid #d8d1e2;background:#fff;color:var(--ink);border-radius:9px;padding:10px 12px;font:inherit;font-size:.96rem}
+.live-log-form input:focus,.live-log-form textarea:focus{outline:2px solid rgba(114,81,155,.3);border-color:var(--accent)}
+.live-log-form textarea{min-height:150px;resize:vertical;line-height:1.7}
+.live-log-auth{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:12px}
+.live-log-auth .full{grid-column:1/-1}
+.live-log-small{color:var(--muted);font-size:.84rem;line-height:1.55}
+#live-log-admin-shortcut{position:fixed;right:18px;bottom:18px;z-index:1000;border:0;border-radius:999px;background:var(--accent);color:#fff;padding:12px 18px;font:600 14px/1.2 system-ui,sans-serif;box-shadow:0 5px 18px rgba(45,27,67,.22);cursor:pointer}
+#live-log-admin-shortcut:focus-visible{outline:3px solid #b9a1d8;outline-offset:3px}
+#live-renovation-logs{scroll-margin-top:76px}
+.site-language-toggle{position:fixed;top:16px;right:16px;z-index:1001;width:76px;height:36px;padding:3px;border:1px solid rgba(106,84,135,.28);border-radius:999px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 3px 12px rgba(40,25,60,.08)}
+.site-language-toggle .lang-knob{position:absolute;left:3px;top:3px;width:32px;height:28px;border-radius:999px;background:#72519b;transition:transform .2s ease}
+.site-language-toggle[data-lang="tw"] .lang-knob{transform:translateX(36px)}
+.site-language-toggle .lang-label{position:relative;z-index:1;width:32px;text-align:center;font-size:14px;line-height:28px;color:#fff}
+.site-language-toggle .lang-label-tw,.site-language-toggle .lang-label.lang-tw{color:#645673}
+.site-language-toggle[data-lang="tw"] .lang-label.lang-cn{color:#645673}
+.site-language-toggle[data-lang="tw"] .lang-label.lang-tw{color:#fff}
+@media(max-width:600px){.nav{justify-content:flex-start;gap:8px 14px;padding:12px 13px;font-size:14px}.live-renovation-logs{width:calc(100% - 22px);margin:24px auto 34px}.live-log-card,.live-log-admin{padding:15px}.live-log-auth{grid-template-columns:1fr}.live-log-auth .full{grid-column:auto}#live-log-admin-shortcut{right:12px;bottom:12px;padding:11px 15px}.site-language-toggle{top:10px;right:10px}.nav{padding-right:98px}}
+[hidden]{display:none!important}
