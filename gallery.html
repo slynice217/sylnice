@@ -183,15 +183,24 @@ body, body * {
     }
 
     carousel.appendChild(track);
+
+    // Desktop-friendly controls: visible arrows, while preserving touch swipe on mobile.
+    const controls = document.createElement('div');
+    controls.className = 'desktop-carousel-controls';
+    controls.innerHTML = '<button type="button" class="carousel-arrow carousel-prev" aria-label="上一张照片">‹</button><span class="carousel-position" aria-live="polite">1 / ' + photoCount + '</span><button type="button" class="carousel-arrow carousel-next" aria-label="下一张照片">›</button>';
+    carousel.appendChild(controls);
+
     section.appendChild(carousel);
     root.appendChild(section);
 
     const cards = Array.from(track.children);
+    const positionLabel = controls.querySelector('.carousel-position');
     let current = 0;
     let startX = 0;
     let startY = 0;
     let dragging = false;
     function render() {
+      positionLabel.textContent = (current + 1) + ' / ' + cards.length;
       cards.forEach((card, i) => {
         let offset = i - current;
         if (offset > cards.length / 2) offset -= cards.length;
@@ -205,6 +214,19 @@ body, body * {
         card.tabIndex = distance === 0 ? 0 : -1;
       });
     }
+
+    function movePhoto(direction) {
+      current = (current + direction + cards.length) % cards.length;
+      render();
+    }
+    controls.querySelector('.carousel-prev').addEventListener('click', event => {
+      event.stopPropagation();
+      movePhoto(-1);
+    });
+    controls.querySelector('.carousel-next').addEventListener('click', event => {
+      event.stopPropagation();
+      movePhoto(1);
+    });
 
     carousel.addEventListener('pointerdown', event => {
       startX = event.clientX;
