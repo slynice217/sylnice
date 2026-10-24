@@ -596,3 +596,46 @@ body, body *:not(svg):not(path) {
     padding: 22px 11px 28px !important;
   }
 }
+
+
+/* Final desktop composition requested:
+   timeline left + six-destination grid right; hobbies stays full-width below/independent.
+   Mobile layout is not changed. */
+@media (min-width: 900px) {
+  .home-content > .content-section:has(.module-timeline) {
+    display: grid !important;
+    grid-template-columns: minmax(280px, .8fr) minmax(0, 1.2fr) !important;
+    align-items: start !important;
+    gap: clamp(20px, 2.5vw, 40px) !important;
+  }
+
+  .home-content > .content-section:has(.module-timeline) > .module-timeline {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  .home-content > .content-section:has(.module-timeline) > .module-grid {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .home-content > .content-section:has(.module-timeline) > .hobbies-panel {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .home-content > .content-section:has(.module-timeline) .destination-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(8px, 1vw, 14px) !important;
+    width: 100% !important;
+  }
+}
