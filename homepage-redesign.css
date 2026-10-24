@@ -513,3 +513,48 @@ body, body *:not(svg):not(path) {
   font-size: 11px;
   line-height: 1.35;
 }
+
+
+/* Correct desktop composition: timeline on the left, six-image destination grid on the right. */
+@media (min-width: 900px) {
+  .home-content > .content-section:has(.module-timeline):has(.destination-grid) {
+    display: grid !important;
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr) !important;
+    align-items: start !important;
+    gap: clamp(20px, 2.5vw, 40px) !important;
+  }
+
+  .home-content > .content-section:has(.module-timeline):has(.destination-grid) .module-timeline {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .home-content > .content-section:has(.module-timeline):has(.destination-grid) .destination-grid {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-content: start !important;
+    gap: clamp(8px, 1vw, 14px) !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+}
+
+@media (max-width: 899px) {
+  .home-content > .content-section:has(.module-timeline):has(.destination-grid) {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
