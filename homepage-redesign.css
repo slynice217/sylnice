@@ -569,3 +569,30 @@ body, body *:not(svg):not(path) {
 .destination-caption small {
   color: #111 !important;
 }
+
+
+/* Make the page background image stop visually at the guestbook section.
+   The guestbook gets an opaque full-width base on both desktop and mobile. */
+#visitor-comments.visitor-comments {
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 28px 16px 34px !important;
+  background: #E6E0EF !important;
+  isolation: isolate;
+}
+#visitor-comments .visitor-comments-inner {
+  width: min(920px, 100%) !important;
+  margin: 0 auto !important;
+  background: #fff !important;
+  border: 1px solid rgba(114,81,155,.2) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 8px 28px rgba(42,24,67,.06) !important;
+}
+@media (max-width: 540px) {
+  #visitor-comments.visitor-comments {
+    padding: 22px 11px 28px !important;
+  }
+}
