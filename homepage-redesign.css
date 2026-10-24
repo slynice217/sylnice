@@ -659,3 +659,26 @@ body, body *:not(svg):not(path) {
   padding-bottom: 0 !important;
   min-height: 0 !important;
 }
+
+
+/* 正计时与倒计时：字号扩大约一倍，并移除模块半透明底板 */
+.module-timer {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.module-timer .timer-value {
+  font-size: clamp(36px, 6vw, 56px) !important;
+  line-height: 1.35 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.module-timer .timer-label {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+@media (max-width: 680px) {
+  .module-timer .timer-value {
+    font-size: clamp(32px, 8vw, 44px) !important;
+  }
+}
