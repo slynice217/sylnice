@@ -2,6 +2,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN" style="--inspector-ui-opacity: 1; --global-banners-height: 0px; --system-broadcast-height: 72px; --broadcast-offset: 72px; --site-nav-height: 51px;">
 <head>
+<script id="homepage-always-start-at-top">
+(function () {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  function goToTop() {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }
+  goToTop();
+  window.addEventListener('load', goToTop, { once: true });
+  window.addEventListener('pageshow', function () {
+    goToTop();
+    requestAnimationFrame(goToTop);
+  });
+})();
+</script>
 <script>
   if (window.performance) {
     var navEntries = window.performance.getEntriesByType("navigation");
