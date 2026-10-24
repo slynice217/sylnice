@@ -1,7 +1,7 @@
 :root{color-scheme:light;--page-bg:#EEECF5;--ink:#342b42;--muted:#766a8a;--accent:#72519b;--line:rgba(114,81,155,.2);--panel:rgba(255,255,255,.82)}
 *{box-sizing:border-box}
 html{min-height:100%;background:var(--page-bg);scroll-behavior:smooth}
-body{min-height:100vh;margin:0;background:var(--page-bg) url("./assets/media/zxrz%20background.png") center center / cover fixed no-repeat;color:var(--ink);font-family:"Songti SC","SimSun","STSong","SimHei",serif;line-height:1.65;font-synthesis:none}
+body{min-height:100vh;margin:0;background:var(--page-bg) url("./assets/media/zxrz%20background.webp") center center / cover fixed no-repeat;color:var(--ink);font-family:"Songti SC","SimSun","STSong","SimHei",serif;line-height:1.65;font-synthesis:none}
 a{color:var(--accent)}
 .nav{position:sticky;top:0;z-index:100;display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px;padding:13px 16px;background:rgba(255,255,255,.86);border-bottom:1px solid rgba(114,81,155,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .nav a{color:#542d8a;text-decoration:none;white-space:nowrap}
