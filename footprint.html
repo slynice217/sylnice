@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="足迹 · 地铁线路图">
+<title>足迹 - welcome to me</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;color:#542d8a;background:#f7f4fb}
+.nav{padding:14px;text-align:center;background:#ffffffaa;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;white-space:nowrap;overflow-x:auto}
+.nav a{display:inline-block;margin:0 8px;color:#542d8a;text-decoration:none}
+.nav a:hover{opacity:.72}
+main{width:min(1500px,100%);margin:0 auto;padding:clamp(8px,2vw,24px)}
+h1{font-size:clamp(22px,3vw,32px);font-weight:500;text-align:center;margin:8px 0 18px}
+.map-wrap{position:relative;width:100%;line-height:0;overflow:hidden;border-radius:10px;background:#fff;box-shadow:0 8px 30px #36215b14}
+.map-wrap img{display:block;width:100%;height:auto}
+.station-dot{position:absolute;transform:translate(-50%,-50%);width:clamp(10px,1.15vw,17px);height:clamp(10px,1.15vw,17px);padding:0;border:1.5px solid rgba(91,54,151,.68);border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;z-index:1}
+.station-dot:hover,.station-dot:focus-visible{background:rgba(133,92,201,.28);outline:2px solid #8a65c5;outline-offset:1px}
+.station-dot:focus:not(:focus-visible){outline:none}
+@media(max-width:600px){.nav{font-size:14px;padding:12px 6px}.nav a{margin:0 6px}main{padding:6px}h1{margin:10px 0 14px}.map-wrap{border-radius:4px}.station-dot{width:10px;height:10px}}
+</style>
+</head>
+<body>
+<nav class="nav"><a href="./index.html">首页</a><a href="./page.html">装修日志</a><a href="./admin.html">管理员登录</a><a href="./gallery.html">Gallery</a><a href="./footprint.html" aria-current="page">足迹</a></nav>
+<main>
+<h1>足迹</h1>
+<div class="map-wrap" aria-label="地铁线路图及站点按钮">
+<img src="./assets/media/routemap.webp?v=1" alt="地铁线路图">
+<button class="station-dot" type="button" aria-label="站点按钮 1" title="站点按钮 1" style="left:12.299%;top:18.146%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 2" title="站点按钮 2" style="left:13.971%;top:22.485%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 3" title="站点按钮 3" style="left:10.561%;top:27.022%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 4" title="站点按钮 4" style="left:13.971%;top:27.022%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 5" title="站点按钮 5" style="left:10.561%;top:33.925%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 6" title="站点按钮 6" style="left:13.971%;top:32.150%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 7" title="站点按钮 7" style="left:15.642%;top:37.870%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 8" title="站点按钮 8" style="left:32.286%;top:21.105%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 9" title="站点按钮 9" style="left:35.227%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 10" title="站点按钮 10" style="left:39.572%;top:18.836%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 11" title="站点按钮 11" style="left:43.984%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 12" title="站点按钮 12" style="left:48.396%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 13" title="站点按钮 13" style="left:52.741%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 14" title="站点按钮 14" style="left:57.821%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 15" title="站点按钮 15" style="left:59.893%;top:25.542%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 16" title="站点按钮 16" style="left:59.893%;top:30.868%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 17" title="站点按钮 17" style="left:60.094%;top:36.095%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 18" title="站点按钮 18" style="left:65.508%;top:38.462%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 19" title="站点按钮 19" style="left:69.519%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 20" title="站点按钮 20" style="left:74.064%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 21" title="站点按钮 21" style="left:78.610%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 22" title="站点按钮 22" style="left:83.422%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 23" title="站点按钮 23" style="left:92.246%;top:18.738%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 24" title="站点按钮 24" style="left:67.045%;top:25.542%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 25" title="站点按钮 25" style="left:67.045%;top:30.769%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 26" title="站点按钮 26" style="left:70.989%;top:53.353%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 27" title="站点按钮 27" style="left:68.449%;top:57.396%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 28" title="站点按钮 28" style="left:65.508%;top:60.454%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 29" title="站点按钮 29" style="left:72.794%;top:48.028%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 30" title="站点按钮 30" style="left:72.861%;top:43.294%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 31" title="站点按钮 31" style="left:15.642%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 32" title="站点按钮 32" style="left:20.521%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 33" title="站点按钮 33" style="left:24.666%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 34" title="站点按钮 34" style="left:29.011%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 35" title="站点按钮 35" style="left:32.888%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 36" title="站点按钮 36" style="left:36.765%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 37" title="站点按钮 37" style="left:40.508%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 38" title="站点按钮 38" style="left:44.786%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 39" title="站点按钮 39" style="left:48.730%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 40" title="站点按钮 40" style="left:51.471%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 41" title="站点按钮 41" style="left:54.078%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 42" title="站点按钮 42" style="left:59.893%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 43" title="站点按钮 43" style="left:62.968%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 44" title="站点按钮 44" style="left:66.845%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 45" title="站点按钮 45" style="left:72.794%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 46" title="站点按钮 46" style="left:76.537%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 47" title="站点按钮 47" style="left:79.078%;top:44.181%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 48" title="站点按钮 48" style="left:27.674%;top:48.225%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 49" title="站点按钮 49" style="left:23.463%;top:55.720%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 50" title="站点按钮 50" style="left:17.914%;top:54.241%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 51" title="站点按钮 51" style="left:15.307%;top:59.763%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 52" title="站点按钮 52" style="left:17.246%;top:64.103%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 53" title="站点按钮 53" style="left:26.471%;top:60.651%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 54" title="站点按钮 54" style="left:36.297%;top:57.396%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 55" title="站点按钮 55" style="left:36.430%;top:64.103%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 56" title="站点按钮 56" style="left:41.444%;top:64.103%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 57" title="站点按钮 57" style="left:45.789%;top:64.103%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 58" title="站点按钮 58" style="left:52.874%;top:67.554%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 59" title="站点按钮 59" style="left:57.754%;top:65.878%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 60" title="站点按钮 60" style="left:62.099%;top:59.665%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 61" title="站点按钮 61" style="left:62.099%;top:56.706%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 62" title="站点按钮 62" style="left:66.043%;top:61.834%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 63" title="站点按钮 63" style="left:24.398%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 64" title="站点按钮 64" style="left:29.144%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 65" title="站点按钮 65" style="left:33.890%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 66" title="站点按钮 66" style="left:38.703%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 67" title="站点按钮 67" style="left:43.516%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 68" title="站点按钮 68" style="left:48.195%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 69" title="站点按钮 69" style="left:52.874%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 70" title="站点按钮 70" style="left:57.553%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 71" title="站点按钮 71" style="left:62.366%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 72" title="站点按钮 72" style="left:67.179%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 73" title="站点按钮 73" style="left:71.925%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 74" title="站点按钮 74" style="left:76.604%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 75" title="站点按钮 75" style="left:81.350%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 76" title="站点按钮 76" style="left:86.096%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 77" title="站点按钮 77" style="left:90.508%;top:81.262%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 78" title="站点按钮 78" style="left:92.513%;top:87.278%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 79" title="站点按钮 79" style="left:92.513%;top:93.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 80" title="站点按钮 80" style="left:51.203%;top:83.333%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 81" title="站点按钮 81" style="left:45.455%;top:87.179%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 82" title="站点按钮 82" style="left:38.369%;top:91.617%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 83" title="站点按钮 83" style="left:32.019%;top:91.617%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 84" title="站点按钮 84" style="left:51.203%;top:59.172%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 85" title="站点按钮 85" style="left:51.471%;top:54.241%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 86" title="站点按钮 86" style="left:51.471%;top:51.282%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 87" title="站点按钮 87" style="left:51.471%;top:47.337%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 88" title="站点按钮 88" style="left:51.471%;top:48.915%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 89" title="站点按钮 89" style="left:51.471%;top:56.213%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 90" title="站点按钮 90" style="left:59.893%;top:51.874%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 91" title="站点按钮 91" style="left:62.099%;top:59.665%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 92" title="站点按钮 92" style="left:59.893%;top:51.282%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 93" title="站点按钮 93" style="left:59.893%;top:43.195%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 94" title="站点按钮 94" style="left:54.078%;top:59.270%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 95" title="站点按钮 95" style="left:59.893%;top:59.172%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 96" title="站点按钮 96" style="left:59.893%;top:64.103%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 97" title="站点按钮 97" style="left:59.893%;top:67.653%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 98" title="站点按钮 98" style="left:59.960%;top:76.134%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 99" title="站点按钮 99" style="left:82.019%;top:61.144%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 100" title="站点按钮 100" style="left:86.029%;top:61.144%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 101" title="站点按钮 101" style="left:90.107%;top:61.144%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 102" title="站点按钮 102" style="left:92.513%;top:47.929%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 103" title="站点按钮 103" style="left:92.513%;top:53.748%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 104" title="站点按钮 104" style="left:92.513%;top:66.864%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 105" title="站点按钮 105" style="left:79.144%;top:47.929%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 106" title="站点按钮 106" style="left:79.612%;top:51.183%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 107" title="站点按钮 107" style="left:79.612%;top:54.241%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 108" title="站点按钮 108" style="left:79.612%;top:57.298%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 109" title="站点按钮 109" style="left:43.449%;top:73.570%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 110" title="站点按钮 110" style="left:48.195%;top:73.570%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 111" title="站点按钮 111" style="left:48.195%;top:75.937%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 112" title="站点按钮 112" style="left:48.195%;top:77.416%"></button>
+<button class="station-dot" type="button" aria-label="站点按钮 113" title="站点按钮 113" style="left:51.203%;top:80.178%"></button>
+</div>
+</main>
+</body>
+</html>
