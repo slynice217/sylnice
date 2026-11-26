@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sylnice217",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-26",
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "database",
+      "database_name": "sylnice-db",
+      "database_id": "35a29f8e-de04-4163-a90b-2f304f7027f7"
+    }
+  ]
+}
