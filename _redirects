@@ -1,3 +1,2 @@
-# Cloudflare Pages / Netlify 静态托管路由重定向规则
-# 针对未匹配到的静态页面请求兜底到 404.html
-/*    /404.html    404
+# Cloudflare Worker static assets do not support 404 status codes in _redirects.
+# GitHub Pages uses 404.html automatically; no redirect rule is needed here.
