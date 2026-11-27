@@ -813,6 +813,7 @@ html, body { min-height:100%; overflow-y:auto !important; }
   const submit = document.getElementById('visitor-comment-submit');
   const list = document.getElementById('visitor-comments-list');
   const refresh = document.getElementById('visitor-comment-refresh');
+  if (!status || !list || !submit || !nicknameInput || !messageInput) return;
   let loading = false;
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -824,43 +825,54 @@ html, body { min-height:100%; overflow-y:auto !important; }
     status.textContent = text;
     status.style.color = isError ? '#b42318' : '';
   }
+  function firstValue(row, keys) {
+    for (const key of keys) if (row && row[key] != null && row[key] !== '') return row[key];
+    return '';
+  }
   function formatDate(value) {
-    if (value === null || value === undefined || value === '') return '時間未知';
-    const date = new Date(value);
+    if (!value) return '時間未知';
+    let date = new Date(value);
+    if (Number.isNaN(date.getTime()) && typeof value === 'number') date = new Date(value < 1e12 ? value * 1000 : value);
     if (Number.isNaN(date.getTime()) || date.getUTCFullYear() <= 1970) return '時間未知';
     return date.toLocaleString(undefined, {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
   }
   async function loadComments() {
     if (loading) return;
     loading = true;
+    setStatus('正在从 Cloudflare 获取留言…');
     try {
       const response = await fetch(API_BASE + '/comments?_=' + Date.now(), {
         cache:'no-store',
-        headers:{'Cache-Control':'no-cache'}
+        headers:{'Cache-Control':'no-cache','Pragma':'no-cache'}
       });
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const data = await response.json();
       const rows = Array.isArray(data) ? data : (Array.isArray(data.results) ? data.results : (Array.isArray(data.comments) ? data.comments : []));
       list.replaceChildren();
       if (!rows.length) {
-        list.append(el('p','visitor-comments-empty','还没有留言，来写下第一条吧。'));
+        list.append(el('p','visitor-comments-empty','接口读取成功，但返回 0 条留言。'));
+        setStatus('接口正常｜0 条｜读取时间：' + new Date().toLocaleTimeString());
         return;
       }
       rows.forEach(row => {
+        const nickname = firstValue(row,['nickname','name','username']) || '访客';
+        const message = firstValue(row,['message','content','body','text']);
+        const dateValue = firstValue(row,['created_at','createdAt','timestamp','date']);
         const item = el('article','visitor-comment-item');
         const meta = el('div','visitor-comment-meta');
-        meta.append(el('span','visitor-comment-name',row.nickname || '访客'));
-        meta.append(el('time','visitor-comment-date',formatDate(row.created_at)));
-        item.append(meta,el('p','visitor-comment-body',row.message || ''));
+        meta.append(el('span','visitor-comment-name',nickname));
+        meta.append(el('time','visitor-comment-date',formatDate(dateValue)));
+        item.append(meta,el('p','visitor-comment-body',message));
         list.append(item);
       });
-      setStatus('留言已更新。');
+      const newest = rows[0] || {};
+      const newestName = firstValue(newest,['nickname','name','username']) || '访客';
+      const newestText = firstValue(newest,['message','content','body','text']);
+      setStatus('接口正常｜' + rows.length + ' 条｜首条：' + newestName + '「' + String(newestText).slice(0,24) + '」｜读取：' + new Date().toLocaleTimeString());
     } catch (error) {
-      list.replaceChildren(el('p','visitor-comments-empty','暂时无法读取留言，请稍后刷新重试。'));
-      setStatus('留言服务暂时不可用。', true);
-    } finally {
-      loading = false;
-    }
+      list.replaceChildren(el('p','visitor-comments-empty','读取失败：' + (error.message || error)));
+      setStatus('留言接口错误｜' + (error.message || error), true);
+    } finally { loading = false; }
   }
   form.addEventListener('submit', async function(event) {
     event.preventDefault();
@@ -872,25 +884,18 @@ html, body { min-height:100%; overflow-y:auto !important; }
     setStatus('正在发布留言……');
     try {
       const response = await fetch(API_BASE + '/comments', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        cache:'no-store',
-        body:JSON.stringify({nickname,message})
+        method:'POST', headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},
+        cache:'no-store', body:JSON.stringify({nickname,message})
       });
-      if (!response.ok) {
-        const payload = await response.json().catch(()=>({}));
-        throw new Error(payload.error || 'HTTP ' + response.status);
-      }
+      if (!response.ok) throw new Error('HTTP ' + response.status);
       messageInput.value = '';
-      setStatus('发布成功！');
+      setStatus('发布成功，正在重新读取…');
       await loadComments();
     } catch (error) {
-      setStatus('发布失败，请稍后重试。', true);
-    } finally {
-      submit.disabled = false;
-    }
+      setStatus('发布失败｜' + (error.message || error), true);
+    } finally { submit.disabled = false; }
   });
-  refresh.addEventListener('click', loadComments);
+  if (refresh) refresh.addEventListener('click', loadComments);
   window.addEventListener('focus', loadComments);
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) loadComments(); });
   loadComments();
