@@ -802,11 +802,9 @@ html, body { min-height:100%; overflow-y:auto !important; }
 <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
 <script src="./language.js?v=307d0a86bdc4"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script id="visitor-comments-app">
 (function(){
-  const PROJECT_URL = 'https://qqduizywyinbvyozjavm.supabase.co';
-  const PUBLISHABLE_KEY = 'sb_publishable_db5BibzV9MY4wRJvsc9GOg_91mmQkjd';
+  const API_BASE = 'https://sylnice217.slynice217.workers.dev/api';
   const form = document.getElementById('visitor-comment-form');
   if (!form) return;
   const nicknameInput = document.getElementById('visitor-comment-nickname');
@@ -815,12 +813,6 @@ html, body { min-height:100%; overflow-y:auto !important; }
   const submit = document.getElementById('visitor-comment-submit');
   const list = document.getElementById('visitor-comments-list');
   const refresh = document.getElementById('visitor-comment-refresh');
-  if (!window.supabase || !window.supabase.createClient) {
-    status.textContent = '留言服务加载失败，请刷新页面后重试。';
-    list.textContent = '暂时无法连接留言服务。';
-    return;
-  }
-  const db = window.supabase.createClient(PROJECT_URL, PUBLISHABLE_KEY);
   function el(tag, className, text) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -833,40 +825,33 @@ html, body { min-height:100%; overflow-y:auto !important; }
   }
   function formatDate(value) {
     if (value === null || value === undefined || value === '') return '時間未知';
-    // Handle Unix timestamps in seconds or milliseconds as well as ISO date strings.
-    let date;
-    if (typeof value === 'number' || /^\d+(\.\d+)?$/.test(String(value).trim())) {
-      let timestamp = Number(value);
-      if (timestamp < 100000000000) timestamp *= 1000;
-      date = new Date(timestamp);
-    } else {
-      date = new Date(value);
-    }
+    const date = new Date(value);
     if (Number.isNaN(date.getTime()) || date.getUTCFullYear() <= 1970) return '時間未知';
     return date.toLocaleString(undefined, {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
   }
   async function loadComments() {
     list.replaceChildren(el('p','visitor-comments-empty','正在加载留言……'));
-    const result = await db.from('site_comments').select('id,nickname,message,created_at').order('created_at',{ascending:false}).limit(100);
-    if (result.error) {
-      list.replaceChildren(el('p','visitor-comments-empty','暂时无法读取留言。请确认已在 Supabase 创建 site_comments 表并设置公开读取权限。'));
-      setStatus('留言服务尚未配置完成。', true);
-      return;
+    try {
+      const response = await fetch(API_BASE + '/comments', {cache:'no-store'});
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const rows = await response.json();
+      list.replaceChildren();
+      if (!Array.isArray(rows) || !rows.length) {
+        list.append(el('p','visitor-comments-empty','还没有留言，来写下第一条吧。'));
+        return;
+      }
+      rows.forEach(row => {
+        const item = el('article','visitor-comment-item');
+        const meta = el('div','visitor-comment-meta');
+        meta.append(el('span','visitor-comment-name',row.nickname || '访客'));
+        meta.append(el('time','visitor-comment-date',formatDate(row.created_at)));
+        item.append(meta,el('p','visitor-comment-body',row.message || ''));
+        list.append(item);
+      });
+    } catch (error) {
+      list.replaceChildren(el('p','visitor-comments-empty','暂时无法读取留言，请稍后刷新重试。'));
+      setStatus('留言服务暂时不可用。', true);
     }
-    list.replaceChildren();
-    if (!result.data || !result.data.length) {
-      list.append(el('p','visitor-comments-empty','还没有留言，来写下第一条吧。'));
-      return;
-    }
-    result.data.forEach(row => {
-      const item = el('article','visitor-comment-item');
-      const meta = el('div','visitor-comment-meta');
-      meta.append(el('span','visitor-comment-name',row.nickname || '访客'));
-      meta.append(el('time','visitor-comment-date',formatDate(row.created_at)));
-      const body = el('p','visitor-comment-body',row.message || '');
-      item.append(meta,body);
-      list.append(item);
-    });
   }
   form.addEventListener('submit', async function(event) {
     event.preventDefault();
@@ -876,19 +861,27 @@ html, body { min-height:100%; overflow-y:auto !important; }
     if (nickname.length > 40 || message.length > 2000) { setStatus('昵称最多 40 字，留言最多 2000 字。', true); return; }
     submit.disabled = true;
     setStatus('正在发布留言……');
-    const result = await db.from('site_comments').insert({nickname, message});
-    submit.disabled = false;
-    if (result.error) {
-      setStatus('发布失败，请确认 Supabase 的 site_comments 表及匿名插入权限已设置。', true);
-      return;
+    try {
+      const response = await fetch(API_BASE + '/comments', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({nickname,message})
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(()=>({}));
+        throw new Error(payload.error || 'HTTP ' + response.status);
+      }
+      messageInput.value = '';
+      setStatus('发布成功！');
+      await loadComments();
+    } catch (error) {
+      setStatus('发布失败，请稍后重试。', true);
+    } finally {
+      submit.disabled = false;
     }
-    messageInput.value = '';
-    setStatus('发布成功！');
-    await loadComments();
   });
   refresh.addEventListener('click', loadComments);
   loadComments();
-  // Refresh periodically so visitors see newly posted messages without manually reloading.
   window.setInterval(loadComments, 15000);
 })();
 </script>
