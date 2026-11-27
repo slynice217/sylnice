@@ -813,6 +813,7 @@ html, body { min-height:100%; overflow-y:auto !important; }
   const submit = document.getElementById('visitor-comment-submit');
   const list = document.getElementById('visitor-comments-list');
   const refresh = document.getElementById('visitor-comment-refresh');
+  let loading = false;
   function el(tag, className, text) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -830,13 +831,18 @@ html, body { min-height:100%; overflow-y:auto !important; }
     return date.toLocaleString(undefined, {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
   }
   async function loadComments() {
-    list.replaceChildren(el('p','visitor-comments-empty','正在加载留言……'));
+    if (loading) return;
+    loading = true;
     try {
-      const response = await fetch(API_BASE + '/comments', {cache:'no-store'});
+      const response = await fetch(API_BASE + '/comments?_=' + Date.now(), {
+        cache:'no-store',
+        headers:{'Cache-Control':'no-cache'}
+      });
       if (!response.ok) throw new Error('HTTP ' + response.status);
-      const rows = await response.json();
+      const data = await response.json();
+      const rows = Array.isArray(data) ? data : (Array.isArray(data.results) ? data.results : (Array.isArray(data.comments) ? data.comments : []));
       list.replaceChildren();
-      if (!Array.isArray(rows) || !rows.length) {
+      if (!rows.length) {
         list.append(el('p','visitor-comments-empty','还没有留言，来写下第一条吧。'));
         return;
       }
@@ -848,9 +854,12 @@ html, body { min-height:100%; overflow-y:auto !important; }
         item.append(meta,el('p','visitor-comment-body',row.message || ''));
         list.append(item);
       });
+      setStatus('留言已更新。');
     } catch (error) {
       list.replaceChildren(el('p','visitor-comments-empty','暂时无法读取留言，请稍后刷新重试。'));
       setStatus('留言服务暂时不可用。', true);
+    } finally {
+      loading = false;
     }
   }
   form.addEventListener('submit', async function(event) {
@@ -865,6 +874,7 @@ html, body { min-height:100%; overflow-y:auto !important; }
       const response = await fetch(API_BASE + '/comments', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
+        cache:'no-store',
         body:JSON.stringify({nickname,message})
       });
       if (!response.ok) {
@@ -881,6 +891,8 @@ html, body { min-height:100%; overflow-y:auto !important; }
     }
   });
   refresh.addEventListener('click', loadComments);
+  window.addEventListener('focus', loadComments);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) loadComments(); });
   loadComments();
   window.setInterval(loadComments, 15000);
 })();
